@@ -9,7 +9,6 @@ import {
 import {
   ErrorCodes,
   errorShape,
-  formatValidationErrors,
   validateNodeDescribeParams,
   validateNodeInvokeParams,
   validateNodeListParams,
@@ -20,20 +19,22 @@ import {
   validateNodePairVerifyParams,
   validateNodeRenameParams,
 } from "../protocol/index.js";
-import { formatForLog } from "../ws-log.js";
+import {
+  respondInvalidParams,
+  respondUnavailableOnThrow,
+  safeParseJson,
+  uniqueSortedStrings,
+} from "./nodes.helpers.js";
 import type { GatewayRequestHandlers } from "./types.js";
 
 export const nodeHandlers: GatewayRequestHandlers = {
   "node.pair.request": async ({ params, respond, context }) => {
     if (!validateNodePairRequestParams(params)) {
-      respond(
-        false,
-        undefined,
-        errorShape(
-          ErrorCodes.INVALID_REQUEST,
-          `invalid node.pair.request params: ${formatValidationErrors(validateNodePairRequestParams.errors)}`,
-        ),
-      );
+      respondInvalidParams({
+        respond,
+        method: "node.pair.request",
+        validator: validateNodePairRequestParams,
+      });
       return;
     }
     const p = params as {
@@ -48,7 +49,7 @@ export const nodeHandlers: GatewayRequestHandlers = {
       remoteIp?: string;
       silent?: boolean;
     };
-    try {
+    await respondUnavailableOnThrow(respond, async () => {
       const result = await requestNodePairing({
         nodeId: p.nodeId,
         displayName: p.displayName,
@@ -67,58 +68,36 @@ export const nodeHandlers: GatewayRequestHandlers = {
         });
       }
       respond(true, result, undefined);
-    } catch (err) {
-      respond(
-        false,
-        undefined,
-        errorShape(ErrorCodes.UNAVAILABLE, formatForLog(err)),
-      );
-    }
+    });
   },
   "node.pair.list": async ({ params, respond }) => {
     if (!validateNodePairListParams(params)) {
-      respond(
-        false,
-        undefined,
-        errorShape(
-          ErrorCodes.INVALID_REQUEST,
-          `invalid node.pair.list params: ${formatValidationErrors(validateNodePairListParams.errors)}`,
-        ),
-      );
+      respondInvalidParams({
+        respond,
+        method: "node.pair.list",
+        validator: validateNodePairListParams,
+      });
       return;
     }
-    try {
+    await respondUnavailableOnThrow(respond, async () => {
       const list = await listNodePairing();
       respond(true, list, undefined);
-    } catch (err) {
-      respond(
-        false,
-        undefined,
-        errorShape(ErrorCodes.UNAVAILABLE, formatForLog(err)),
-      );
-    }
+    });
   },
   "node.pair.approve": async ({ params, respond, context }) => {
     if (!validateNodePairApproveParams(params)) {
-      respond(
-        false,
-        undefined,
-        errorShape(
-          ErrorCodes.INVALID_REQUEST,
-          `invalid node.pair.approve params: ${formatValidationErrors(validateNodePairApproveParams.errors)}`,
-        ),
-      );
+      respondInvalidParams({
+        respond,
+        method: "node.pair.approve",
+        validator: validateNodePairApproveParams,
+      });
       return;
     }
     const { requestId } = params as { requestId: string };
-    try {
+    await respondUnavailableOnThrow(respond, async () => {
       const approved = await approveNodePairing(requestId);
       if (!approved) {
-        respond(
-          false,
-          undefined,
-          errorShape(ErrorCodes.INVALID_REQUEST, "unknown requestId"),
-        );
+        respond(false, undefined, errorShape(ErrorCodes.INVALID_REQUEST, "unknown requestId"));
         return;
       }
       context.broadcast(
@@ -132,35 +111,22 @@ export const nodeHandlers: GatewayRequestHandlers = {
         { dropIfSlow: true },
       );
       respond(true, approved, undefined);
-    } catch (err) {
-      respond(
-        false,
-        undefined,
-        errorShape(ErrorCodes.UNAVAILABLE, formatForLog(err)),
-      );
-    }
+    });
   },
   "node.pair.reject": async ({ params, respond, context }) => {
     if (!validateNodePairRejectParams(params)) {
-      respond(
-        false,
-        undefined,
-        errorShape(
-          ErrorCodes.INVALID_REQUEST,
-          `invalid node.pair.reject params: ${formatValidationErrors(validateNodePairRejectParams.errors)}`,
-        ),
-      );
+      respondInvalidParams({
+        respond,
+        method: "node.pair.reject",
+        validator: validateNodePairRejectParams,
+      });
       return;
     }
     const { requestId } = params as { requestId: string };
-    try {
+    await respondUnavailableOnThrow(respond, async () => {
       const rejected = await rejectNodePairing(requestId);
       if (!rejected) {
-        respond(
-          false,
-          undefined,
-          errorShape(ErrorCodes.INVALID_REQUEST, "unknown requestId"),
-        );
+        respond(false, undefined, errorShape(ErrorCodes.INVALID_REQUEST, "unknown requestId"));
         return;
       }
       context.broadcast(
@@ -174,130 +140,75 @@ export const nodeHandlers: GatewayRequestHandlers = {
         { dropIfSlow: true },
       );
       respond(true, rejected, undefined);
-    } catch (err) {
-      respond(
-        false,
-        undefined,
-        errorShape(ErrorCodes.UNAVAILABLE, formatForLog(err)),
-      );
-    }
+    });
   },
   "node.pair.verify": async ({ params, respond }) => {
     if (!validateNodePairVerifyParams(params)) {
-      respond(
-        false,
-        undefined,
-        errorShape(
-          ErrorCodes.INVALID_REQUEST,
-          `invalid node.pair.verify params: ${formatValidationErrors(validateNodePairVerifyParams.errors)}`,
-        ),
-      );
+      respondInvalidParams({
+        respond,
+        method: "node.pair.verify",
+        validator: validateNodePairVerifyParams,
+      });
       return;
     }
     const { nodeId, token } = params as {
       nodeId: string;
       token: string;
     };
-    try {
+    await respondUnavailableOnThrow(respond, async () => {
       const result = await verifyNodeToken(nodeId, token);
       respond(true, result, undefined);
-    } catch (err) {
-      respond(
-        false,
-        undefined,
-        errorShape(ErrorCodes.UNAVAILABLE, formatForLog(err)),
-      );
-    }
+    });
   },
   "node.rename": async ({ params, respond }) => {
     if (!validateNodeRenameParams(params)) {
-      respond(
-        false,
-        undefined,
-        errorShape(
-          ErrorCodes.INVALID_REQUEST,
-          `invalid node.rename params: ${formatValidationErrors(validateNodeRenameParams.errors)}`,
-        ),
-      );
+      respondInvalidParams({
+        respond,
+        method: "node.rename",
+        validator: validateNodeRenameParams,
+      });
       return;
     }
     const { nodeId, displayName } = params as {
       nodeId: string;
       displayName: string;
     };
-    try {
+    await respondUnavailableOnThrow(respond, async () => {
       const trimmed = displayName.trim();
       if (!trimmed) {
-        respond(
-          false,
-          undefined,
-          errorShape(ErrorCodes.INVALID_REQUEST, "displayName required"),
-        );
+        respond(false, undefined, errorShape(ErrorCodes.INVALID_REQUEST, "displayName required"));
         return;
       }
       const updated = await renamePairedNode(nodeId, trimmed);
       if (!updated) {
-        respond(
-          false,
-          undefined,
-          errorShape(ErrorCodes.INVALID_REQUEST, "unknown nodeId"),
-        );
+        respond(false, undefined, errorShape(ErrorCodes.INVALID_REQUEST, "unknown nodeId"));
         return;
       }
-      respond(
-        true,
-        { nodeId: updated.nodeId, displayName: updated.displayName },
-        undefined,
-      );
-    } catch (err) {
-      respond(
-        false,
-        undefined,
-        errorShape(ErrorCodes.UNAVAILABLE, formatForLog(err)),
-      );
-    }
+      respond(true, { nodeId: updated.nodeId, displayName: updated.displayName }, undefined);
+    });
   },
   "node.list": async ({ params, respond, context }) => {
     if (!validateNodeListParams(params)) {
-      respond(
-        false,
-        undefined,
-        errorShape(
-          ErrorCodes.INVALID_REQUEST,
-          `invalid node.list params: ${formatValidationErrors(validateNodeListParams.errors)}`,
-        ),
-      );
+      respondInvalidParams({
+        respond,
+        method: "node.list",
+        validator: validateNodeListParams,
+      });
       return;
     }
-    try {
+    await respondUnavailableOnThrow(respond, async () => {
       const list = await listNodePairing();
       const pairedById = new Map(list.paired.map((n) => [n.nodeId, n]));
       const connected = context.bridge?.listConnected?.() ?? [];
       const connectedById = new Map(connected.map((n) => [n.nodeId, n]));
-      const nodeIds = new Set<string>([
-        ...pairedById.keys(),
-        ...connectedById.keys(),
-      ]);
+      const nodeIds = new Set<string>([...pairedById.keys(), ...connectedById.keys()]);
 
       const nodes = [...nodeIds].map((nodeId) => {
         const paired = pairedById.get(nodeId);
         const live = connectedById.get(nodeId);
 
-        const caps = [
-          ...new Set(
-            (live?.caps ?? paired?.caps ?? [])
-              .map((c) => String(c).trim())
-              .filter(Boolean),
-          ),
-        ].sort();
-
-        const commands = [
-          ...new Set(
-            (live?.commands ?? paired?.commands ?? [])
-              .map((c) => String(c).trim())
-              .filter(Boolean),
-          ),
-        ].sort();
+        const caps = uniqueSortedStrings([...(live?.caps ?? paired?.caps ?? [])]);
+        const commands = uniqueSortedStrings([...(live?.commands ?? paired?.commands ?? [])]);
 
         return {
           nodeId,
@@ -325,66 +236,36 @@ export const nodeHandlers: GatewayRequestHandlers = {
       });
 
       respond(true, { ts: Date.now(), nodes }, undefined);
-    } catch (err) {
-      respond(
-        false,
-        undefined,
-        errorShape(ErrorCodes.UNAVAILABLE, formatForLog(err)),
-      );
-    }
+    });
   },
   "node.describe": async ({ params, respond, context }) => {
     if (!validateNodeDescribeParams(params)) {
-      respond(
-        false,
-        undefined,
-        errorShape(
-          ErrorCodes.INVALID_REQUEST,
-          `invalid node.describe params: ${formatValidationErrors(validateNodeDescribeParams.errors)}`,
-        ),
-      );
+      respondInvalidParams({
+        respond,
+        method: "node.describe",
+        validator: validateNodeDescribeParams,
+      });
       return;
     }
     const { nodeId } = params as { nodeId: string };
     const id = String(nodeId ?? "").trim();
     if (!id) {
-      respond(
-        false,
-        undefined,
-        errorShape(ErrorCodes.INVALID_REQUEST, "nodeId required"),
-      );
+      respond(false, undefined, errorShape(ErrorCodes.INVALID_REQUEST, "nodeId required"));
       return;
     }
-    try {
+    await respondUnavailableOnThrow(respond, async () => {
       const list = await listNodePairing();
       const paired = list.paired.find((n) => n.nodeId === id);
       const connected = context.bridge?.listConnected?.() ?? [];
       const live = connected.find((n) => n.nodeId === id);
 
       if (!paired && !live) {
-        respond(
-          false,
-          undefined,
-          errorShape(ErrorCodes.INVALID_REQUEST, "unknown nodeId"),
-        );
+        respond(false, undefined, errorShape(ErrorCodes.INVALID_REQUEST, "unknown nodeId"));
         return;
       }
 
-      const caps = [
-        ...new Set(
-          (live?.caps ?? paired?.caps ?? [])
-            .map((c) => String(c).trim())
-            .filter(Boolean),
-        ),
-      ].sort();
-
-      const commands = [
-        ...new Set(
-          (live?.commands ?? paired?.commands ?? [])
-            .map((c) => String(c).trim())
-            .filter(Boolean),
-        ),
-      ].sort();
+      const caps = uniqueSortedStrings([...(live?.caps ?? paired?.caps ?? [])]);
+      const commands = uniqueSortedStrings([...(live?.commands ?? paired?.commands ?? [])]);
 
       respond(
         true,
@@ -405,32 +286,20 @@ export const nodeHandlers: GatewayRequestHandlers = {
         },
         undefined,
       );
-    } catch (err) {
-      respond(
-        false,
-        undefined,
-        errorShape(ErrorCodes.UNAVAILABLE, formatForLog(err)),
-      );
-    }
+    });
   },
   "node.invoke": async ({ params, respond, context }) => {
     if (!validateNodeInvokeParams(params)) {
-      respond(
-        false,
-        undefined,
-        errorShape(
-          ErrorCodes.INVALID_REQUEST,
-          `invalid node.invoke params: ${formatValidationErrors(validateNodeInvokeParams.errors)}`,
-        ),
-      );
+      respondInvalidParams({
+        respond,
+        method: "node.invoke",
+        validator: validateNodeInvokeParams,
+      });
       return;
     }
-    if (!context.bridge) {
-      respond(
-        false,
-        undefined,
-        errorShape(ErrorCodes.UNAVAILABLE, "bridge not running"),
-      );
+    const bridge = context.bridge;
+    if (!bridge) {
+      respond(false, undefined, errorShape(ErrorCodes.UNAVAILABLE, "bridge not running"));
       return;
     }
     const p = params as {
@@ -451,12 +320,9 @@ export const nodeHandlers: GatewayRequestHandlers = {
       return;
     }
 
-    try {
-      const paramsJSON =
-        "params" in p && p.params !== undefined
-          ? JSON.stringify(p.params)
-          : null;
-      const res = await context.bridge.invoke({
+    await respondUnavailableOnThrow(respond, async () => {
+      const paramsJSON = "params" in p && p.params !== undefined ? JSON.stringify(p.params) : null;
+      const res = await bridge.invoke({
         nodeId,
         command,
         paramsJSON,
@@ -466,24 +332,13 @@ export const nodeHandlers: GatewayRequestHandlers = {
         respond(
           false,
           undefined,
-          errorShape(
-            ErrorCodes.UNAVAILABLE,
-            res.error?.message ?? "node invoke failed",
-            { details: { nodeError: res.error ?? null } },
-          ),
+          errorShape(ErrorCodes.UNAVAILABLE, res.error?.message ?? "node invoke failed", {
+            details: { nodeError: res.error ?? null },
+          }),
         );
         return;
       }
-      const payload =
-        typeof res.payloadJSON === "string" && res.payloadJSON.trim()
-          ? (() => {
-              try {
-                return JSON.parse(res.payloadJSON) as unknown;
-              } catch {
-                return { payloadJSON: res.payloadJSON };
-              }
-            })()
-          : undefined;
+      const payload = safeParseJson(res.payloadJSON ?? null);
       respond(
         true,
         {
@@ -495,12 +350,6 @@ export const nodeHandlers: GatewayRequestHandlers = {
         },
         undefined,
       );
-    } catch (err) {
-      respond(
-        false,
-        undefined,
-        errorShape(ErrorCodes.UNAVAILABLE, formatForLog(err)),
-      );
-    }
+    });
   },
 };

@@ -8,149 +8,49 @@ import {
   complete,
   type Model,
 } from "@mariozechner/pi-ai";
-import {
-  discoverAuthStorage,
-  discoverModels,
-} from "@mariozechner/pi-coding-agent";
+import { discoverAuthStorage, discoverModels } from "@mariozechner/pi-coding-agent";
 import { Type } from "@sinclair/typebox";
 
 import type { ClawdbotConfig } from "../../config/config.js";
 import { resolveUserPath } from "../../utils.js";
 import { loadWebMedia } from "../../web/media.js";
-import {
-  ensureAuthProfileStore,
-  listProfilesForProvider,
-} from "../auth-profiles.js";
+import { ensureAuthProfileStore, listProfilesForProvider } from "../auth-profiles.js";
 import { DEFAULT_MODEL, DEFAULT_PROVIDER } from "../defaults.js";
 import { minimaxUnderstandImage } from "../minimax-vlm.js";
 import { getApiKeyForModel, resolveEnvApiKey } from "../model-auth.js";
 import { runWithImageModelFallback } from "../model-fallback.js";
 import { parseModelRef } from "../model-selection.js";
 import { ensureClawdbotModelsJson } from "../models-config.js";
-import { extractAssistantText } from "../pi-embedded-utils.js";
 import { assertSandboxPath } from "../sandbox-paths.js";
 import type { AnyAgentTool } from "./common.js";
+import {
+  coerceImageAssistantText,
+  coerceImageModelConfig,
+  decodeDataUrl,
+  type ImageModelConfig,
+  resolveProviderVisionModelFromConfig,
+} from "./image-tool.helpers.js";
 
 const DEFAULT_PROMPT = "Describe the image.";
-
-type ImageModelConfig = { primary?: string; fallbacks?: string[] };
-
-function decodeDataUrl(dataUrl: string): {
-  buffer: Buffer;
-  mimeType: string;
-  kind: "image";
-} {
-  const trimmed = dataUrl.trim();
-  const match = /^data:([^;,]+);base64,([a-z0-9+/=\r\n]+)$/i.exec(trimmed);
-  if (!match) throw new Error("Invalid data URL (expected base64 data: URL).");
-  const mimeType = (match[1] ?? "").trim().toLowerCase();
-  if (!mimeType.startsWith("image/")) {
-    throw new Error(`Unsupported data URL type: ${mimeType || "unknown"}`);
-  }
-  const b64 = (match[2] ?? "").trim();
-  const buffer = Buffer.from(b64, "base64");
-  if (buffer.length === 0) {
-    throw new Error("Invalid data URL: empty payload.");
-  }
-  return { buffer, mimeType, kind: "image" };
-}
 
 export const __testing = {
   decodeDataUrl,
   coerceImageAssistantText,
 } as const;
 
-function coerceImageAssistantText(params: {
-  message: AssistantMessage;
-  provider: string;
-  model: string;
-}): string {
-  const stop = params.message.stopReason;
-  const errorMessage = params.message.errorMessage?.trim();
-  if (stop === "error" || stop === "aborted") {
-    throw new Error(
-      errorMessage
-        ? `Image model failed (${params.provider}/${params.model}): ${errorMessage}`
-        : `Image model failed (${params.provider}/${params.model})`,
-    );
-  }
-  if (errorMessage) {
-    throw new Error(
-      `Image model failed (${params.provider}/${params.model}): ${errorMessage}`,
-    );
-  }
-  const text = extractAssistantText(params.message);
-  if (text.trim()) return text.trim();
-  throw new Error(
-    `Image model returned no text (${params.provider}/${params.model}).`,
-  );
-}
-
-function coerceImageModelConfig(cfg?: ClawdbotConfig): ImageModelConfig {
-  const imageModel = cfg?.agents?.defaults?.imageModel as
-    | { primary?: string; fallbacks?: string[] }
-    | string
-    | undefined;
-  const primary =
-    typeof imageModel === "string" ? imageModel.trim() : imageModel?.primary;
-  const fallbacks =
-    typeof imageModel === "object" ? (imageModel?.fallbacks ?? []) : [];
-  return {
-    ...(primary?.trim() ? { primary: primary.trim() } : {}),
-    ...(fallbacks.length > 0 ? { fallbacks } : {}),
-  };
-}
-
-function resolveProviderVisionModelFromConfig(params: {
-  cfg?: ClawdbotConfig;
-  provider: string;
-}): string | null {
-  const providerCfg = params.cfg?.models?.providers?.[
-    params.provider
-  ] as unknown as
-    | { models?: Array<{ id?: string; input?: string[] }> }
-    | undefined;
-  const models = providerCfg?.models ?? [];
-  const preferMinimaxVl =
-    params.provider === "minimax"
-      ? models.find(
-          (m) =>
-            (m?.id ?? "").trim() === "MiniMax-VL-01" &&
-            Array.isArray(m?.input) &&
-            m.input.includes("image"),
-        )
-      : null;
-  const picked =
-    preferMinimaxVl ??
-    models.find(
-      (m) => Boolean((m?.id ?? "").trim()) && m.input?.includes("image"),
-    );
-  const id = (picked?.id ?? "").trim();
-  return id ? `${params.provider}/${id}` : null;
-}
-
 function resolveDefaultModelRef(cfg?: ClawdbotConfig): {
   provider: string;
   model: string;
 } {
-  const modelConfig = cfg?.agents?.defaults?.model as
-    | { primary?: string }
-    | string
-    | undefined;
-  const raw =
-    typeof modelConfig === "string"
-      ? modelConfig.trim()
-      : modelConfig?.primary?.trim();
+  const modelConfig = cfg?.agents?.defaults?.model as { primary?: string } | string | undefined;
+  const raw = typeof modelConfig === "string" ? modelConfig.trim() : modelConfig?.primary?.trim();
   const parsed =
     parseModelRef(raw ?? "", DEFAULT_PROVIDER) ??
     ({ provider: DEFAULT_PROVIDER, model: DEFAULT_MODEL } as const);
   return { provider: parsed.provider, model: parsed.model };
 }
 
-function hasAuthForProvider(params: {
-  provider: string;
-  agentDir: string;
-}): boolean {
+function hasAuthForProvider(params: { provider: string; agentDir: string }): boolean {
   if (resolveEnvApiKey(params.provider)?.apiKey) return true;
   const store = ensureAuthProfileStore(params.agentDir, {
     allowKeychainPrompt: false,
@@ -241,33 +141,18 @@ export function resolveImageModelConfigForTool(params: {
   return null;
 }
 
-function pickMaxBytes(
-  cfg?: ClawdbotConfig,
-  maxBytesMb?: number,
-): number | undefined {
-  if (
-    typeof maxBytesMb === "number" &&
-    Number.isFinite(maxBytesMb) &&
-    maxBytesMb > 0
-  ) {
+function pickMaxBytes(cfg?: ClawdbotConfig, maxBytesMb?: number): number | undefined {
+  if (typeof maxBytesMb === "number" && Number.isFinite(maxBytesMb) && maxBytesMb > 0) {
     return Math.floor(maxBytesMb * 1024 * 1024);
   }
   const configured = cfg?.agents?.defaults?.mediaMaxMb;
-  if (
-    typeof configured === "number" &&
-    Number.isFinite(configured) &&
-    configured > 0
-  ) {
+  if (typeof configured === "number" && Number.isFinite(configured) && configured > 0) {
     return Math.floor(configured * 1024 * 1024);
   }
   return undefined;
 }
 
-function buildImageContext(
-  prompt: string,
-  base64: string,
-  mimeType: string,
-): Context {
+function buildImageContext(prompt: string, base64: string, mimeType: string): Context {
   return {
     messages: [
       {
@@ -286,8 +171,7 @@ async function resolveSandboxedImagePath(params: {
   sandboxRoot: string;
   imagePath: string;
 }): Promise<{ resolved: string; rewrittenFrom?: string }> {
-  const normalize = (p: string) =>
-    p.startsWith("file://") ? p.slice("file://".length) : p;
+  const normalize = (p: string) => (p.startsWith("file://") ? p.slice("file://".length) : p);
   const filePath = normalize(params.imagePath);
   try {
     const out = await assertSandboxPath({
@@ -354,9 +238,7 @@ async function runImagePrompt(params: {
         throw new Error(`Unknown model: ${provider}/${modelId}`);
       }
       if (!model.input?.includes("image")) {
-        throw new Error(
-          `Model does not support images: ${provider}/${modelId}`,
-        );
+        throw new Error(`Model does not support images: ${provider}/${modelId}`);
       }
       const apiKeyInfo = await getApiKeyForModel({
         model,
@@ -376,11 +258,7 @@ async function runImagePrompt(params: {
         return { text, provider: model.provider, model: model.id };
       }
 
-      const context = buildImageContext(
-        params.prompt,
-        params.base64,
-        params.mimeType,
-      );
+      const context = buildImageContext(params.prompt, params.base64, params.mimeType);
       const message = (await complete(model, context, {
         apiKey: apiKeyInfo.apiKey,
         maxTokens: 512,
@@ -436,53 +314,69 @@ export function createImageTool(options?: {
       maxBytesMb: Type.Optional(Type.Number()),
     }),
     execute: async (_toolCallId, args) => {
-      const record =
-        args && typeof args === "object"
-          ? (args as Record<string, unknown>)
-          : {};
-      const imageRawInput =
-        typeof record.image === "string" ? record.image.trim() : "";
+      const record = args && typeof args === "object" ? (args as Record<string, unknown>) : {};
+      const imageRawInput = typeof record.image === "string" ? record.image.trim() : "";
       const imageRaw = imageRawInput.startsWith("@")
         ? imageRawInput.slice(1).trim()
         : imageRawInput;
       if (!imageRaw) throw new Error("image required");
+
+      // The tool accepts file paths, file/data URLs, or http(s) URLs. In some
+      // agent/model contexts, images can be referenced as pseudo-URIs like
+      // `image:0` (e.g. "first image in the prompt"). We don't have access to a
+      // shared image registry here, so fail gracefully instead of attempting to
+      // `fs.readFile("image:0")` and producing a noisy ENOENT.
+      const looksLikeWindowsDrivePath = /^[a-zA-Z]:[\\/]/.test(imageRaw);
+      const hasScheme = /^[a-z][a-z0-9+.-]*:/i.test(imageRaw);
+      const isFileUrl = /^file:/i.test(imageRaw);
+      const isHttpUrl = /^https?:\/\//i.test(imageRaw);
+      const isDataUrl = /^data:/i.test(imageRaw);
+      if (hasScheme && !looksLikeWindowsDrivePath && !isFileUrl && !isHttpUrl && !isDataUrl) {
+        return {
+          content: [
+            {
+              type: "text",
+              text: `Unsupported image reference: ${imageRawInput}. Use a file path, a file:// URL, a data: URL, or an http(s) URL.`,
+            },
+          ],
+          details: {
+            error: "unsupported_image_reference",
+            image: imageRawInput,
+          },
+        };
+      }
       const promptRaw =
         typeof record.prompt === "string" && record.prompt.trim()
           ? record.prompt.trim()
           : DEFAULT_PROMPT;
       const modelOverride =
-        typeof record.model === "string" && record.model.trim()
-          ? record.model.trim()
-          : undefined;
-      const maxBytesMb =
-        typeof record.maxBytesMb === "number" ? record.maxBytesMb : undefined;
+        typeof record.model === "string" && record.model.trim() ? record.model.trim() : undefined;
+      const maxBytesMb = typeof record.maxBytesMb === "number" ? record.maxBytesMb : undefined;
       const maxBytes = pickMaxBytes(options?.config, maxBytesMb);
 
       const sandboxRoot = options?.sandboxRoot?.trim();
-      const isUrl = /^https?:\/\//i.test(imageRaw);
+      const isUrl = isHttpUrl;
       if (sandboxRoot && isUrl) {
         throw new Error("Sandboxed image tool does not allow remote URLs.");
       }
 
-      const isDataUrl = /^data:/i.test(imageRaw);
       const resolvedImage = (() => {
         if (sandboxRoot) return imageRaw;
         if (imageRaw.startsWith("~")) return resolveUserPath(imageRaw);
         return imageRaw;
       })();
-      const resolvedPathInfo: { resolved: string; rewrittenFrom?: string } =
-        isDataUrl
-          ? { resolved: "" }
-          : sandboxRoot
-            ? await resolveSandboxedImagePath({
-                sandboxRoot,
-                imagePath: resolvedImage,
-              })
-            : {
-                resolved: resolvedImage.startsWith("file://")
-                  ? resolvedImage.slice("file://".length)
-                  : resolvedImage,
-              };
+      const resolvedPathInfo: { resolved: string; rewrittenFrom?: string } = isDataUrl
+        ? { resolved: "" }
+        : sandboxRoot
+          ? await resolveSandboxedImagePath({
+              sandboxRoot,
+              imagePath: resolvedImage,
+            })
+          : {
+              resolved: resolvedImage.startsWith("file://")
+                ? resolvedImage.slice("file://".length)
+                : resolvedImage,
+            };
       const resolvedPath = isDataUrl ? null : resolvedPathInfo.resolved;
 
       const media = isDataUrl

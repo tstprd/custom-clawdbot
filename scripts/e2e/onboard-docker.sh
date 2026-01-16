@@ -12,7 +12,7 @@ docker run --rm -t "$IMAGE_NAME" bash -lc '
   set -euo pipefail
   trap "" PIPE
   export TERM=xterm-256color
-  ONBOARD_FLAGS="--flow quickstart --auth-choice skip --skip-providers --skip-skills --skip-daemon --skip-ui"
+  ONBOARD_FLAGS="--flow quickstart --auth-choice skip --skip-channels --skip-skills --skip-daemon --skip-ui"
 
   # Provide a minimal trash shim to avoid noisy "missing trash" logs in containers.
   export PATH="/tmp/clawdbot-bin:$PATH"
@@ -40,6 +40,38 @@ TRASH
     # Let prompts render before sending keystrokes.
     sleep "$delay"
     printf "%b" "$payload" >&3 2>/dev/null || true
+  }
+
+  wait_for_log() {
+    local needle="$1"
+    local timeout_s="${2:-45}"
+    local needle_compact
+    needle_compact="$(printf "%s" "$needle" | sed -E "s/[[:space:]]+//g")"
+    local start_s
+    start_s="$(date +%s)"
+    while true; do
+      if [ -n "${WIZARD_LOG_PATH:-}" ] && [ -f "$WIZARD_LOG_PATH" ]; then
+        if NEEDLE="$needle_compact" node --input-type=module -e "
+          import fs from \"node:fs\";
+          const file = process.env.WIZARD_LOG_PATH;
+          const needle = process.env.NEEDLE ?? \"\";
+          let text = \"\";
+          try { text = fs.readFileSync(file, \"utf8\"); } catch { process.exit(1); }
+          text = text.replace(/\\x1b\\[[0-9;]*[A-Za-z]/g, \"\").replace(/\\s+/g, \"\");
+          process.exit(text.includes(needle) ? 0 : 1);
+        "; then
+          return 0
+        fi
+      fi
+      if [ $(( $(date +%s) - start_s )) -ge "$timeout_s" ]; then
+        echo "Timeout waiting for log: $needle"
+        if [ -n "${WIZARD_LOG_PATH:-}" ] && [ -f "$WIZARD_LOG_PATH" ]; then
+          tail -n 140 "$WIZARD_LOG_PATH" || true
+        fi
+        return 1
+      fi
+      sleep 0.2
+    done
   }
 
   start_gateway() {
@@ -81,6 +113,8 @@ TRASH
     input_fifo="$(mktemp -u "/tmp/clawdbot-onboard-${case_name}.XXXXXX")"
     mkfifo "$input_fifo"
     local log_path="/tmp/clawdbot-onboard-${case_name}.log"
+    WIZARD_LOG_PATH="$log_path"
+    export WIZARD_LOG_PATH
     # Run under script to keep an interactive TTY for clack prompts.
     script -q -c "$command" "$log_path" < "$input_fifo" &
     wizard_pid=$!
@@ -135,36 +169,44 @@ TRASH
   }
 
   send_local_basic() {
-    # Choose local gateway, accept defaults, skip provider/skills/daemon, skip UI.
+    # Risk acknowledgement (default is "No").
+    send $'"'"'y\r'"'"' 0.6
+    # Choose local gateway, accept defaults, skip channels/skills/daemon, skip UI.
     send $'"'"'\r'"'"' 0.5
   }
 
-  send_reset_config_only() {
-    # Reset config + reuse the local defaults flow.
-    send $'"'"'\e[B'"'"' 0.3
-    send $'"'"'\e[B'"'"' 0.3
-    send $'"'"'\r'"'"' 0.4
-    send $'"'"'\r'"'"' 0.4
-    send "" 1.2
-    send_local_basic
-  }
+	  send_reset_config_only() {
+	    # Risk acknowledgement (default is "No").
+	    send $'"'"'y\r'"'"' 0.8
+	    # Reset config + reuse the local defaults flow.
+	    send $'"'"'\e[B'"'"' 0.3
+	    send $'"'"'\e[B'"'"' 0.3
+	    send $'"'"'\r'"'"' 0.4
+	    send $'"'"'\r'"'"' 0.4
+	    send "" 1.2
+	    send_local_basic
+	  }
 
-  send_providers_flow() {
-    # Configure providers via configure wizard.
-    send $'"'"'\r'"'"' 1.0
-    send "" 1.5
-    # Provider mode (default Configure providers)
-    send $'"'"'\r'"'"' 0.8
-    send "" 1.0
-    # Configure chat providers now? -> No
-    send $'"'"'n\r'"'"' 0.6
+  send_channels_flow() {
+    # Configure channels via configure wizard.
+    # Prompts are interactive; notes are not. Use conservative delays to stay in sync.
+    # Where will the Gateway run? -> Local (default)
+    send $'"'"'\r'"'"' 1.2
+    # Channels mode -> Configure/link (default)
+    send $'"'"'\r'"'"' 1.5
+    # Select a channel -> Finished (last option; clack wraps on Up)
+    send $'"'"'\e[A\r'"'"' 2.0
+    # Keep stdin open until wizard exits.
+    send "" 2.5
   }
 
   send_skills_flow() {
     # Select skills section and skip optional installs.
-    send $'"'"'\r'"'"' 1.0
-    send "" 1.2
-    send $'"'"'n\r'"'"' 0.6
+    send $'"'"'\r'"'"' 1.2
+    send "" 1.0
+    # Configure skills now? -> No
+    send $'"'"'n\r'"'"' 1.2
+    send "" 2.0
   }
 
   run_case_local_basic() {
@@ -257,7 +299,7 @@ NODE
     export HOME="$home_dir"
     mkdir -p "$HOME"
     # Smoke test non-interactive remote config write.
-    node dist/index.js onboard --non-interactive \
+    node dist/index.js onboard --non-interactive --accept-risk \
       --mode remote \
       --remote-url ws://gateway.local:18789 \
       --remote-token remote-token \
@@ -339,11 +381,11 @@ if (errors.length > 0) {
 NODE
   }
 
-  run_case_providers() {
+  run_case_channels() {
     local home_dir
-    home_dir="$(make_home providers)"
-    # Providers-only configure flow.
-    run_wizard_cmd providers "$home_dir" "node dist/index.js configure --section providers" send_providers_flow
+    home_dir="$(make_home channels)"
+    # Channels-only configure flow.
+    run_wizard_cmd channels "$home_dir" "node dist/index.js configure --section channels" send_channels_flow
 
     config_path="$HOME/.clawdbot/clawdbot.json"
     assert_file "$config_path"
@@ -440,7 +482,7 @@ NODE
   run_case_local_basic
   run_case_remote_non_interactive
   run_case_reset
-  run_case_providers
+  run_case_channels
   run_case_skills
 '
 

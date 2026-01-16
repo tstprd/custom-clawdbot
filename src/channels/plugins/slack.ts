@@ -1,13 +1,7 @@
-import {
-  createActionGate,
-  readNumberParam,
-  readStringParam,
-} from "../../agents/tools/common.js";
+import { createActionGate, readNumberParam, readStringParam } from "../../agents/tools/common.js";
 import { handleSlackAction } from "../../agents/tools/slack-actions.js";
-import {
-  DEFAULT_ACCOUNT_ID,
-  normalizeAccountId,
-} from "../../routing/session-key.js";
+import { loadConfig } from "../../config/config.js";
+import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "../../routing/session-key.js";
 import {
   listEnabledSlackAccounts,
   listSlackAccountIds,
@@ -35,6 +29,19 @@ import type { ChannelMessageActionName, ChannelPlugin } from "./types.js";
 
 const meta = getChatChannelMeta("slack");
 
+// Select the appropriate Slack token for read/write operations.
+function getTokenForOperation(
+  account: ResolvedSlackAccount,
+  operation: "read" | "write",
+): string | undefined {
+  const userToken = account.config.userToken?.trim() || undefined;
+  const botToken = account.botToken?.trim();
+  const allowUserWrites = account.config.userTokenReadOnly === false;
+  if (operation === "read") return userToken ?? botToken;
+  if (!allowUserWrites) return botToken;
+  return botToken ?? userToken;
+}
+
 export const slackPlugin: ChannelPlugin<ResolvedSlackAccount> = {
   id: "slack",
   meta: {
@@ -45,7 +52,21 @@ export const slackPlugin: ChannelPlugin<ResolvedSlackAccount> = {
     idLabel: "slackUserId",
     normalizeAllowEntry: (entry) => entry.replace(/^(slack|user):/i, ""),
     notifyApproval: async ({ id }) => {
-      await sendMessageSlack(`user:${id}`, PAIRING_APPROVED_MESSAGE);
+      const cfg = loadConfig();
+      const account = resolveSlackAccount({
+        cfg,
+        accountId: DEFAULT_ACCOUNT_ID,
+      });
+      const token = getTokenForOperation(account, "write");
+      const botToken = account.botToken?.trim();
+      const tokenOverride = token && token !== botToken ? token : undefined;
+      if (tokenOverride) {
+        await sendMessageSlack(`user:${id}`, PAIRING_APPROVED_MESSAGE, {
+          token: tokenOverride,
+        });
+      } else {
+        await sendMessageSlack(`user:${id}`, PAIRING_APPROVED_MESSAGE);
+      }
     },
   },
   capabilities: {
@@ -88,9 +109,7 @@ export const slackPlugin: ChannelPlugin<ResolvedSlackAccount> = {
       appTokenSource: account.appTokenSource,
     }),
     resolveAllowFrom: ({ cfg, accountId }) =>
-      (resolveSlackAccount({ cfg, accountId }).dm?.allowFrom ?? []).map(
-        (entry) => String(entry),
-      ),
+      (resolveSlackAccount({ cfg, accountId }).dm?.allowFrom ?? []).map((entry) => String(entry)),
     formatAllowFrom: ({ allowFrom }) =>
       allowFrom
         .map((entry) => String(entry).trim())
@@ -99,11 +118,8 @@ export const slackPlugin: ChannelPlugin<ResolvedSlackAccount> = {
   },
   security: {
     resolveDmPolicy: ({ cfg, accountId, account }) => {
-      const resolvedAccountId =
-        accountId ?? account.accountId ?? DEFAULT_ACCOUNT_ID;
-      const useAccountPath = Boolean(
-        cfg.channels?.slack?.accounts?.[resolvedAccountId],
-      );
+      const resolvedAccountId = accountId ?? account.accountId ?? DEFAULT_ACCOUNT_ID;
+      const useAccountPath = Boolean(cfg.channels?.slack?.accounts?.[resolvedAccountId]);
       const allowFromPath = useAccountPath
         ? `channels.slack.accounts.${resolvedAccountId}.dm.`
         : "channels.slack.dm.";
@@ -119,8 +135,7 @@ export const slackPlugin: ChannelPlugin<ResolvedSlackAccount> = {
       const groupPolicy = account.config.groupPolicy ?? "allowlist";
       if (groupPolicy !== "open") return [];
       const channelAllowlistConfigured =
-        Boolean(account.config.channels) &&
-        Object.keys(account.config.channels ?? {}).length > 0;
+        Boolean(account.config.channels) && Object.keys(account.config.channels ?? {}).length > 0;
       if (channelAllowlistConfigured) {
         return [
           `- Slack channels: groupPolicy="open" allows any channel not explicitly denied to trigger (mention-gated). Set channels.slack.groupPolicy="allowlist" and configure channels.slack.channels.`,
@@ -139,11 +154,8 @@ export const slackPlugin: ChannelPlugin<ResolvedSlackAccount> = {
       resolveSlackAccount({ cfg, accountId }).replyToMode ?? "off",
     allowTagsWhenOff: true,
     buildToolContext: ({ cfg, accountId, context, hasRepliedRef }) => {
-      const configuredReplyToMode =
-        resolveSlackAccount({ cfg, accountId }).replyToMode ?? "off";
-      const effectiveReplyToMode = context.ThreadLabel
-        ? "all"
-        : configuredReplyToMode;
+      const configuredReplyToMode = resolveSlackAccount({ cfg, accountId }).replyToMode ?? "off";
+      const effectiveReplyToMode = context.ThreadLabel ? "all" : configuredReplyToMode;
       return {
         currentChannelId: context.To?.startsWith("channel:")
           ? context.To.slice("channel:".length)
@@ -200,14 +212,12 @@ export const slackPlugin: ChannelPlugin<ResolvedSlackAccount> = {
       if (action !== "sendMessage") return null;
       const to = typeof args.to === "string" ? args.to : undefined;
       if (!to) return null;
-      const accountId =
-        typeof args.accountId === "string" ? args.accountId.trim() : undefined;
+      const accountId = typeof args.accountId === "string" ? args.accountId.trim() : undefined;
       return { to, accountId };
     },
     handleAction: async ({ action, params, cfg, accountId, toolContext }) => {
       const resolveChannelId = () =>
-        readStringParam(params, "channelId") ??
-        readStringParam(params, "to", { required: true });
+        readStringParam(params, "channelId") ?? readStringParam(params, "to", { required: true });
 
       if (action === "send") {
         const to = readStringParam(params, "to", { required: true });
@@ -237,8 +247,7 @@ export const slackPlugin: ChannelPlugin<ResolvedSlackAccount> = {
           required: true,
         });
         const emoji = readStringParam(params, "emoji", { allowEmpty: true });
-        const remove =
-          typeof params.remove === "boolean" ? params.remove : undefined;
+        const remove = typeof params.remove === "boolean" ? params.remove : undefined;
         return await handleSlackAction(
           {
             action: "react",
@@ -324,11 +333,7 @@ export const slackPlugin: ChannelPlugin<ResolvedSlackAccount> = {
         return await handleSlackAction(
           {
             action:
-              action === "pin"
-                ? "pinMessage"
-                : action === "unpin"
-                  ? "unpinMessage"
-                  : "listPins",
+              action === "pin" ? "pinMessage" : action === "unpin" ? "unpinMessage" : "listPins",
             channelId: resolveChannelId(),
             messageId,
             accountId: accountId ?? undefined,
@@ -352,9 +357,7 @@ export const slackPlugin: ChannelPlugin<ResolvedSlackAccount> = {
         );
       }
 
-      throw new Error(
-        `Action ${action} is not supported for provider ${meta.id}.`,
-      );
+      throw new Error(`Action ${action} is not supported for provider ${meta.id}.`);
     },
   },
   setup: {
@@ -437,27 +440,35 @@ export const slackPlugin: ChannelPlugin<ResolvedSlackAccount> = {
       if (!trimmed) {
         return {
           ok: false,
-          error: new Error(
-            "Delivering to Slack requires --to <channelId|user:ID|channel:ID>",
-          ),
+          error: new Error("Delivering to Slack requires --to <channelId|user:ID|channel:ID>"),
         };
       }
       return { ok: true, to: trimmed };
     },
-    sendText: async ({ to, text, accountId, deps, replyToId }) => {
+    sendText: async ({ to, text, accountId, deps, replyToId, cfg }) => {
       const send = deps?.sendSlack ?? sendMessageSlack;
+      const account = resolveSlackAccount({ cfg, accountId });
+      const token = getTokenForOperation(account, "write");
+      const botToken = account.botToken?.trim();
+      const tokenOverride = token && token !== botToken ? token : undefined;
       const result = await send(to, text, {
         threadTs: replyToId ?? undefined,
         accountId: accountId ?? undefined,
+        ...(tokenOverride ? { token: tokenOverride } : {}),
       });
       return { channel: "slack", ...result };
     },
-    sendMedia: async ({ to, text, mediaUrl, accountId, deps, replyToId }) => {
+    sendMedia: async ({ to, text, mediaUrl, accountId, deps, replyToId, cfg }) => {
       const send = deps?.sendSlack ?? sendMessageSlack;
+      const account = resolveSlackAccount({ cfg, accountId });
+      const token = getTokenForOperation(account, "write");
+      const botToken = account.botToken?.trim();
+      const tokenOverride = token && token !== botToken ? token : undefined;
       const result = await send(to, text, {
         mediaUrl,
         threadTs: replyToId ?? undefined,
         accountId: accountId ?? undefined,
+        ...(tokenOverride ? { token: tokenOverride } : {}),
       });
       return { channel: "slack", ...result };
     },

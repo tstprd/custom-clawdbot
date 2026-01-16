@@ -9,6 +9,44 @@ read_when:
 
 This page describes the current CLI behavior. If commands change, update this doc.
 
+## Command pages
+
+- [`setup`](/cli/setup)
+- [`onboard`](/cli/onboard)
+- [`configure`](/cli/configure)
+- [`config`](/cli/config)
+- [`doctor`](/cli/doctor)
+- [`dashboard`](/cli/dashboard)
+- [`reset`](/cli/reset)
+- [`uninstall`](/cli/uninstall)
+- [`update`](/cli/update)
+- [`message`](/cli/message)
+- [`agent`](/cli/agent)
+- [`agents`](/cli/agents)
+- [`status`](/cli/status)
+- [`health`](/cli/health)
+- [`sessions`](/cli/sessions)
+- [`gateway`](/cli/gateway)
+- [`daemon`](/cli/daemon)
+- [`logs`](/cli/logs)
+- [`models`](/cli/models)
+- [`memory`](/cli/memory)
+- [`nodes`](/cli/nodes)
+- [`sandbox`](/cli/sandbox)
+- [`tui`](/cli/tui)
+- [`browser`](/cli/browser)
+- [`wake`](/cli/wake)
+- [`cron`](/cli/cron)
+- [`dns`](/cli/dns)
+- [`docs`](/cli/docs)
+- [`hooks`](/cli/hooks)
+- [`pairing`](/cli/pairing)
+- [`plugins`](/cli/plugins) (plugin commands)
+- [`channels`](/cli/channels)
+- [`security`](/cli/security)
+- [`skills`](/cli/skills)
+- [`voicecall`](/cli/voicecall) (plugin; if installed)
+
 ## Global flags
 
 - `--dev`: isolate state under `~/.clawdbot-dev` and shift default ports.
@@ -46,8 +84,14 @@ Palette source of truth: `src/terminal/palette.ts` (aka “lobster seam”).
 clawdbot [--dev] [--profile <name>] <command>
   setup
   onboard
-  configure (alias: config)
+  configure
+  config
+    get
+    set
+    unset
   doctor
+  security
+    audit
   reset
   uninstall
   update
@@ -180,6 +224,12 @@ clawdbot [--dev] [--profile <name>] <command>
 
 Note: plugins can add additional top-level commands (for example `clawdbot voicecall`).
 
+## Security
+
+- `clawdbot security audit` — audit config + local state for common security foot-guns.
+- `clawdbot security audit --deep` — best-effort live Gateway probe.
+- `clawdbot security audit --fix` — tighten safe defaults and chmod state/config.
+
 ## Plugins
 
 Manage extensions and their config:
@@ -265,8 +315,17 @@ Options:
 - `--node-manager <npm|pnpm|bun>` (pnpm recommended; bun not recommended for Gateway runtime)
 - `--json`
 
-### `configure` / `config`
+### `configure`
 Interactive configuration wizard (models, channels, skills, gateway).
+
+### `config`
+Non-interactive config helpers (get/set/unset). Running `clawdbot config` with no
+subcommand launches the wizard.
+
+Subcommands:
+- `config get <path>`: print a config value (dot/bracket path).
+- `config set <path> <value>`: set a value (JSON5 or raw string).
+- `config unset <path>`: remove a value.
 
 ### `doctor`
 Health checks + quick fixes (config + gateway + legacy services).
@@ -549,8 +608,9 @@ Notes:
 - `daemon status` supports `--no-probe`, `--deep`, and `--json` for scripting.
 - `daemon status` also surfaces legacy or extra gateway services when it can detect them (`--deep` adds system-level scans). Profile-named Clawdbot services are treated as first-class and aren't flagged as "extra".
 - `daemon status` prints which config path the CLI uses vs which config the daemon likely uses (service env), plus the resolved probe target URL.
+- `daemon install|uninstall|start|stop|restart` support `--json` for scripting (default output stays human-friendly).
 - `daemon install` defaults to Node runtime; bun is **not recommended** (WhatsApp/Telegram bugs).
-- `daemon install` options: `--port`, `--runtime`, `--token`, `--force`.
+- `daemon install` options: `--port`, `--runtime`, `--token`, `--force`, `--json`.
 
 ### `logs`
 Tail Gateway file logs via RPC.
@@ -579,7 +639,11 @@ Subcommands:
 
 Common RPCs:
 - `config.apply` (validate + write config + restart + wake)
+- `config.patch` (merge a partial update without clobbering unrelated keys)
 - `update.run` (run update + restart + wake)
+
+Tip: when calling `config.set`/`config.apply`/`config.patch` directly, pass `baseHash` from
+`config.get` if a config already exists.
 
 ## Models
 
@@ -736,7 +800,7 @@ Location:
 
 ## Browser
 
-Browser control CLI (dedicated Chrome/Chromium). See [/tools/browser](/tools/browser).
+Browser control CLI (dedicated Chrome/Brave/Edge/Chromium). See [`clawdbot browser`](/cli/browser) and the [Browser tool](/tools/browser).
 
 Common options:
 - `--url <controlUrl>`

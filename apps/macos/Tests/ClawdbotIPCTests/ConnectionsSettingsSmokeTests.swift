@@ -1,25 +1,26 @@
+import ClawdbotProtocol
 import SwiftUI
 import Testing
 @testable import Clawdbot
 
 @Suite(.serialized)
 @MainActor
-    struct ConnectionsSettingsSmokeTests {
-        @Test func connectionsSettingsBuildsBodyWithSnapshot() {
-            let store = ConnectionsStore(isPreview: true)
-            store.snapshot = ChannelsStatusSnapshot(
-                ts: 1_700_000_000_000,
-                channelOrder: ["whatsapp", "telegram", "signal", "imessage"],
-                channelLabels: [
-                    "whatsapp": "WhatsApp",
-                    "telegram": "Telegram",
-                    "signal": "Signal",
-                    "imessage": "iMessage",
-                ],
-                channels: [
-                    "whatsapp": AnyCodable([
-                        "configured": true,
-                        "linked": true,
+struct ConnectionsSettingsSmokeTests {
+    @Test func connectionsSettingsBuildsBodyWithSnapshot() {
+        let store = ConnectionsStore(isPreview: true)
+        store.snapshot = ChannelsStatusSnapshot(
+            ts: 1_700_000_000_000,
+            channelOrder: ["whatsapp", "telegram", "signal", "imessage"],
+            channelLabels: [
+                "whatsapp": "WhatsApp",
+                "telegram": "Telegram",
+                "signal": "Signal",
+                "imessage": "iMessage",
+            ],
+            channels: [
+                "whatsapp": AnyCodable([
+                    "configured": true,
+                    "linked": true,
                     "authAgeMs": 86_400_000,
                     "self": ["e164": "+15551234567"],
                     "running": true,
@@ -70,13 +71,13 @@ import Testing
                     "lastError": "not configured",
                     "probe": ["ok": false, "error": "imsg not found (imsg)"],
                     "lastProbeAt": 1_700_000_050_000,
-                    ]),
-                ],
-                channelAccounts: [:],
-                channelDefaultAccountId: [
-                    "whatsapp": "default",
-                    "telegram": "default",
-                    "signal": "default",
+                ]),
+            ],
+            channelAccounts: [:],
+            channelDefaultAccountId: [
+                "whatsapp": "default",
+                "telegram": "default",
+                "signal": "default",
                 "imessage": "default",
             ])
 
@@ -93,23 +94,23 @@ import Testing
 
         let view = ConnectionsSettings(store: store)
         _ = view.body
-        }
+    }
 
-        @Test func connectionsSettingsBuildsBodyWithoutSnapshot() {
-            let store = ConnectionsStore(isPreview: true)
-            store.snapshot = ChannelsStatusSnapshot(
-                ts: 1_700_000_000_000,
-                channelOrder: ["whatsapp", "telegram", "signal", "imessage"],
-                channelLabels: [
-                    "whatsapp": "WhatsApp",
-                    "telegram": "Telegram",
-                    "signal": "Signal",
-                    "imessage": "iMessage",
-                ],
-                channels: [
-                    "whatsapp": AnyCodable([
-                        "configured": false,
-                        "linked": false,
+    @Test func connectionsSettingsBuildsBodyWithoutSnapshot() {
+        let store = ConnectionsStore(isPreview: true)
+        store.snapshot = ChannelsStatusSnapshot(
+            ts: 1_700_000_000_000,
+            channelOrder: ["whatsapp", "telegram", "signal", "imessage"],
+            channelLabels: [
+                "whatsapp": "WhatsApp",
+                "telegram": "Telegram",
+                "signal": "Signal",
+                "imessage": "iMessage",
+            ],
+            channels: [
+                "whatsapp": AnyCodable([
+                    "configured": false,
+                    "linked": false,
                     "running": false,
                     "connected": false,
                     "reconnectAttempts": 0,
@@ -146,13 +147,13 @@ import Testing
                     "cliPath": "imsg",
                     "probe": ["ok": false, "error": "imsg not found (imsg)"],
                     "lastProbeAt": 1_700_000_200_000,
-                    ]),
-                ],
-                channelAccounts: [:],
-                channelDefaultAccountId: [
-                    "whatsapp": "default",
-                    "telegram": "default",
-                    "signal": "default",
+                ]),
+            ],
+            channelAccounts: [:],
+            channelDefaultAccountId: [
+                "whatsapp": "default",
+                "telegram": "default",
+                "signal": "default",
                 "imessage": "default",
             ])
 
