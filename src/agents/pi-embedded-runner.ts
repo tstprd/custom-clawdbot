@@ -861,6 +861,28 @@ function formatUserTime(date: Date, timeZone: string): string | undefined {
   }
 }
 
+/** Format current time as a short HH:MM string for message prefix. */
+function formatShortTime(date: Date, timeZone: string): string | undefined {
+  try {
+    const parts = new Intl.DateTimeFormat("en-CA", {
+      timeZone,
+      hour: "2-digit",
+      minute: "2-digit",
+      hourCycle: "h23",
+    }).formatToParts(date);
+    const map: Record<string, string> = {};
+    for (const part of parts) {
+      if (part.type !== "literal") map[part.type] = part.value;
+    }
+    if (!map.hour || !map.minute) {
+      return undefined;
+    }
+    return `${map.hour}:${map.minute}`;
+  } catch {
+    return undefined;
+  }
+}
+
 function describeUnknownError(error: unknown): string {
   if (error instanceof Error) return error.message;
   if (typeof error === "string") return error;
@@ -1940,8 +1962,13 @@ export async function runEmbeddedPiAgent(params: {
             log.debug(
               `embedded run prompt start: runId=${params.runId} sessionId=${params.sessionId}`,
             );
+            // Prepend current time to help the agent track time accurately
+            const currentShortTime = formatShortTime(new Date(), userTimezone);
+            const promptWithTime = currentShortTime
+              ? `[${currentShortTime}] ${params.prompt}`
+              : params.prompt;
             try {
-              await session.prompt(params.prompt, {
+              await session.prompt(promptWithTime, {
                 images: params.images,
               });
             } catch (err) {

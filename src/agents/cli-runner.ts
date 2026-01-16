@@ -138,6 +138,28 @@ function formatUserTime(date: Date, timeZone: string): string | undefined {
   }
 }
 
+/** Format current time as a short HH:MM string for message prefix. */
+function formatShortTime(date: Date, timeZone: string): string | undefined {
+  try {
+    const parts = new Intl.DateTimeFormat("en-CA", {
+      timeZone,
+      hour: "2-digit",
+      minute: "2-digit",
+      hourCycle: "h23",
+    }).formatToParts(date);
+    const map: Record<string, string> = {};
+    for (const part of parts) {
+      if (part.type !== "literal") map[part.type] = part.value;
+    }
+    if (!map.hour || !map.minute) {
+      return undefined;
+    }
+    return `${map.hour}:${map.minute}`;
+  } catch {
+    return undefined;
+  }
+}
+
 function buildModelAliasLines(cfg?: ClawdbotConfig) {
   const models = cfg?.agents?.defaults?.models ?? {};
   const entries: Array<{ alias: string; model: string }> = [];
@@ -546,7 +568,14 @@ export async function runCliAgent(params: {
 
   let imagePaths: string[] | undefined;
   let cleanupImages: (() => Promise<void>) | undefined;
-  let prompt = params.prompt;
+  // Prepend current time to help the agent track time accurately
+  const userTimezone = resolveUserTimezone(
+    params.config?.agents?.defaults?.userTimezone,
+  );
+  const currentShortTime = formatShortTime(new Date(), userTimezone);
+  let prompt = currentShortTime
+    ? `[${currentShortTime}] ${params.prompt}`
+    : params.prompt;
   if (params.images && params.images.length > 0) {
     const imagePayload = await writeCliImages(params.images);
     imagePaths = imagePayload.paths;
