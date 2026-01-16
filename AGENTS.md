@@ -74,6 +74,7 @@
 
 ## Agent-Specific Notes
 - Vocabulary: "makeup" = "mac app".
+- **Cron job messages - NEVER hardcode timestamps:** When creating cron reminders, do NOT include hardcoded times like "Sir, il est 19h48" in the message. This creates massive confusion when the cron fires at a different time (e.g., fires at 20h48 but says "19h48"). Either say "Sir, rappel comme convenu" or omit the time entirely. The user sees when the message arrives; repeating an incorrect time makes them think there's a system clock bug.
 - When answering questions, respond with high-confidence answers only: verify in code; do not guess.
 - Never update the Carbon dependency.
 - CLI progress: use `src/cli/progress.ts` (`osc-progress` + `@clack/prompts` spinner); don’t hand-roll spinners/bars.

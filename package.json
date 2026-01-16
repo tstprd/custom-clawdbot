@@ -157,6 +157,7 @@
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "file-type": "^21.3.0",
+    "googleapis": "^170.0.0",
     "grammy": "^1.39.2",
     "jiti": "^2.6.1",
     "json5": "^2.2.3",
@@ -164,6 +165,7 @@
     "markdown-it": "^14.1.0",
     "node-llama-cpp": "3.14.5",
     "osc-progress": "^0.2.0",
+    "pdf-parse": "^2.4.5",
     "playwright-core": "1.57.0",
     "proper-lockfile": "^4.1.2",
     "qrcode-terminal": "^0.12.0",
@@ -210,7 +212,10 @@
     },
     "patchedDependencies": {
       "@mariozechner/pi-ai@0.45.3": "patches/@mariozechner__pi-ai@0.45.3.patch"
-    }
+    },
+    "ignoredBuiltDependencies": [
+      "node-llama-cpp"
+    ]
   },
   "vitest": {
     "coverage": {
