@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <title>Home Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0a1a2a 100%);
+            width: 1920px;
+            height: 1080px;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at 20% 80%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255, 0, 255, 0.1) 0%, transparent 50%);
+            animation: rotate 60s linear infinite;
+        }
+
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .header {
+            text-align: center;
+            padding: 15px 0;
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #00ffff, #ff00ff, #00ffff);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient 3s ease infinite;
+        }
+
+        @keyframes gradient { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+        .header .datetime {
+            margin-top: 5px;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 320px;
+            grid-template-rows: 1fr;
+            gap: 20px;
+            padding: 20px;
+            height: calc(1080px - 80px);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .card-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #00ffff;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(180deg, #00ffff, #ff00ff);
+            border-radius: 2px;
+        }
+
+        /* 3D Floor plan */
+        .floor-3d {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            background: #111;
+            height: calc(100% - 50px);
+        }
+
+        .floor-label-3d {
+            position: absolute;
+            top: 10px; left: 10px;
+            background: linear-gradient(90deg, rgba(0, 255, 255, 0.9), rgba(0, 136, 255, 0.9));
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            z-index: 10;
+        }
+
+        .floor-image-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .floor-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Temperature badges */
+        .temp-badge {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            padding: 10px 14px;
+            border-radius: 14px;
+            border: 2px solid rgba(0, 255, 255, 0.5);
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #00ffff;
+            text-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            transform: translate(-50%, -50%);
+            z-index: 20;
+        }
+
+        .temp-badge.heating {
+            border-color: rgba(255, 100, 50, 0.7);
+            color: #ff8844;
+            text-shadow: 0 0 15px rgba(255, 100, 50, 0.6);
+            animation: heating-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes heating-pulse {
+            0%, 100% { box-shadow: 0 4px 20px rgba(255, 100, 50, 0.3); }
+            50% { box-shadow: 0 4px 30px rgba(255, 100, 50, 0.6); }
+        }
+
+        .temp-badge .room-name {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.7);
+            display: block;
+            margin-bottom: 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .temp-badge .temp-value { font-size: 1.4rem; }
+        .temp-badge.heating .temp-value::after { content: ' 🔥'; font-size: 1rem; }
+
+        /* Right sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Plants section */
+        .plants-section { flex: 1; overflow: hidden; }
+
+        .plants-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            max-height: calc(100% - 40px);
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .plants-grid::-webkit-scrollbar { width: 4px; }
+        .plants-grid::-webkit-scrollbar-thumb { background: rgba(0, 255, 255, 0.3); border-radius: 2px; }
+
+        .plant-card {
+            background: rgba(0, 50, 30, 0.3);
+            border-radius: 10px;
+            padding: 10px 12px;
+            border: 1px solid rgba(0, 255, 100, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .plant-card.needs-water { border-color: rgba(255, 200, 0, 0.5); background: rgba(50, 40, 0, 0.3); }
+        .plant-card.overdue { border-color: rgba(255, 50, 50, 0.5); background: rgba(50, 0, 0, 0.3); animation: pulse 2s ease-in-out infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+
+        .plant-name { font-size: 0.8rem; font-weight: 600; color: #88ff88; }
+        .plant-info { font-size: 0.7rem; color: rgba(255, 255, 255, 0.6); }
+
+        /* Energy section */
+        .energy-section { height: auto; }
+
+        .energy-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .energy-item {
+            text-align: center;
+            padding: 15px 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+        }
+
+        .energy-value {
+            font-size: 1.6rem;
+            font-weight: 200;
+            background: linear-gradient(180deg, #00ffff, #0088ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .energy-label {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 5px;
+        }
+
+        .energy-bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .energy-bar-fill { height: 100%; border-radius: 2px; }
+        .energy-bar-fill.nuclear { background: linear-gradient(90deg, #00ff88, #00ffff); }
+        .energy-bar-fill.renewable { background: linear-gradient(90deg, #88ff00, #ffff00); }
+        .energy-bar-fill.power { background: linear-gradient(90deg, #ff8800, #ffaa00); }
+        .energy-bar-fill.lowcarbon { background: linear-gradient(90deg, #00aaff, #00ffaa); }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <header class="header">
+        <h1>🏠 Home Dashboard</h1>
+        <div class="datetime" id="datetime"></div>
+    </header>
+
+    <div class="container">
+        <!-- Étage (Upper floor) -->
+        <div class="card">
+            <div class="card-title">Étage</div>
+            <div class="floor-3d">
+                <div class="floor-image-container">
+                    <img src="images/base_haut.png" alt="Étage">
+                    
+                    <!-- Temperatures -->
+                    <div class="temp-badge heating" style="top: 60%; left: 50%;">
+                        <span class="room-name">Salon</span>
+                        <span class="temp-value">18.6°</span>
+                    </div>
+                    <div class="temp-badge" style="top: 34%; left: 55%;">
+                        <span class="room-name">Cuisine</span>
+                        <span class="temp-value">--</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RDC (Lower floor) -->
+        <div class="card">
+            <div class="card-title">Rez-de-chaussée</div>
+            <div class="floor-3d">
+                <div class="floor-image-container">
+                    <img src="images/base_bas.png" alt="RDC">
+                    
+                    <!-- Temperatures -->
+                    <div class="temp-badge heating" style="top: 33%; left: 69%;">
+                        <span class="room-name">Chambre</span>
+                        <span class="temp-value">19.1°</span>
+                    </div>
+                    <div class="temp-badge" style="top: 61%; left: 55%;">
+                        <span class="room-name">Bureau AL</span>
+                        <span class="temp-value">17.0°</span>
+                    </div>
+                    <div class="temp-badge" style="top: 30%; left: 35%;">
+                        <span class="room-name">Bureau Jules</span>
+                        <span class="temp-value">18.6°</span>
+                    </div>
+                    <div class="temp-badge" style="top: 59%; left: 27%;">
+                        <span class="room-name">SDB</span>
+                        <span class="temp-value">17.7°</span>
+                    </div>
+                    <div class="temp-badge" style="top: 46%; left: 28%;">
+                        <span class="room-name">SDD</span>
+                        <span class="temp-value">18.9°</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Plants -->
+            <div class="card plants-section">
+                <div class="card-title">🌱 Plantes</div>
+                <div class="plants-grid" id="plants-grid"></div>
+            </div>
+
+            <!-- Energy -->
+            <div class="card energy-section">
+                <div class="card-title">⚡ Énergie</div>
+                <div class="energy-grid">
+                    <div class="energy-item">
+                        <div class="energy-value">196W</div>
+                        <div class="energy-label">Puissance</div>
+                        <div class="energy-bar"><div class="energy-bar-fill power" style="width: 20%;"></div></div>
+                    </div>
+                    <div class="energy-item">
+                        <div class="energy-value">67%</div>
+                        <div class="energy-label">Nucléaire</div>
+                        <div class="energy-bar"><div class="energy-bar-fill nuclear" style="width: 67%;"></div></div>
+                    </div>
+                    <div class="energy-item">
+                        <div class="energy-value">24%</div>
+                        <div class="energy-label">Renouvelable</div>
+                        <div class="energy-bar"><div class="energy-bar-fill renewable" style="width: 24%;"></div></div>
+                    </div>
+                    <div class="energy-item">
+                        <div class="energy-value">91%</div>
+                        <div class="energy-label">Bas carbone</div>
+                        <div class="energy-bar"><div class="energy-bar-fill lowcarbon" style="width: 91%;"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update datetime
+        function updateDateTime() {
+            const now = new Date();
+            const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+            document.getElementById('datetime').textContent = now.toLocaleDateString('fr-FR', options);
+        }
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+
+        // Plants data
+        const plants = [
+            { name: "Monstera", next: "05/02" },
+            { name: "Fleur de lune", next: "07/02" },
+            { name: "Ficus", next: "08/02" },
+            { name: "Goeppertia", next: "28/01", overdue: true },
+            { name: "Aloès Vera", next: "02/02", needsWater: true },
+            { name: "Pothos", next: "02/03" },
+        ];
+
+        const plantsGrid = document.getElementById('plants-grid');
+        plants.forEach(plant => {
+            const card = document.createElement('div');
+            card.className = 'plant-card';
+            if (plant.overdue) card.classList.add('overdue');
+            else if (plant.needsWater) card.classList.add('needs-water');
+            card.innerHTML = `
+                <span class="plant-name">${plant.name}</span>
+                <span class="plant-info">💧 ${plant.next}</span>
+            `;
+            plantsGrid.appendChild(card);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "refresh_token": "1//03OKy615XihZOCgYIARAAGAMSNwF-L9Irs2PguhtyF0vQkF8QifCm0P3Yn1wDqZlUvWG1_DnyPDAAJuLTn8PZQSC0yzPCcpG-T34",
+  "expiry_date": null,
+  "token_type": "Bearer",
+  "scope": "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/tasks",
+  "account": "jmudes76000@gmail.com"
+}

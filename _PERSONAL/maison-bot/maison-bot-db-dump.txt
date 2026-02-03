@@ -1,0 +1,99 @@
+=== TABLES ===
+- client_reminders
+- client_subscriptions
+- clients
+- notification_log
+- payments
+- reminder_templates
+- sqlite_sequence
+- verticals
+
+=== CLIENT_REMINDERS ===
+Columns: id, client_id, vertical_id, template_id, name, description, icon, enabled, interval_days, interval_months, interval_km, reference_date, reference_mileage, current_mileage, next_due_date, next_due_mileage, notify_days_before, notify_count, status, last_notified_at, completed_at, snooze_until, notes, created_at, updated_at
+Rows: 1
+Row 1: [1,1,"maison",1,"Entretien chaudière","Révision annuelle obligatoire","🔥",1,null,12,null,"2026-02-01",null,null,"2027-02-01",null,7,2,"pending",null,null,null,null,"2026-02-01 21:33:34","2026-02-01 21:33:34"]
+
+=== CLIENT_SUBSCRIPTIONS ===
+(empty)
+
+=== CLIENTS ===
+Columns: id, whatsapp_id, phone, name, email, timezone, language, notification_hour, created_at, updated_at, last_active_at
+Rows: 1
+Row 1: [1,"telegram:8133218645","","Jules",null,"Europe/Paris","fr",9,"2026-02-01 21:31:52","2026-02-01 21:31:52",null]
+
+=== NOTIFICATION_LOG ===
+(empty)
+
+=== PAYMENTS ===
+(empty)
+
+=== REMINDER_TEMPLATES ===
+Columns: id, vertical_id, code, name, description, icon, default_interval_days, default_interval_months, default_interval_km, requires_date, requires_mileage, seasonal, season_months, is_mandatory, legal_reference, tips, estimated_cost_min, estimated_cost_max, display_order, enabled, created_at
+Rows: 50
+Row 1: [1,"maison","boiler_service","Entretien chaudière","Révision annuelle obligatoire","🔥",null,12,null,1,0,0,null,1,null,"Obligatoire pour locataires et propriétaires. Conservez le certificat.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 2: [2,"maison","chimney_sweep","Ramonage cheminée","Ramonage obligatoire 1-2x/an","🏠",null,6,null,1,0,0,null,1,null,"Vérifiez réglementation locale. Certificat exigé par assurances.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 3: [3,"maison","smoke_detector","Test détecteurs fumée","Vérification détecteurs","🚨",null,6,null,1,0,0,null,1,null,"Appuyez sur bouton test. Changez piles si nécessaire.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 4: [4,"maison","radiator_bleed","Purge radiateurs","Purger avant hiver","🌡️",null,12,null,1,0,0,null,0,null,"Septembre/octobre avant rallumer chauffage.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 5: [5,"maison","vmc_clean","Nettoyage VMC","Nettoyer bouches et filtres","💨",null,6,null,1,0,0,null,0,null,"Aspirer bouches, laver filtres.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 6: [6,"maison","water_heater","Détartrage chauffe-eau","Détartrage ballon","🚿",null,24,null,1,0,0,null,0,null,"Prolonge durée vie, améliore rendement.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 7: [7,"maison","gutters","Nettoyage gouttières","Vider et nettoyer","🍂",null,6,null,1,0,0,null,0,null,"Printemps et automne.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 8: [8,"maison","roof_check","Vérification toiture","Inspection visuelle","🏗️",null,12,null,1,0,0,null,0,null,"Vérifier tuiles, faîtage, étanchéité.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 9: [9,"maison","ac_service","Entretien climatisation","Nettoyage filtres clim","❄️",null,12,null,1,0,0,null,0,null,"Nettoyer filtres chaque mois en été.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 10: [10,"maison","electrical_test","Test disjoncteur","Tester différentiel","⚡",null,6,null,1,0,0,null,0,null,"Bouton test - le courant doit couper.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 11: [11,"maison","water_softener","Sel adoucisseur","Recharger sel adoucisseur","💧",null,3,null,1,0,0,null,0,null,"Vérifier niveau tous les 2-3 mois.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 12: [12,"auto","oil_change","Vidange huile","Vidange huile moteur","🛢️",null,12,15000,1,1,0,null,0,null,"Tous les 15-30 000 km selon véhicule.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 13: [13,"auto","technical_inspection","Contrôle technique","CT obligatoire","🔍",null,24,null,1,0,0,null,1,null,"Tous les 2 ans après 4 ans du véhicule.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 14: [14,"auto","tire_rotation","Permutation pneus","Rotation pneus","🔧",null,12,10000,1,1,0,null,0,null,"Équilibre usure des pneus.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 15: [15,"auto","winter_tires","Pneus hiver","Monter pneus hiver","❄️",null,null,null,1,0,0,null,0,null,"Novembre. En dessous de 7°C.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 16: [16,"auto","summer_tires","Pneus été","Remonter pneus été","☀️",null,null,null,1,0,0,null,0,null,"Mars/Avril quand T°>7°C stable.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 17: [17,"auto","brake_check","Contrôle freins","Vérifier plaquettes/disques","🛑",null,12,30000,1,1,0,null,0,null,"Plaquettes ~30-50k km, disques ~80k km.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 18: [18,"auto","coolant","Liquide refroidissement","Contrôler/remplacer","🌡️",null,24,60000,1,1,0,null,0,null,"Vérifier niveau et état.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 19: [19,"auto","air_filter","Filtre à air","Remplacer filtre air","💨",null,12,20000,1,1,0,null,0,null,"Améliore performances et conso.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 20: [20,"auto","battery_check","Contrôle batterie","Vérifier batterie","🔋",null,24,null,1,0,0,null,0,null,"Durée vie ~4-5 ans.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 21: [21,"auto","insurance","Assurance auto","Renouvellement assurance","📋",null,12,null,1,0,0,null,1,null,"Comparer les offres avant renouvellement.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 22: [22,"moto","oil_change","Vidange huile","Vidange huile moteur","🛢️",null,6,6000,1,1,0,null,0,null,"Plus fréquent que voiture.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 23: [23,"moto","chain_maintenance","Entretien chaîne","Graissage et tension chaîne","⛓️",null,1,500,1,1,0,null,0,null,"Tous les 500km ou après pluie.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 24: [24,"moto","chain_replacement","Remplacement chaîne/kit","Chaîne + pignons + couronne","🔗",null,24,20000,1,1,0,null,0,null,"Kit complet recommandé.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 25: [25,"moto","tire_check","Contrôle pneus","Vérifier usure et pression","🏍️",null,1,1000,1,1,0,null,0,null,"Pression à froid, usure témoin.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 26: [26,"moto","brake_fluid","Liquide frein","Remplacer liquide frein","🛑",null,24,null,1,0,0,null,0,null,"Absorbe humidité, perd efficacité.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 27: [27,"moto","winterization","Hivernage moto","Préparer pour hiver","❄️",null,null,null,1,0,0,null,0,null,"Batterie, essence, pneus, bâche.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 28: [28,"moto","spring_prep","Remise en route","Préparer pour saison","🌸",null,null,null,1,0,0,null,0,null,"Vérifier tout après hivernage.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 29: [29,"moto","technical_inspection","Contrôle technique","CT obligatoire (si applicable)","🔍",null,24,null,1,0,0,null,1,null,"Obligatoire depuis 2024.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 30: [30,"jardin","hedge_trim","Taille haies","Tailler les haies","🌳",null,6,null,1,0,1,"[2,9]",0,null,"Février et septembre.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 31: [31,"jardin","lawn_scarify","Scarification pelouse","Scarifier la pelouse","🌱",null,12,null,1,0,1,"[3,4]",0,null,"Au printemps après gelées.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 32: [32,"jardin","lawn_fertilize","Engrais pelouse","Fertiliser gazon","🧪",null,4,null,1,0,0,null,0,null,"3x/an: printemps, été, automne.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 33: [33,"jardin","irrigation_winterize","Hivernage arrosage","Vidanger système","💧",null,12,null,1,0,1,"[10,11]",0,null,"Avant premières gelées.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 34: [34,"jardin","irrigation_startup","Remise en route arrosage","Remettre système","💦",null,12,null,1,0,1,"[3,4]",0,null,"Après dernières gelées.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 35: [35,"jardin","fruit_tree_prune","Taille fruitiers","Tailler arbres fruitiers","🍎",null,12,null,1,0,1,"[1,2]",0,null,"Hiver, hors gel.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 36: [36,"jardin","rose_prune","Taille rosiers","Tailler les rosiers","🌹",null,12,null,1,0,1,"[2,3]",0,null,"Fin hiver, avant reprise.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 37: [37,"jardin","compost_turn","Retourner compost","Brasser le compost","♻️",null,2,null,1,0,0,null,0,null,"Aération pour décomposition.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 38: [38,"plantes","watering_weekly","Arrosage hebdo","Arroser plantes classiques","💧",7,null,null,1,0,0,null,0,null,"La plupart des plantes vertes.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 39: [39,"plantes","watering_biweekly","Arrosage bi-mensuel","Plantes peu gourmandes","💧",14,null,null,1,0,0,null,0,null,"Succulentes, cactus, ZZ, snake plant.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 40: [40,"plantes","fertilize","Engrais","Fertiliser plantes","🧪",14,null,null,1,0,0,null,0,null,"Printemps-été uniquement.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 41: [41,"plantes","repot","Rempotage","Rempoter si nécessaire","🪴",365,null,null,1,0,0,null,0,null,"Quand racines sortent du pot.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 42: [42,"plantes","dust_leaves","Dépoussiérer feuilles","Nettoyer feuilles","🍃",30,null,null,1,0,0,null,0,null,"Améliore photosynthèse.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 43: [43,"plantes","rotate","Rotation","Tourner les plantes","🔄",14,null,null,1,0,0,null,0,null,"Croissance uniforme vers lumière.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 44: [44,"plantes","pest_check","Inspection parasites","Vérifier insectes","🔍",14,null,null,1,0,0,null,0,null,"Dessous feuilles, tiges.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 45: [45,"pets","vaccination","Vaccins annuels","Rappel vaccins","💉",null,12,null,1,0,0,null,1,null,"Carnet de santé obligatoire.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 46: [46,"pets","deworming","Vermifuge","Traitement vermifuge","💊",null,3,null,1,0,0,null,0,null,"Tous les 3-6 mois selon mode de vie.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 47: [47,"pets","flea_treatment","Anti-puces/tiques","Traitement antiparasitaire","🐜",null,1,null,1,0,0,null,0,null,"Mensuel en saison (mars-novembre).",null,null,0,1,"2026-02-01 21:30:19"]
+Row 48: [48,"pets","grooming","Toilettage","Toilettage complet","✂️",null,2,null,1,0,0,null,0,null,"Selon race et pelage.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 49: [49,"pets","dental_check","Contrôle dentaire","Vérifier dents","🦷",null,12,null,1,0,0,null,0,null,"Détartrage si nécessaire.",null,null,0,1,"2026-02-01 21:30:19"]
+Row 50: [50,"pets","vet_checkup","Visite véto annuelle","Bilan de santé","🩺",null,12,null,1,0,0,null,0,null,"Même si tout va bien.",null,null,0,1,"2026-02-01 21:30:19"]
+
+=== SQLITE_SEQUENCE ===
+Columns: name, seq
+Rows: 3
+Row 1: ["reminder_templates",156]
+Row 2: ["clients",1]
+Row 3: ["client_reminders",1]
+
+=== VERTICALS ===
+Columns: id, name, description, icon, whatsapp_number, enabled, created_at
+Rows: 6
+Row 1: ["maison","MaisonBot","Rappels entretien maison","🏠",null,1,"2026-02-01 21:30:19"]
+Row 2: ["auto","AutoBot","Rappels entretien voiture","🚗",null,1,"2026-02-01 21:30:19"]
+Row 3: ["moto","MotoBot","Rappels entretien moto","🏍️",null,1,"2026-02-01 21:30:19"]
+Row 4: ["jardin","JardinBot","Rappels jardinage","🌱",null,1,"2026-02-01 21:30:19"]
+Row 5: ["plantes","PlantesBot","Rappels plantes intérieur","🪴",null,1,"2026-02-01 21:30:19"]
+Row 6: ["pets","PetBot","Rappels animaux de compagnie","🐕",null,1,"2026-02-01 21:30:19"]

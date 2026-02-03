@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>LinkedIn Schema Post #2 - Niveaux d'automatisation</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+  font-family: 'Segoe UI', Arial, sans-serif; 
+  background: white; 
+  padding: 40px 60px;
+  min-height: 100vh;
+}
+.title {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.title h1 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #0070AD;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.title p {
+  font-size: 13px;
+  color: #666;
+  margin-top: 8px;
+}
+.scale {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.level {
+  display: flex;
+  align-items: stretch;
+  min-height: 70px;
+}
+.level-number {
+  width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  flex-shrink: 0;
+}
+.level-content {
+  flex: 1;
+  padding: 16px 20px;
+  border-left: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.level-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 4px;
+}
+.level-desc {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.4;
+}
+.level-tag {
+  display: inline-block;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: 10px;
+  font-weight: 500;
+  vertical-align: middle;
+}
+
+/* Zone 1: Manuel - Gris */
+.zone-manual .level-number { background: #9E9E9E; }
+.zone-manual .level-content { background: #F5F5F5; border-bottom: 1px solid #E0E0E0; }
+.zone-manual .level-tag { background: #E0E0E0; color: #666; }
+
+/* Zone 2: Script - Orange */
+.zone-script .level-number { background: #FF9800; }
+.zone-script .level-content { background: #FFF8E1; border-bottom: 1px solid #FFE0B2; }
+.zone-script .level-tag { background: #FFE0B2; color: #E65100; }
+
+/* Zone 3: Agent-assisted - Bleu clair */
+.zone-assisted .level-number { background: #0070AD; }
+.zone-assisted .level-content { background: #E3F2FD; border-bottom: 1px solid #BBDEFB; }
+.zone-assisted .level-tag { background: #BBDEFB; color: #0070AD; }
+
+/* Zone 4: Agent autonome - Vert */
+.zone-auto .level-number { background: #00A86B; }
+.zone-auto .level-content { background: #E8F5E9; border-bottom: 1px solid #C8E6C9; }
+.zone-auto .level-tag { background: #C8E6C9; color: #2E7D32; }
+
+.level:last-child .level-content { border-bottom: none; }
+
+.arrow-zone {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 20px;
+  width: 140px;
+  flex-shrink: 0;
+}
+.zone-label {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 10px 0;
+}
+.zone-label.manual { color: #9E9E9E; }
+.zone-label.script { color: #FF9800; }
+.zone-label.assisted { color: #0070AD; }
+.zone-label.auto { color: #00A86B; }
+
+.divider {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #0070AD, transparent);
+  margin: 30px 0;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 11px;
+  color: #999;
+}
+.footer strong {
+  color: #0070AD;
+}
+
+.bracket {
+  position: relative;
+  width: 30px;
+  flex-shrink: 0;
+}
+.bracket::after {
+  content: '';
+  position: absolute;
+  right: 10px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: currentColor;
+}
+.bracket::before {
+  content: '';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  width: 15px;
+  height: 2px;
+  background: currentColor;
+}
+</style>
+</head>
+<body>
+
+<div class="title">
+  <h1>Les 7 niveaux d'automatisation d'une tâche IT</h1>
+  <p>De "trop cher à faire" à "l'agent gère en autonomie"</p>
+</div>
+
+<div class="scale">
+  
+  <div class="level zone-manual">
+    <div class="level-number">1</div>
+    <div class="level-content">
+      <div class="level-title">Pas fait <span class="level-tag">STATU QUO</span></div>
+      <div class="level-desc">La tâche serait utile mais trop coûteuse à automatiser. On laisse tomber ou on fait sans.</div>
+    </div>
+  </div>
+  
+  <div class="level zone-manual">
+    <div class="level-number">2</div>
+    <div class="level-content">
+      <div class="level-title">Fait manuellement</div>
+      <div class="level-desc">On le fait à la main, ça prend du temps, c'est répétitif, source d'erreurs.</div>
+    </div>
+  </div>
+  
+  <div class="level zone-script">
+    <div class="level-number">3</div>
+    <div class="level-content">
+      <div class="level-title">Délégué à un dev <span class="level-tag">COÛT ÉLEVÉ</span></div>
+      <div class="level-desc">C'est répétitif et coûteux → on demande à un développeur d'écrire un script. Semaines d'attente, budget conséquent.</div>
+    </div>
+  </div>
+  
+  <div class="level zone-script">
+    <div class="level-number">4</div>
+    <div class="level-content">
+      <div class="level-title">Script maison</div>
+      <div class="level-desc">On écrit soi-même un script. Ça marche, mais on y passe du temps et il faut le maintenir.</div>
+    </div>
+  </div>
+  
+  <div class="level zone-assisted">
+    <div class="level-number">5</div>
+    <div class="level-content">
+      <div class="level-title">Agent génère le script <span class="level-tag">NOUVEAU</span></div>
+      <div class="level-desc">On demande à un coding agent d'écrire le script et la méthode. On récupère le code, on l'exécute.</div>
+    </div>
+  </div>
+  
+  <div class="level zone-assisted">
+    <div class="level-number">6</div>
+    <div class="level-content">
+      <div class="level-title">Agent exécute et on valide <span class="level-tag">RECOMMANDÉ</span></div>
+      <div class="level-desc">On donne la tâche à l'agent. Il écrit le code, l'exécute, produit le résultat. On contrôle l'output avant de l'utiliser.</div>
+    </div>
+  </div>
+  
+  <div class="level zone-auto">
+    <div class="level-number">7</div>
+    <div class="level-content">
+      <div class="level-title">Autopilot <span class="level-tag">AVANCÉ</span></div>
+      <div class="level-desc">L'agent exécute les tâches de façon autonome, en continu. Supervision humaine sur exceptions uniquement.</div>
+    </div>
+  </div>
+  
+</div>
+
+<div class="footer">
+  Niveaux 1-4 : approche traditionnelle · Niveaux 5-7 : <strong>approche agent-native</strong>
+</div>
+
+</body>
+</html>

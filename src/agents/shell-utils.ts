@@ -19,6 +19,30 @@ function resolvePowerShellPath(): string {
   return "powershell.exe";
 }
 
+/**
+ * Transform bash-style commands to be PowerShell-compatible on Windows.
+ * Bash operators && and || are not valid in PowerShell, so we wrap commands
+ * that use them with cmd.exe /c to let cmd handle the operator parsing.
+ */
+export function transformCommandForPowerShell(command: string): string {
+  if (process.platform !== "win32") {
+    return command;
+  }
+
+  // Check if command uses bash-style operators that PowerShell doesn't support
+  // Match && or || that are not inside quotes
+  const hasBashOperators = /(?<![&|])[&]{2}(?![&])|(?<![|])[|]{2}(?![|])/.test(command);
+
+  if (!hasBashOperators) {
+    return command;
+  }
+
+  // Wrap with cmd.exe /c to handle && and || operators
+  // Escape double quotes and special characters for cmd.exe
+  const escaped = command.replace(/"/g, '\\"');
+  return `cmd.exe /c "${escaped}"`;
+}
+
 export function getShellConfig(): { shell: string; args: string[] } {
   if (process.platform === "win32") {
     // Use PowerShell instead of cmd.exe on Windows.

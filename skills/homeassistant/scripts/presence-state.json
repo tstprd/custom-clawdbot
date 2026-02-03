@@ -1,0 +1,48 @@
+{
+  "generatedAt": "2026-02-01T18:30:07.839Z",
+  "weekStart": "2026-02-01T23:00:00.000Z",
+  "weekEnd": "2026-02-08T22:59:59.999Z",
+  "config": {
+    "2026-02-01": {
+      "day": "Lundi",
+      "jules": "home",
+      "al": "home"
+    },
+    "2026-02-02": {
+      "day": "Mardi",
+      "jules": "home",
+      "al": "home"
+    },
+    "2026-02-03": {
+      "day": "Mercredi",
+      "jules": "home",
+      "al": "home"
+    },
+    "2026-02-04": {
+      "day": "Jeudi",
+      "jules": "away",
+      "al": "home"
+    },
+    "2026-02-05": {
+      "day": "Vendredi",
+      "jules": "home",
+      "al": "home"
+    },
+    "2026-02-06": {
+      "day": "Samedi",
+      "jules": "home",
+      "al": "home"
+    },
+    "2026-02-07": {
+      "day": "Dimanche",
+      "jules": "home",
+      "al": "home"
+    },
+    "2026-02-08": {
+      "day": "Lundi",
+      "jules": "home",
+      "al": "home"
+    }
+  },
+  "validated": false
+}

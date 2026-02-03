@@ -1,0 +1,22 @@
+{
+  "name": "maintenance-bot",
+  "version": "0.1.0",
+  "description": "Bot Telegram multi-vertical: MotoBot, AutoBot, MaisonBot",
+  "main": "bot-telegram.ts",
+  "scripts": {
+    "dev": "tsx watch bot-telegram.ts",
+    "start": "tsx bot-telegram.ts",
+    "init-db": "tsx scripts/init-db.ts"
+  },
+  "dependencies": {
+    "node-telegram-bot-api": "^0.66.0",
+    "better-sqlite3": "^11.0.0",
+    "cron": "^3.1.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.0.0",
+    "@types/better-sqlite3": "^7.6.0",
+    "@types/node-telegram-bot-api": "^0.64.0",
+    "@types/cron": "^2.4.0"
+  }
+}

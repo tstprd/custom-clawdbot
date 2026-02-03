@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>LinkedIn Schema - Avant/Après Agent</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+  font-family: 'Segoe UI', Arial, sans-serif; 
+  background: white; 
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+.container {
+  display: flex;
+  gap: 40px;
+  align-items: stretch;
+}
+.column {
+  width: 340px;
+  text-align: center;
+}
+.header {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0070AD;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 24px;
+}
+.box {
+  border: 2px solid #E0E0E0;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 12px;
+  background: #FAFAFA;
+}
+.box.highlight {
+  border-color: #0070AD;
+  background: #F0F7FB;
+}
+.box-title {
+  font-size: 10px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.box-content {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.5;
+}
+.code {
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 11px;
+  background: #F5F5F5;
+  padding: 12px;
+  border-radius: 4px;
+  text-align: left;
+  color: #555;
+  line-height: 1.6;
+}
+.arrow {
+  font-size: 20px;
+  color: #0070AD;
+  margin: 6px 0;
+}
+.result {
+  border-color: #00A86B;
+  background: #F0FBF5;
+}
+.result .box-title {
+  color: #00A86B;
+}
+.pain {
+  font-size: 12px;
+  color: #999;
+  font-style: italic;
+  margin-top: 16px;
+}
+.divider {
+  width: 2px;
+  background: linear-gradient(180deg, #E0E0E0 0%, #0070AD 50%, #E0E0E0 100%);
+  margin: 0 10px;
+  align-self: stretch;
+}
+.success {
+  color: #00A86B;
+  font-style: normal;
+  font-weight: 500;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="column">
+    <div class="header">Avant · Script custom</div>
+    <div class="box">
+      <div class="box-title">Besoin</div>
+      <div class="box-content">Croiser fichier transporteur avec ERP, identifier les anomalies</div>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="box">
+      <div class="box-title">Implémentation</div>
+      <div class="code">def reconciliate():<br>&nbsp;&nbsp;parse_csv()<br>&nbsp;&nbsp;query_erp()<br>&nbsp;&nbsp;match_records()<br>&nbsp;&nbsp;handle_edge_cases()<br>&nbsp;&nbsp;generate_report()</div>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="box">
+      <div class="box-title">Maintenance</div>
+      <div class="box-content">Debug, évolutions de format, nouveaux cas limites, documentation</div>
+    </div>
+    <p class="pain">Semaines de dev · Maintenance continue</p>
+  </div>
+  
+  <div class="divider"></div>
+  
+  <div class="column">
+    <div class="header">Après · Agent</div>
+    <div class="box highlight">
+      <div class="box-title">Objectif en langage naturel</div>
+      <div class="box-content"><em>"Croise le fichier transporteur avec l'ERP, identifie les BL sans facture, génère le rapport d'anomalies"</em></div>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="box highlight">
+      <div class="box-title">Agent en boucle</div>
+      <div class="box-content">
+        <strong>LLM + Terminal + Fichiers</strong><br>
+        <span style="font-size:12px;color:#666;">Itère jusqu'au résultat attendu</span>
+      </div>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="box result">
+      <div class="box-title">Résultat</div>
+      <div class="box-content">Rapport généré<br>Cas limites gérés dynamiquement</div>
+    </div>
+    <p class="pain success">Minutes · Adaptation automatique</p>
+  </div>
+</div>
+</body>
+</html>

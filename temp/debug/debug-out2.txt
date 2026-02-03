@@ -1,0 +1,15 @@
+Aujourd'hui: mercredi 07/01/2026
+getDay(): 3
+Jours jusqu'au samedi: 3
+
+Weekend 0:
+  Samedi: samedi 10/01
+  Dimanche: dimanche 11/01
+
+Weekend 1:
+  Samedi: samedi 17/01
+  Dimanche: dimanche 18/01
+
+Weekend 2:
+  Samedi: samedi 24/01
+  Dimanche: dimanche 25/01

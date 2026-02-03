@@ -1,0 +1,7 @@
+{
+  "refresh_token": "1//03RvTMW875eDoCgYIARAAGAMSNwF-L9IrXAVhOv4PgxXUeVaU-EQxy6VZfkKmUoS89fmwGU0owbXPttoTm-zuze8OHiWcMwNph6o",
+  "expiry_date": null,
+  "token_type": "Bearer",
+  "scope": "https://www.googleapis.com/auth/tasks https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.modify",
+  "account": "alejmurot@gmail.com"
+}
