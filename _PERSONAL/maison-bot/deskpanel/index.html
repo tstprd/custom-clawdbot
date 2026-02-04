@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Dashboard</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    html, body {
+      width: 2400px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: 'Segoe UI', -apple-system, sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+    }
+    
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-template-rows: auto 1fr auto;
+      gap: 20px;
+      padding: 30px;
+      height: 100%;
+    }
+    
+    /* Header */
+    .header {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #222;
+    }
+    .time {
+      font-size: 64px;
+      font-weight: 200;
+      letter-spacing: -2px;
+    }
+    .date {
+      font-size: 24px;
+      color: #666;
+      margin-left: 20px;
+    }
+    .status-bar {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
+    .battery {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      color: #666;
+    }
+    .battery-icon {
+      width: 40px;
+      height: 20px;
+      border: 2px solid #666;
+      border-radius: 3px;
+      position: relative;
+    }
+    .battery-icon::after {
+      content: '';
+      position: absolute;
+      right: -6px;
+      top: 4px;
+      width: 4px;
+      height: 10px;
+      background: #666;
+      border-radius: 0 2px 2px 0;
+    }
+    .battery-level {
+      height: 100%;
+      background: #00A86B;
+      border-radius: 1px;
+      transition: width 0.3s;
+    }
+    .battery.low .battery-level { background: #ff4444; }
+    
+    /* Temperature Cards */
+    .temps {
+      grid-column: 1 / 3;
+      display: flex;
+      gap: 20px;
+    }
+    .temp-card {
+      flex: 1;
+      background: #151515;
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+    .temp-label {
+      font-size: 16px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+    .temp-value {
+      font-size: 56px;
+      font-weight: 300;
+      color: #fff;
+    }
+    .temp-value span { font-size: 32px; color: #666; }
+    .temp-trend {
+      font-size: 14px;
+      color: #666;
+      margin-top: auto;
+    }
+    .temp-trend.up { color: #ff6b6b; }
+    .temp-trend.down { color: #4dabf7; }
+    
+    /* Action Buttons */
+    .actions {
+      grid-column: 3 / 5;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .action-btn {
+      background: #151515;
+      border: none;
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: #fff;
+    }
+    .action-btn:active {
+      transform: scale(0.96);
+      background: #1a1a1a;
+    }
+    .action-btn.active {
+      background: #0070AD;
+    }
+    .action-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+    .action-label {
+      font-size: 16px;
+      color: #888;
+    }
+    .action-btn.active .action-label { color: #fff; }
+    
+    /* Message Area */
+    .message-area {
+      grid-column: 1 / 3;
+      background: #151515;
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+    .message-header {
+      font-size: 14px;
+      color: #0070AD;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+    .message-content {
+      font-size: 20px;
+      line-height: 1.5;
+      color: #ccc;
+      flex: 1;
+    }
+    .message-time {
+      font-size: 12px;
+      color: #444;
+      margin-top: 16px;
+    }
+    
+    /* Voice Button */
+    .voice-section {
+      grid-column: 3 / 5;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .voice-btn {
+      flex: 1;
+      background: linear-gradient(135deg, #0070AD 0%, #005a8c 100%);
+      border: none;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: #fff;
+    }
+    .voice-btn:active {
+      transform: scale(0.98);
+    }
+    .voice-btn.listening {
+      background: linear-gradient(135deg, #00A86B 0%, #008855 100%);
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0, 168, 107, 0.4); }
+      50% { box-shadow: 0 0 0 20px rgba(0, 168, 107, 0); }
+    }
+    .voice-icon {
+      font-size: 64px;
+    }
+    .voice-text {
+      font-size: 28px;
+      font-weight: 500;
+    }
+    
+    /* Quick Stats */
+    .quick-stats {
+      display: flex;
+      gap: 20px;
+    }
+    .stat {
+      flex: 1;
+      background: #151515;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 24px;
+      font-weight: 500;
+      color: #fff;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: #666;
+      margin-top: 4px;
+    }
+    
+    /* Connection status */
+    .connection {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #00A86B;
+    }
+    .connection.disconnected {
+      background: #ff4444;
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+  </style>
+</head>
+<body>
+  <div class="connection" id="connection"></div>
+  
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div style="display: flex; align-items: baseline;">
+        <div class="time" id="time">00:00</div>
+        <div class="date" id="date">--</div>
+      </div>
+      <div class="status-bar">
+        <div class="battery" id="battery">
+          <div class="battery-icon">
+            <div class="battery-level" id="battery-level" style="width: 80%"></div>
+          </div>
+          <span id="battery-text">80%</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Temperatures -->
+    <div class="temps">
+      <div class="temp-card">
+        <div class="temp-label">Salon</div>
+        <div class="temp-value" id="temp-salon">--<span>°C</span></div>
+        <div class="temp-trend" id="trend-salon">--</div>
+      </div>
+      <div class="temp-card">
+        <div class="temp-label">Chambre</div>
+        <div class="temp-value" id="temp-chambre">--<span>°C</span></div>
+        <div class="temp-trend" id="trend-chambre">--</div>
+      </div>
+      <div class="temp-card">
+        <div class="temp-label">Bureau</div>
+        <div class="temp-value" id="temp-bureau">--<span>°C</span></div>
+        <div class="temp-trend" id="trend-bureau">--</div>
+      </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="actions">
+      <button class="action-btn" data-action="lights" id="btn-lights">
+        <div class="action-icon">💡</div>
+        <div class="action-label">Lumières</div>
+      </button>
+      <button class="action-btn" data-action="heating" id="btn-heating">
+        <div class="action-icon">🔥</div>
+        <div class="action-label">Chauffage</div>
+      </button>
+      <button class="action-btn" data-action="presence" id="btn-presence">
+        <div class="action-icon">🏠</div>
+        <div class="action-label">Présence</div>
+      </button>
+      <button class="action-btn" data-action="tasks" id="btn-tasks">
+        <div class="action-icon">📋</div>
+        <div class="action-label">Tâches</div>
+      </button>
+    </div>
+    
+    <!-- Message from Claude -->
+    <div class="message-area">
+      <div class="message-header">💬 Dwight</div>
+      <div class="message-content" id="message">En attente de connexion...</div>
+      <div class="message-time" id="message-time">--</div>
+    </div>
+    
+    <!-- Voice + Stats -->
+    <div class="voice-section">
+      <button class="voice-btn" id="voice-btn">
+        <div class="voice-icon">🎤</div>
+        <div class="voice-text">Parler à Dwight</div>
+      </button>
+      <div class="quick-stats">
+        <div class="stat">
+          <div class="stat-value" id="stat-tasks">-</div>
+          <div class="stat-label">Tâches</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="stat-unread">-</div>
+          <div class="stat-label">Non lus</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // WebSocket connection
+    let ws;
+    let reconnectInterval;
+    
+    function connect() {
+      const wsUrl = `ws://${window.location.host}/ws`;
+      ws = new WebSocket(wsUrl);
+      
+      ws.onopen = () => {
+        document.getElementById('connection').classList.remove('disconnected');
+        clearInterval(reconnectInterval);
+        console.log('Connected');
+      };
+      
+      ws.onclose = () => {
+        document.getElementById('connection').classList.add('disconnected');
+        reconnectInterval = setInterval(connect, 3000);
+      };
+      
+      ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        updateUI(data);
+      };
+    }
+    
+    function updateUI(data) {
+      // Temperatures
+      if (data.temps) {
+        for (const [room, info] of Object.entries(data.temps)) {
+          const el = document.getElementById(`temp-${room}`);
+          const trend = document.getElementById(`trend-${room}`);
+          if (el) el.innerHTML = `${info.value}<span>°C</span>`;
+          if (trend) {
+            trend.textContent = info.trend || '';
+            trend.className = 'temp-trend ' + (info.trendDir || '');
+          }
+        }
+      }
+      
+      // Message from Claude
+      if (data.message) {
+        document.getElementById('message').textContent = data.message.text;
+        document.getElementById('message-time').textContent = data.message.time;
+      }
+      
+      // Button states
+      if (data.buttons) {
+        for (const [id, active] of Object.entries(data.buttons)) {
+          const btn = document.getElementById(`btn-${id}`);
+          if (btn) btn.classList.toggle('active', active);
+        }
+      }
+      
+      // Stats
+      if (data.stats) {
+        if (data.stats.tasks !== undefined) 
+          document.getElementById('stat-tasks').textContent = data.stats.tasks;
+        if (data.stats.unread !== undefined)
+          document.getElementById('stat-unread').textContent = data.stats.unread;
+      }
+      
+      // Battery
+      if (data.battery !== undefined) {
+        const pct = data.battery;
+        document.getElementById('battery-level').style.width = pct + '%';
+        document.getElementById('battery-text').textContent = pct + '%';
+        document.getElementById('battery').classList.toggle('low', pct < 20);
+      }
+    }
+    
+    // Time update
+    function updateTime() {
+      const now = new Date();
+      document.getElementById('time').textContent = 
+        now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('date').textContent = 
+        now.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+    }
+    
+    // Button actions
+    document.querySelectorAll('.action-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const action = btn.dataset.action;
+        if (ws && ws.readyState === WebSocket.OPEN) {
+          ws.send(JSON.stringify({ type: 'action', action }));
+        }
+      });
+    });
+    
+    // Voice button
+    const voiceBtn = document.getElementById('voice-btn');
+    let recognition;
+    
+    if ('webkitSpeechRecognition' in window) {
+      recognition = new webkitSpeechRecognition();
+      recognition.lang = 'fr-FR';
+      recognition.continuous = false;
+      
+      recognition.onstart = () => {
+        voiceBtn.classList.add('listening');
+        voiceBtn.querySelector('.voice-text').textContent = 'Écoute...';
+      };
+      
+      recognition.onend = () => {
+        voiceBtn.classList.remove('listening');
+        voiceBtn.querySelector('.voice-text').textContent = 'Parler à Dwight';
+      };
+      
+      recognition.onresult = (event) => {
+        const text = event.results[0][0].transcript;
+        if (ws && ws.readyState === WebSocket.OPEN) {
+          ws.send(JSON.stringify({ type: 'voice', text }));
+        }
+      };
+      
+      voiceBtn.addEventListener('click', () => {
+        if (voiceBtn.classList.contains('listening')) {
+          recognition.stop();
+        } else {
+          recognition.start();
+        }
+      });
+    }
+    
+    // Init
+    connect();
+    updateTime();
+    setInterval(updateTime, 1000);
+  </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "temps": {
+    "salon": { "value": 21, "trend": "+0.5°/h", "trendDir": "up" },
+    "chambre": { "value": 19, "trend": "stable", "trendDir": "" },
+    "bureau": { "value": 22, "trend": "-0.3°/h", "trendDir": "down" }
+  },
+  "message": {
+    "text": "Dashboard prêt. En attente de connexion...",
+    "time": "00:00"
+  },
+  "buttons": {
+    "lights": false,
+    "heating": true,
+    "presence": true,
+    "tasks": false
+  },
+  "stats": {
+    "tasks": 3,
+    "unread": 12
+  },
+  "battery": 80
+}

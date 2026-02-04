@@ -11,6 +11,7 @@
 ## ⚠️ À traiter
 
 - **Token Gmail** : `alejmurot@gmail.com` expiré → `gog auth login --account alejmurot@gmail.com`
+- **LinkedIn GenAI** : Pousser Jules à rédiger Post #2 (rappel 17 fév) — c'est son intérêt pro, construire sa crédibilité expert IA
 
 ## ✅ Récemment complété
 

@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>DeskPanel</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    html, body {
+      width: 2400px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: 'Segoe UI', -apple-system, sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+    }
+    
+    .app {
+      display: flex;
+      height: 100%;
+    }
+    
+    /* Sidebar Tabs */
+    .sidebar {
+      width: 100px;
+      background: #111;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid #222;
+    }
+    
+    .tab {
+      height: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: all 0.2s;
+      color: #555;
+    }
+    .tab:hover {
+      background: #1a1a1a;
+      color: #888;
+    }
+    .tab.active {
+      background: #0a0a0a;
+      border-left-color: #0070AD;
+      color: #fff;
+    }
+    .tab-icon {
+      font-size: 36px;
+      margin-bottom: 6px;
+    }
+    .tab-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .tab-spacer {
+      flex: 1;
+    }
+    
+    .tab-time {
+      padding: 20px 10px;
+      text-align: center;
+      border-top: 1px solid #222;
+    }
+    .tab-time .time {
+      font-size: 24px;
+      font-weight: 300;
+    }
+    .tab-time .date {
+      font-size: 10px;
+      color: #555;
+      margin-top: 4px;
+    }
+    
+    /* Main Content */
+    .main {
+      flex: 1;
+      padding: 40px;
+      overflow: hidden;
+    }
+    
+    .section {
+      display: none;
+      height: 100%;
+    }
+    .section.active {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .section-title {
+      font-size: 14px;
+      color: #0070AD;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #222;
+    }
+    
+    /* HOME Section */
+    #section-home {
+      display: flex;
+      flex-direction: row;
+      gap: 40px;
+    }
+    #section-home.active {
+      flex-direction: row;
+    }
+    
+    .home-left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+    
+    .home-right {
+      width: 500px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Temperature Cards */
+    .temps-grid {
+      display: flex;
+      gap: 20px;
+    }
+    .temp-card {
+      flex: 1;
+      background: #151515;
+      border-radius: 16px;
+      padding: 28px;
+    }
+    .temp-label {
+      font-size: 14px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+    .temp-value {
+      font-size: 72px;
+      font-weight: 200;
+      color: #fff;
+      line-height: 1;
+    }
+    .temp-value span { 
+      font-size: 36px; 
+      color: #666;
+      font-weight: 300;
+    }
+    .temp-trend {
+      font-size: 13px;
+      color: #666;
+      margin-top: 12px;
+    }
+    .temp-trend.up { color: #ff6b6b; }
+    .temp-trend.down { color: #4dabf7; }
+    
+    /* Message Card */
+    .message-card {
+      flex: 1;
+      background: #151515;
+      border-radius: 16px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+    }
+    .message-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .message-avatar {
+      width: 48px;
+      height: 48px;
+      background: #0070AD;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    .message-name {
+      font-size: 18px;
+      font-weight: 500;
+    }
+    .message-status {
+      font-size: 12px;
+      color: #00A86B;
+    }
+    .message-content {
+      font-size: 22px;
+      line-height: 1.6;
+      color: #ccc;
+      flex: 1;
+    }
+    .message-time {
+      font-size: 12px;
+      color: #444;
+      margin-top: 20px;
+    }
+    
+    /* Quick Stats */
+    .quick-stats {
+      display: flex;
+      gap: 20px;
+      margin-top: auto;
+    }
+    .stat-card {
+      flex: 1;
+      background: #151515;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 36px;
+      font-weight: 500;
+      color: #fff;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: #666;
+      margin-top: 6px;
+      text-transform: uppercase;
+    }
+    
+    /* CONTROL Section */
+    .controls-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      flex: 1;
+    }
+    .control-btn {
+      background: #151515;
+      border: none;
+      border-radius: 20px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: #fff;
+    }
+    .control-btn:active {
+      transform: scale(0.96);
+    }
+    .control-btn.active {
+      background: linear-gradient(135deg, #0070AD 0%, #005a8c 100%);
+    }
+    .control-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+    .control-label {
+      font-size: 18px;
+      color: #888;
+    }
+    .control-btn.active .control-label { color: #fff; }
+    .control-state {
+      font-size: 13px;
+      color: #555;
+      margin-top: 8px;
+    }
+    .control-btn.active .control-state { color: rgba(255,255,255,0.7); }
+    
+    /* TASKS Section */
+    .tasks-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      overflow-y: auto;
+    }
+    .task-item {
+      background: #151515;
+      border-radius: 12px;
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .task-check {
+      width: 32px;
+      height: 32px;
+      border: 2px solid #333;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      transition: all 0.2s;
+    }
+    .task-check:hover {
+      border-color: #0070AD;
+    }
+    .task-item.done .task-check {
+      background: #00A86B;
+      border-color: #00A86B;
+    }
+    .task-text {
+      font-size: 20px;
+      flex: 1;
+    }
+    .task-item.done .task-text {
+      color: #555;
+      text-decoration: line-through;
+    }
+    .task-due {
+      font-size: 14px;
+      color: #666;
+    }
+    .task-due.urgent {
+      color: #ff6b6b;
+    }
+    
+    /* VOICE Section */
+    #section-voice {
+      align-items: center;
+      justify-content: center;
+    }
+    .voice-container {
+      text-align: center;
+    }
+    .voice-btn {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0070AD 0%, #005a8c 100%);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      margin: 0 auto;
+    }
+    .voice-btn:active {
+      transform: scale(0.95);
+    }
+    .voice-btn.listening {
+      background: linear-gradient(135deg, #00A86B 0%, #008855 100%);
+      animation: pulse-big 1.5s infinite;
+    }
+    @keyframes pulse-big {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0, 168, 107, 0.4); }
+      50% { box-shadow: 0 0 0 40px rgba(0, 168, 107, 0); }
+    }
+    .voice-icon {
+      font-size: 120px;
+    }
+    .voice-text {
+      font-size: 28px;
+      color: #666;
+      margin-top: 40px;
+    }
+    .voice-transcript {
+      font-size: 24px;
+      color: #ccc;
+      margin-top: 30px;
+      min-height: 60px;
+    }
+    
+    /* Connection indicator */
+    .connection {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #444;
+    }
+    .connection-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #00A86B;
+    }
+    .connection.disconnected .connection-dot {
+      background: #ff4444;
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    
+    /* Battery */
+    .battery-indicator {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: #555;
+    }
+    .battery-icon {
+      width: 36px;
+      height: 18px;
+      border: 2px solid #555;
+      border-radius: 3px;
+      position: relative;
+    }
+    .battery-icon::after {
+      content: '';
+      position: absolute;
+      right: -5px;
+      top: 3px;
+      width: 3px;
+      height: 8px;
+      background: #555;
+      border-radius: 0 2px 2px 0;
+    }
+    .battery-level {
+      height: 100%;
+      background: #00A86B;
+      border-radius: 1px;
+    }
+    .battery-indicator.low .battery-level { background: #ff4444; }
+    
+    /* Floating Mic Button */
+    .floating-mic {
+      position: fixed;
+      bottom: 40px;
+      right: 140px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0070AD 0%, #005a8c 100%);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      z-index: 1000;
+      box-shadow: 0 8px 32px rgba(0, 112, 173, 0.4);
+    }
+    .floating-mic:hover {
+      transform: scale(1.05);
+    }
+    .floating-mic:active {
+      transform: scale(0.95);
+    }
+    .floating-mic.listening {
+      background: linear-gradient(135deg, #00A86B 0%, #008855 100%);
+      box-shadow: 0 8px 32px rgba(0, 168, 107, 0.4);
+    }
+    .floating-mic-icon {
+      font-size: 56px;
+      z-index: 2;
+    }
+    .floating-mic-pulse {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: inherit;
+      opacity: 0;
+    }
+    .floating-mic.listening .floating-mic-pulse {
+      animation: mic-pulse 1.5s infinite;
+    }
+    @keyframes mic-pulse {
+      0% { transform: scale(1); opacity: 0.5; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+    .floating-mic-status {
+      position: fixed;
+      bottom: 170px;
+      right: 115px;
+      background: #1a1a1a;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 14px;
+      color: #ccc;
+      display: none;
+      max-width: 300px;
+      text-align: center;
+      z-index: 1000;
+    }
+    .floating-mic-status.visible {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="tab active" data-section="home">
+        <div class="tab-icon">🏠</div>
+        <div class="tab-label">Home</div>
+      </div>
+      <div class="tab" data-section="control">
+        <div class="tab-icon">🎛️</div>
+        <div class="tab-label">Contrôle</div>
+      </div>
+      <div class="tab" data-section="tasks">
+        <div class="tab-icon">📋</div>
+        <div class="tab-label">Tâches</div>
+      </div>
+      <div class="tab" data-section="voice">
+        <div class="tab-icon">🎤</div>
+        <div class="tab-label">Voice</div>
+      </div>
+      
+      <div class="tab-spacer"></div>
+      
+      <div class="tab-time">
+        <div class="time" id="sidebar-time">00:00</div>
+        <div class="date" id="sidebar-date">--</div>
+      </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="main">
+      
+      <!-- HOME -->
+      <section id="section-home" class="section active">
+        <div class="home-left">
+          <div class="section-title">Températures</div>
+          <div class="temps-grid">
+            <div class="temp-card">
+              <div class="temp-label">Salon</div>
+              <div class="temp-value" id="temp-salon">21<span>°C</span></div>
+              <div class="temp-trend up" id="trend-salon">+0.5°/h</div>
+            </div>
+            <div class="temp-card">
+              <div class="temp-label">Chambre</div>
+              <div class="temp-value" id="temp-chambre">19<span>°C</span></div>
+              <div class="temp-trend" id="trend-chambre">stable</div>
+            </div>
+            <div class="temp-card">
+              <div class="temp-label">Bureau</div>
+              <div class="temp-value" id="temp-bureau">22<span>°C</span></div>
+              <div class="temp-trend down" id="trend-bureau">-0.3°/h</div>
+            </div>
+          </div>
+          
+          <div class="quick-stats">
+            <div class="stat-card">
+              <div class="stat-value" id="stat-tasks">3</div>
+              <div class="stat-label">Tâches</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="stat-unread">12</div>
+              <div class="stat-label">Non lus</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="stat-events">2</div>
+              <div class="stat-label">Événements</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="home-right">
+          <div class="section-title">Dwight</div>
+          <div class="message-card">
+            <div class="message-header">
+              <div class="message-avatar">🥋</div>
+              <div>
+                <div class="message-name">Dwight</div>
+                <div class="message-status">En ligne</div>
+              </div>
+            </div>
+            <div class="message-content" id="message">En attente de connexion...</div>
+            <div class="message-time" id="message-time">--</div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- CONTROL -->
+      <section id="section-control" class="section">
+        <div class="section-title">Contrôle Maison</div>
+        <div class="controls-grid">
+          <button class="control-btn" data-action="lights-salon" id="btn-lights-salon">
+            <div class="control-icon">💡</div>
+            <div class="control-label">Salon</div>
+            <div class="control-state">Off</div>
+          </button>
+          <button class="control-btn" data-action="lights-chambre" id="btn-lights-chambre">
+            <div class="control-icon">💡</div>
+            <div class="control-label">Chambre</div>
+            <div class="control-state">Off</div>
+          </button>
+          <button class="control-btn" data-action="lights-bureau" id="btn-lights-bureau">
+            <div class="control-icon">💡</div>
+            <div class="control-label">Bureau</div>
+            <div class="control-state">Off</div>
+          </button>
+          <button class="control-btn active" data-action="heating" id="btn-heating">
+            <div class="control-icon">🔥</div>
+            <div class="control-label">Chauffage</div>
+            <div class="control-state">22°C</div>
+          </button>
+          <button class="control-btn active" data-action="presence-jules" id="btn-presence-jules">
+            <div class="control-icon">👤</div>
+            <div class="control-label">Jules</div>
+            <div class="control-state">Présent</div>
+          </button>
+          <button class="control-btn" data-action="presence-al" id="btn-presence-al">
+            <div class="control-icon">👤</div>
+            <div class="control-label">Anne-Laure</div>
+            <div class="control-state">Absente</div>
+          </button>
+          <button class="control-btn" data-action="vacuum" id="btn-vacuum">
+            <div class="control-icon">🤖</div>
+            <div class="control-label">Aspirateur</div>
+            <div class="control-state">Dock</div>
+          </button>
+          <button class="control-btn" data-action="scene-night" id="btn-scene-night">
+            <div class="control-icon">🌙</div>
+            <div class="control-label">Mode Nuit</div>
+            <div class="control-state">--</div>
+          </button>
+        </div>
+      </section>
+      
+      <!-- TASKS -->
+      <section id="section-tasks" class="section">
+        <div class="section-title">Tâches du jour</div>
+        <div class="tasks-container" id="tasks-list">
+          <div class="task-item" data-id="1">
+            <div class="task-check"></div>
+            <div class="task-text">Phone Dashboard - Setup Termux</div>
+            <div class="task-due">Aujourd'hui</div>
+          </div>
+          <div class="task-item" data-id="2">
+            <div class="task-check"></div>
+            <div class="task-text">LinkedIn Post #2 - 7 niveaux d'automatisation</div>
+            <div class="task-due">17 fév</div>
+          </div>
+          <div class="task-item done" data-id="3">
+            <div class="task-check">✓</div>
+            <div class="task-text">Pi-hole rate limit config</div>
+            <div class="task-due">Fait</div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- VOICE -->
+      <section id="section-voice" class="section">
+        <div class="voice-container">
+          <button class="voice-btn" id="voice-btn">
+            <div class="voice-icon">🎤</div>
+          </button>
+          <div class="voice-text" id="voice-status">Appuie pour parler à Dwight</div>
+          <div class="voice-transcript" id="voice-transcript"></div>
+        </div>
+      </section>
+      
+    </main>
+  </div>
+  
+  <!-- Floating Mic Button -->
+  <button class="floating-mic" id="floating-mic">
+    <div class="floating-mic-icon">🎤</div>
+    <div class="floating-mic-pulse"></div>
+  </button>
+  <div class="floating-mic-status" id="floating-mic-status"></div>
+  
+  <!-- Battery -->
+  <div class="battery-indicator" id="battery">
+    <div class="battery-icon">
+      <div class="battery-level" id="battery-level" style="width: 80%"></div>
+    </div>
+    <span id="battery-text">80%</span>
+  </div>
+  
+  <!-- Connection -->
+  <div class="connection" id="connection">
+    <div class="connection-dot"></div>
+    <span>Connecté</span>
+  </div>
+  
+  <script>
+    // Tab navigation
+    document.querySelectorAll('.tab[data-section]').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const section = tab.dataset.section;
+        
+        // Update tabs
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        // Update sections
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById(`section-${section}`).classList.add('active');
+      });
+    });
+    
+    // WebSocket
+    let ws;
+    function connect() {
+      ws = new WebSocket(`ws://${window.location.host}/ws`);
+      
+      ws.onopen = () => {
+        document.getElementById('connection').classList.remove('disconnected');
+      };
+      
+      ws.onclose = () => {
+        document.getElementById('connection').classList.add('disconnected');
+        setTimeout(connect, 3000);
+      };
+      
+      ws.onmessage = (e) => {
+        const data = JSON.parse(e.data);
+        updateUI(data);
+      };
+    }
+    
+    function updateUI(data) {
+      if (data.temps) {
+        for (const [room, info] of Object.entries(data.temps)) {
+          const el = document.getElementById(`temp-${room}`);
+          const trend = document.getElementById(`trend-${room}`);
+          if (el) el.innerHTML = `${info.value}<span>°C</span>`;
+          if (trend) {
+            trend.textContent = info.trend || '';
+            trend.className = 'temp-trend ' + (info.trendDir || '');
+          }
+        }
+      }
+      
+      if (data.message) {
+        document.getElementById('message').textContent = data.message.text;
+        document.getElementById('message-time').textContent = data.message.time;
+      }
+      
+      if (data.stats) {
+        if (data.stats.tasks !== undefined) document.getElementById('stat-tasks').textContent = data.stats.tasks;
+        if (data.stats.unread !== undefined) document.getElementById('stat-unread').textContent = data.stats.unread;
+        if (data.stats.events !== undefined) document.getElementById('stat-events').textContent = data.stats.events;
+      }
+      
+      if (data.battery !== undefined) {
+        document.getElementById('battery-level').style.width = data.battery + '%';
+        document.getElementById('battery-text').textContent = data.battery + '%';
+        document.getElementById('battery').classList.toggle('low', data.battery < 20);
+      }
+      
+      if (data.tasks) {
+        const container = document.getElementById('tasks-list');
+        container.innerHTML = data.tasks.map(t => `
+          <div class="task-item ${t.done ? 'done' : ''}" data-id="${t.id}">
+            <div class="task-check">${t.done ? '✓' : ''}</div>
+            <div class="task-text">${t.text}</div>
+            <div class="task-due ${t.urgent ? 'urgent' : ''}">${t.due}</div>
+          </div>
+        `).join('');
+      }
+    }
+    
+    // Time
+    function updateTime() {
+      const now = new Date();
+      document.getElementById('sidebar-time').textContent = 
+        now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('sidebar-date').textContent = 
+        now.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' });
+    }
+    
+    // Control buttons
+    document.querySelectorAll('.control-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const action = btn.dataset.action;
+        if (ws?.readyState === 1) {
+          ws.send(JSON.stringify({ type: 'action', action }));
+        }
+        btn.classList.toggle('active');
+      });
+    });
+    
+    // Voice
+    const voiceBtn = document.getElementById('voice-btn');
+    const voiceStatus = document.getElementById('voice-status');
+    const voiceTranscript = document.getElementById('voice-transcript');
+    const floatingMic = document.getElementById('floating-mic');
+    const floatingMicStatus = document.getElementById('floating-mic-status');
+    let recognition;
+    
+    if ('webkitSpeechRecognition' in window) {
+      recognition = new webkitSpeechRecognition();
+      recognition.lang = 'fr-FR';
+      recognition.continuous = false;
+      
+      recognition.onstart = () => {
+        voiceBtn.classList.add('listening');
+        floatingMic.classList.add('listening');
+        voiceStatus.textContent = 'Écoute...';
+        floatingMicStatus.textContent = 'Écoute...';
+        floatingMicStatus.classList.add('visible');
+        voiceTranscript.textContent = '';
+      };
+      
+      recognition.onend = () => {
+        voiceBtn.classList.remove('listening');
+        floatingMic.classList.remove('listening');
+        voiceStatus.textContent = 'Appuie pour parler à Dwight';
+        setTimeout(() => floatingMicStatus.classList.remove('visible'), 2000);
+      };
+      
+      recognition.onresult = (e) => {
+        const text = e.results[0][0].transcript;
+        voiceTranscript.textContent = `"${text}"`;
+        floatingMicStatus.textContent = `"${text}"`;
+        if (ws?.readyState === 1) {
+          ws.send(JSON.stringify({ type: 'voice', text }));
+        }
+      };
+      
+      function toggleVoice() {
+        if (floatingMic.classList.contains('listening')) {
+          recognition.stop();
+        } else {
+          recognition.start();
+        }
+      }
+      
+      voiceBtn.onclick = toggleVoice;
+      floatingMic.onclick = toggleVoice;
+    }
+    
+    // Task check
+    document.getElementById('tasks-list').addEventListener('click', (e) => {
+      const check = e.target.closest('.task-check');
+      if (check) {
+        const item = check.closest('.task-item');
+        item.classList.toggle('done');
+        check.textContent = item.classList.contains('done') ? '✓' : '';
+        if (ws?.readyState === 1) {
+          ws.send(JSON.stringify({ 
+            type: 'task-toggle', 
+            id: item.dataset.id,
+            done: item.classList.contains('done')
+          }));
+        }
+      }
+    });
+    
+    // Init
+    connect();
+    updateTime();
+    setInterval(updateTime, 1000);
+  </script>
+</body>
+</html>

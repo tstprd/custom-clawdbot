@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>LinkedIn Schema - Boucle Agent</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+  font-family: 'Segoe UI', Arial, sans-serif; 
+  background: white; 
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+.title {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.title h1 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0070AD;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.title p {
+  font-size: 12px;
+  color: #666;
+  margin-top: 8px;
+}
+.container {
+  display: flex;
+  gap: 60px;
+  align-items: center;
+}
+.side {
+  text-align: center;
+}
+.side-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+
+/* One-shot side */
+.oneshot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.oneshot-box {
+  width: 160px;
+  padding: 16px;
+  border: 2px solid #E0E0E0;
+  border-radius: 8px;
+  background: #FAFAFA;
+  font-size: 13px;
+  color: #333;
+}
+.oneshot-arrow {
+  font-size: 20px;
+  color: #999;
+}
+.oneshot-result {
+  border-color: #E0E0E0;
+  background: #F5F5F5;
+  color: #666;
+}
+.oneshot-note {
+  font-size: 11px;
+  color: #999;
+  font-style: italic;
+  margin-top: 8px;
+}
+
+/* Divider */
+.divider {
+  width: 2px;
+  height: 280px;
+  background: linear-gradient(180deg, #E0E0E0 0%, #0070AD 50%, #E0E0E0 100%);
+}
+
+/* Loop side */
+.loop-container {
+  position: relative;
+  width: 300px;
+  height: 280px;
+}
+.loop-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: #F0F7FB;
+  border: 2px solid #0070AD;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #0070AD;
+  text-align: center;
+  line-height: 1.3;
+}
+.loop-step {
+  position: absolute;
+  width: 90px;
+  padding: 10px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  text-align: center;
+  font-weight: 500;
+}
+.step-1 {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #E3F2FD;
+  border: 1px solid #BBDEFB;
+  color: #0070AD;
+}
+.step-2 {
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  background: #FFF8E1;
+  border: 1px solid #FFE0B2;
+  color: #E65100;
+}
+.step-3 {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #F3E5F5;
+  border: 1px solid #E1BEE7;
+  color: #7B1FA2;
+}
+.step-4 {
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  background: #E8F5E9;
+  border: 1px solid #C8E6C9;
+  color: #2E7D32;
+}
+
+/* Curved arrows */
+.loop-arrows {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  pointer-events: none;
+}
+.arrow-path {
+  fill: none;
+  stroke: #0070AD;
+  stroke-width: 2;
+  stroke-linecap: round;
+  marker-end: url(#arrowhead);
+}
+
+.loop-note {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  color: #00A86B;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.vs {
+  font-size: 14px;
+  font-weight: 600;
+  color: #999;
+}
+
+.footer {
+  margin-top: 40px;
+  font-size: 11px;
+  color: #999;
+  font-style: italic;
+}
+</style>
+</head>
+<body>
+
+<div class="title">
+  <h1>Prompt one-shot vs. Boucle agent</h1>
+  <p>La différence fondamentale des coding agents</p>
+</div>
+
+<div class="container">
+  
+  <div class="side">
+    <div class="side-label">Prompt classique</div>
+    <div class="oneshot">
+      <div class="oneshot-box">Prompt</div>
+      <div class="oneshot-arrow">↓</div>
+      <div class="oneshot-box">LLM</div>
+      <div class="oneshot-arrow">↓</div>
+      <div class="oneshot-box oneshot-result">Réponse</div>
+    </div>
+    <p class="oneshot-note">Un seul essai, pas de feedback</p>
+  </div>
+  
+  <div class="divider"></div>
+  
+  <div class="side">
+    <div class="side-label">Coding Agent</div>
+    <div class="loop-container">
+      <svg class="loop-arrows" viewBox="0 0 200 200">
+        <defs>
+          <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+            <polygon points="0 0, 6 3, 0 6" fill="#0070AD" />
+          </marker>
+        </defs>
+        <!-- Top to Right -->
+        <path class="arrow-path" d="M 115 35 Q 155 35 165 75" />
+        <!-- Right to Bottom -->
+        <path class="arrow-path" d="M 165 125 Q 155 165 115 165" />
+        <!-- Bottom to Left -->
+        <path class="arrow-path" d="M 85 165 Q 45 165 35 125" />
+        <!-- Left to Top -->
+        <path class="arrow-path" d="M 35 75 Q 45 35 85 35" />
+      </svg>
+      
+      <div class="loop-step step-1">Objectif</div>
+      <div class="loop-step step-2">Exécute<br>commande</div>
+      <div class="loop-step step-3">Lit résultat</div>
+      <div class="loop-step step-4">Ajuste<br>approche</div>
+      
+      <div class="loop-center">LLM +<br>Terminal</div>
+      
+      <p class="loop-note">Boucle jusqu'au résultat attendu</p>
+    </div>
+  </div>
+  
+</div>
+
+<div class="footer">Schéma généré par agent IA</div>
+
+</body>
+</html>
