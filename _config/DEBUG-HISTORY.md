@@ -4,6 +4,19 @@
 
 ---
 
+## 🌐 Tailscale IPs
+
+| Device | IP Tailscale |
+|--------|--------------|
+| google-pixel-9-pro | 100.67.46.102 |
+| desktop-9eoj263 | 100.76.118.18 |
+| raspberry5 | 100.73.163.6 |
+
+**Compte** : jmudes76000@gmail.com
+**Exit node** : raspberry5
+
+---
+
 ## 🔧 Pi-hole (configuré 1er fév 2026)
 
 - **IP** : 192.168.1.89 (raspberry5)
