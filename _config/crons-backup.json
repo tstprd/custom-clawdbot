@@ -1,59 +1,77 @@
 {
-  "exportedAt": "2026-02-04T15:45:00+01:00",
+  "exportedAt": "2026-02-04T20:36:00+01:00",
   "jobs": [
+    {
+      "name": "Daily Backup Commit",
+      "schedule": {"kind": "cron", "expr": "0 2 * * *", "tz": "Europe/Paris"},
+      "sessionTarget": "isolated",
+      "payload": {"kind": "agentTurn", "message": "Backup quotidien:\n1. Exporte les crons actuels vers _config/crons-backup.json\n2. Git add + commit + push vers jules/main"}
+    },
     {
       "name": "Morning Brief - Weekday",
       "schedule": {"kind": "cron", "expr": "40 8 * * 1-5", "tz": "Europe/Paris"},
       "sessionTarget": "isolated",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Génère et envoie le brief du matin à Jules sur Telegram. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning. Résume les tâches, calendrier, et emails importants. Sois concis et utile."
-      }
+      "payload": {"kind": "agentTurn", "message": "Génère et envoie le brief du matin à Jules sur Telegram."}
     },
     {
       "name": "Morning Brief - Weekend",
       "schedule": {"kind": "cron", "expr": "0 10 * * 0,6", "tz": "Europe/Paris"},
       "sessionTarget": "isolated",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Génère et envoie le brief du matin (weekend) à Jules sur Telegram. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning. Résume les tâches, calendrier, et emails importants. Sois concis."
-      }
+      "payload": {"kind": "agentTurn", "message": "Génère et envoie le brief du matin (weekend) à Jules sur Telegram."}
     },
     {
       "name": "Evening Brief - Weekday",
       "schedule": {"kind": "cron", "expr": "30 18 * * 1-5", "tz": "Europe/Paris"},
       "sessionTarget": "isolated",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Génère et envoie le brief du soir à Jules sur Telegram. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts evening. Résume ce qui reste à faire et le programme du lendemain. Sois concis."
-      }
+      "payload": {"kind": "agentTurn", "message": "Génère et envoie le brief du soir à Jules sur Telegram."}
     },
     {
-      "name": "Daily Backup Commit",
-      "schedule": {"kind": "cron", "expr": "0 2 * * *", "tz": "Europe/Paris"},
+      "name": "Dwight Daily Wisdom",
+      "schedule": {"kind": "cron", "expr": "0 13 * * *", "tz": "Europe/Paris"},
       "sessionTarget": "isolated",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Fais un backup du repo clawdbot : cd C:\\Users\\jules\\repo\\clawdbot && git add -A && git commit -m 'backup auto' --allow-empty && git push jules main. Si erreur, log-la mais ne fail pas."
-      }
+      "payload": {"kind": "agentTurn", "message": "Envoie meme Dwight + 3 mots italiens. Log dans ~/.clawdbot/dwight-wisdom-log.txt pour éviter répétitions."}
+    },
+    {
+      "name": "Surveillance Marchés - Matin",
+      "schedule": {"kind": "cron", "expr": "0 9 * * 1-5", "tz": "Europe/Paris"},
+      "sessionTarget": "isolated",
+      "payload": {"kind": "agentTurn", "message": "Check CAP.PA, BTC, ETH. Alerte si >5% variation."}
+    },
+    {
+      "name": "Surveillance Marchés - Soir",
+      "schedule": {"kind": "cron", "expr": "0 18 * * 1-5", "tz": "Europe/Paris"},
+      "sessionTarget": "isolated",
+      "payload": {"kind": "agentTurn", "message": "Check CAP.PA, BTC, ETH. Alerte si >5% variation."}
+    },
+    {
+      "name": "Sorties Cinéma",
+      "schedule": {"kind": "cron", "expr": "0 10 * * 3", "tz": "Europe/Paris"},
+      "sessionTarget": "isolated",
+      "payload": {"kind": "agentTurn", "message": "Check Allociné, filtre selon goûts Jules (SF, thrillers, auteur, 4+/5)."}
+    },
+    {
+      "name": "Sorties Rennes Weekend",
+      "schedule": {"kind": "cron", "expr": "0 12 * * 3", "tz": "Europe/Paris"},
+      "sessionTarget": "isolated",
+      "payload": {"kind": "agentTurn", "message": "Check jds.fr/rennes pour événements weekend selon goûts Jules."}
+    },
+    {
+      "name": "Rappel Sauna Aqua Tonic",
+      "schedule": {"kind": "cron", "expr": "0 19 * * 2", "tz": "Europe/Paris"},
+      "sessionTarget": "main",
+      "payload": {"kind": "systemEvent", "text": "🧖 Rappel : Réserver Aqua Tonic pour demain midi ? (35€)"}
     },
     {
       "name": "LinkedIn GenAI Post Reminder",
       "schedule": {"kind": "every", "everyMs": 1209600000, "anchorMs": 1739178000000},
       "sessionTarget": "main",
-      "payload": {
-        "kind": "systemEvent",
-        "text": "🔔 RAPPEL LinkedIn GenAI : C'est le moment de poster ! Ouvre [[Projects/LinkedIn-GenAI-Strategy]] dans Obsidian et propose à Jules un draft du prochain post de la file."
-      }
+      "payload": {"kind": "systemEvent", "text": "🔔 RAPPEL LinkedIn GenAI : C'est le moment de poster !"}
     },
     {
       "name": "LinkedIn Post #2 - Email Reminder",
       "schedule": {"kind": "at", "atMs": 1771315200000},
       "sessionTarget": "isolated",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Envoie un email à jules.mudes@capgemini.com avec sujet 'Rappel LinkedIn Post #2 - Les 7 niveaux d'automatisation'. Corps : 'Salut Jules, c'est le moment de préparer ton Post #2 LinkedIn sur les 7 niveaux d'automatisation. Le visuel est prêt : _PERSONAL/linkedin-genai/linkedin-schema-post2.html. Brief complet : Obsidian > Projects/LinkedIn-GenAI-Strategy.md'. Utilise gog gmail send --account jmudes76000@gmail.com"
-      }
+      "payload": {"kind": "agentTurn", "message": "Envoie email rappel LinkedIn Post #2 à jules.mudes@capgemini.com"}
     }
   ]
 }
