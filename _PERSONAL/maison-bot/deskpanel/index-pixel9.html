@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>DeskPanel</title>
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --bg: #0a0a0a;
+      --bg-card: #141414;
+      --bg-hover: #1a1a1a;
+      --text: #fff;
+      --text-dim: #888;
+      --text-muted: #555;
+      --accent: #0070AD;
+      --success: #00A86B;
+    }
+    
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      font-family: -apple-system, 'SF Pro Display', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+    }
+    
+    .app {
+      display: flex;
+      height: 100%;
+    }
+    
+    /* SIDEBAR */
+    .sidebar {
+      width: 56px;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 8px 0;
+      gap: 4px;
+    }
+    
+    .tab {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      cursor: pointer;
+      color: var(--text-dim);
+      background: transparent;
+      border: none;
+      transition: all 0.2s;
+    }
+    .tab:hover { background: var(--bg-hover); color: var(--text); }
+    .tab.active { background: var(--accent); color: white; }
+    .tab i { font-size: 20px; }
+    
+    .sidebar-spacer { flex: 1; }
+    
+    .sidebar-time {
+      font-size: 11px;
+      color: var(--text-dim);
+      text-align: center;
+      padding: 8px 4px;
+    }
+    
+    /* MAIN */
+    .main {
+      flex: 1;
+      padding: 12px 16px;
+      overflow: hidden;
+    }
+    
+    .section {
+      display: none;
+      height: 100%;
+    }
+    .section.active {
+      display: flex;
+      gap: 12px;
+    }
+    
+    /* HOME */
+    #section-home.active {
+      flex-direction: row;
+    }
+    
+    .home-left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .home-right {
+      width: 260px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    /* Floorplan */
+    .floorplan {
+      flex: 1;
+      background: var(--bg-card);
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .floor-toggle {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      display: flex;
+      background: rgba(0,0,0,0.6);
+      border-radius: 8px;
+      padding: 3px;
+      gap: 2px;
+      z-index: 10;
+    }
+    .floor-btn {
+      padding: 5px 10px;
+      border: none;
+      background: transparent;
+      color: var(--text-dim);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 11px;
+    }
+    .floor-btn.active {
+      background: var(--accent);
+      color: white;
+    }
+    
+    .floor-layer {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .floor-layer.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    
+    .floor-img {
+      max-width: 95%;
+      max-height: 95%;
+      object-fit: contain;
+    }
+    
+    .temp-badge {
+      position: absolute;
+      background: rgba(0,0,0,0.7);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .temp-badge .t { font-weight: 600; font-size: 13px; }
+    .temp-badge.salon { bottom: 15%; right: 20%; }
+    .temp-badge.cuisine { top: 30%; left: 25%; }
+    .temp-badge.chambre { top: 25%; right: 30%; }
+    .temp-badge.bureau { bottom: 30%; right: 25%; }
+    .temp-badge.ext { top: 8px; right: 8px; background: rgba(0,112,173,0.5); }
+    
+    /* Stats row */
+    .stats-row {
+      display: flex;
+      gap: 8px;
+    }
+    .stat {
+      flex: 1;
+      background: var(--bg-card);
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .stat-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .stat-icon.t { background: rgba(0,112,173,0.2); color: var(--accent); }
+    .stat-icon.m { background: rgba(245,166,35,0.2); color: #F5A623; }
+    .stat-icon.e { background: rgba(0,168,107,0.2); color: var(--success); }
+    .stat-val { font-size: 20px; font-weight: 600; }
+    .stat-lbl { font-size: 10px; color: var(--text-dim); text-transform: uppercase; }
+    
+    /* Heatmap card */
+    .heatmap-card {
+      background: var(--bg-card);
+      border-radius: 10px;
+      padding: 10px;
+    }
+    .heatmap-hdr {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+    .heatmap-legend {
+      display: flex;
+      gap: 8px;
+      font-size: 9px;
+      color: var(--text-muted);
+    }
+    .leg-item { display: flex; align-items: center; gap: 3px; }
+    .leg-dot { width: 8px; height: 8px; border-radius: 2px; }
+    .leg-dot.sq { background: var(--accent); }
+    .leg-dot.vl { background: var(--success); }
+    
+    .heatmap-grid {
+      display: flex;
+      gap: 2px;
+    }
+    .hm-week {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .hm-day {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      background: #1a1a1a;
+    }
+    .hm-day.s1 { background: rgba(0,112,173,0.5); }
+    .hm-day.s2 { background: var(--accent); }
+    .hm-day.vl { background: var(--success); }
+    .hm-day.future { background: #0d0d0d; }
+    
+    /* Message card */
+    .msg-card {
+      flex: 1;
+      background: var(--bg-card);
+      border-radius: 10px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+    .msg-hdr {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .msg-avatar {
+      width: 28px;
+      height: 28px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+    .msg-name { font-size: 12px; font-weight: 600; }
+    .msg-status { font-size: 10px; color: var(--success); }
+    .msg-txt {
+      flex: 1;
+      font-size: 12px;
+      line-height: 1.4;
+      color: var(--text);
+    }
+    .msg-time {
+      font-size: 9px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+    
+    /* CONTROL */
+    #section-control.active {
+      flex-wrap: wrap;
+      align-content: start;
+      gap: 8px;
+    }
+    .ctrl-btn {
+      width: calc(25% - 6px);
+      background: var(--bg-card);
+      border: none;
+      border-radius: 12px;
+      padding: 12px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s;
+    }
+    .ctrl-btn:hover { background: var(--bg-hover); }
+    .ctrl-btn.active { background: var(--accent); }
+    .ctrl-btn i { font-size: 20px; display: block; margin-bottom: 6px; }
+    .ctrl-lbl { font-size: 11px; color: var(--text); }
+    .ctrl-st { font-size: 10px; color: var(--text-dim); }
+    .ctrl-btn.active .ctrl-st { color: rgba(255,255,255,0.7); }
+    
+    /* SPORT */
+    #section-sport.active {
+      flex-direction: column;
+      gap: 12px;
+    }
+    .sport-hdr {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sport-hdr h1 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .sport-hdr h1 i { color: var(--success); }
+    .sport-sub { font-size: 11px; color: var(--text-dim); }
+    
+    .sport-stats {
+      display: flex;
+      gap: 12px;
+    }
+    .sp-stat {
+      background: var(--bg-card);
+      border-radius: 10px;
+      padding: 12px 20px;
+      text-align: center;
+    }
+    .sp-val { font-size: 28px; font-weight: 700; color: var(--success); }
+    .sp-lbl { font-size: 10px; color: var(--text-dim); text-transform: uppercase; }
+    
+    .sport-grid-wrap {
+      background: var(--bg-card);
+      border-radius: 10px;
+      padding: 12px;
+      flex: 1;
+    }
+    .sport-legend {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .sport-legend .spacer { flex: 1; }
+    .sp-grid {
+      display: flex;
+      gap: 3px;
+    }
+    .sp-week {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .sp-day {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+      background: #1a1a1a;
+    }
+    .sp-day.s1 { background: rgba(0,112,173,0.5); }
+    .sp-day.s2 { background: var(--accent); }
+    .sp-day.vl { background: var(--success); }
+    .sp-day.future { background: #0d0d0d; }
+    
+    /* TASKS */
+    #section-tasks.active {
+      flex-direction: column;
+      gap: 6px;
+      overflow-y: auto;
+    }
+    .task {
+      background: var(--bg-card);
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .task-chk {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--text-muted);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+    }
+    .task.done .task-chk {
+      background: var(--success);
+      border-color: var(--success);
+      color: white;
+    }
+    .task-txt { flex: 1; font-size: 12px; }
+    .task.done .task-txt { color: var(--text-dim); text-decoration: line-through; }
+    .task-due { font-size: 10px; color: var(--text-muted); }
+    
+    /* VOICE */
+    #section-voice.active {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+    .voice-btn {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(0,112,173,0.4);
+    }
+    .voice-btn i { font-size: 40px; color: white; }
+    .voice-btn.listening { background: var(--success); }
+    .voice-txt { font-size: 12px; color: var(--text-dim); }
+    
+    /* Status bar */
+    .status-bar {
+      position: fixed;
+      top: 8px;
+      right: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 10px;
+      color: var(--text-dim);
+      z-index: 100;
+    }
+    .conn { display: flex; align-items: center; gap: 4px; }
+    .conn-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <nav class="sidebar">
+      <button class="tab active" data-section="home"><i class="ph ph-house"></i></button>
+      <button class="tab" data-section="control"><i class="ph ph-sliders-horizontal"></i></button>
+      <button class="tab" data-section="tasks"><i class="ph ph-check-square"></i></button>
+      <button class="tab" data-section="voice"><i class="ph ph-microphone"></i></button>
+      <button class="tab" data-section="sport"><i class="ph ph-barbell"></i></button>
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-time" id="clock">--:--</div>
+    </nav>
+    
+    <main class="main">
+      <!-- HOME -->
+      <section id="section-home" class="section active">
+        <div class="home-left">
+          <div class="floorplan">
+            <div class="floor-toggle">
+              <button class="floor-btn active" data-floor="haut">Étage</button>
+              <button class="floor-btn" data-floor="bas">RDC</button>
+            </div>
+            <div class="temp-badge ext"><i class="ph ph-cloud"></i><span class="t">7°</span></div>
+            <div class="floor-layer active" data-floor="haut">
+              <img src="FLOORPLAN_HAUT" class="floor-img" alt="Étage">
+              <div class="temp-badge salon"><span class="t">21°</span> Salon</div>
+              <div class="temp-badge cuisine"><span class="t">20°</span> Cuisine</div>
+            </div>
+            <div class="floor-layer" data-floor="bas">
+              <img src="FLOORPLAN_BAS" class="floor-img" alt="RDC">
+              <div class="temp-badge chambre"><span class="t">19°</span> Chambre</div>
+              <div class="temp-badge bureau"><span class="t">22°</span> Bureau</div>
+            </div>
+          </div>
+          <div class="stats-row">
+            <div class="stat">
+              <div class="stat-icon t"><i class="ph ph-check-circle"></i></div>
+              <div><div class="stat-val">3</div><div class="stat-lbl">Tâches</div></div>
+            </div>
+            <div class="stat">
+              <div class="stat-icon m"><i class="ph ph-envelope"></i></div>
+              <div><div class="stat-val">12</div><div class="stat-lbl">Mails</div></div>
+            </div>
+            <div class="stat">
+              <div class="stat-icon e"><i class="ph ph-calendar"></i></div>
+              <div><div class="stat-val">2</div><div class="stat-lbl">Events</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="home-right">
+          <div class="heatmap-card">
+            <div class="heatmap-hdr">
+              <span>Sport</span>
+              <div class="heatmap-legend">
+                <span class="leg-item"><span class="leg-dot sq"></span>Squash</span>
+                <span class="leg-item"><span class="leg-dot vl"></span>Volley</span>
+              </div>
+            </div>
+            <div class="heatmap-grid" id="heatmap-mini"></div>
+          </div>
+          <div class="msg-card">
+            <div class="msg-hdr">
+              <div class="msg-avatar">🥋</div>
+              <div>
+                <div class="msg-name">Dwight</div>
+                <div class="msg-status">En ligne</div>
+              </div>
+            </div>
+            <div class="msg-txt">Bears eat beets. Bears. Beets. Battlestar Galactica.</div>
+            <div class="msg-time">Il y a 2 min</div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- CONTROL -->
+      <section id="section-control" class="section">
+        <button class="ctrl-btn" data-entity="light.salon">
+          <i class="ph ph-lamp"></i>
+          <div class="ctrl-lbl">Salon</div>
+          <div class="ctrl-st">Off</div>
+        </button>
+        <button class="ctrl-btn" data-entity="light.chambre">
+          <i class="ph ph-lamp"></i>
+          <div class="ctrl-lbl">Chambre</div>
+          <div class="ctrl-st">Off</div>
+        </button>
+        <button class="ctrl-btn" data-entity="light.bureau">
+          <i class="ph ph-lamp"></i>
+          <div class="ctrl-lbl">Bureau</div>
+          <div class="ctrl-st">Off</div>
+        </button>
+        <button class="ctrl-btn active">
+          <i class="ph ph-fire"></i>
+          <div class="ctrl-lbl">Chauffage</div>
+          <div class="ctrl-st">22°C</div>
+        </button>
+        <button class="ctrl-btn active">
+          <i class="ph ph-user"></i>
+          <div class="ctrl-lbl">Jules</div>
+          <div class="ctrl-st">Présent</div>
+        </button>
+        <button class="ctrl-btn">
+          <i class="ph ph-user"></i>
+          <div class="ctrl-lbl">Anne-Laure</div>
+          <div class="ctrl-st">Absente</div>
+        </button>
+        <button class="ctrl-btn">
+          <i class="ph ph-robot"></i>
+          <div class="ctrl-lbl">Aspirateur</div>
+          <div class="ctrl-st">Dock</div>
+        </button>
+        <button class="ctrl-btn">
+          <i class="ph ph-moon"></i>
+          <div class="ctrl-lbl">Mode Nuit</div>
+          <div class="ctrl-st">Scène</div>
+        </button>
+      </section>
+      
+      <!-- TASKS -->
+      <section id="section-tasks" class="section">
+        <div class="task">
+          <div class="task-chk"></div>
+          <div class="task-txt">Deskpanel V3 - Calibration Pixel</div>
+          <div class="task-due">Aujourd'hui</div>
+        </div>
+        <div class="task">
+          <div class="task-chk"></div>
+          <div class="task-txt">LinkedIn Post #2</div>
+          <div class="task-due">17 fév</div>
+        </div>
+        <div class="task done">
+          <div class="task-chk"><i class="ph ph-check"></i></div>
+          <div class="task-txt">Pi-hole rate limit</div>
+          <div class="task-due">Fait</div>
+        </div>
+      </section>
+      
+      <!-- VOICE -->
+      <section id="section-voice" class="section">
+        <button class="voice-btn" id="voice-btn">
+          <i class="ph ph-microphone"></i>
+        </button>
+        <div class="voice-txt">Appuie pour parler</div>
+      </section>
+      
+      <!-- SPORT -->
+      <section id="section-sport" class="section">
+        <div class="sport-hdr">
+          <h1><i class="ph ph-barbell"></i> Suivi Sport</h1>
+          <span class="sport-sub">3 derniers mois</span>
+        </div>
+        <div class="sport-stats">
+          <div class="sp-stat"><div class="sp-val">5</div><div class="sp-lbl">Sessions</div></div>
+          <div class="sp-stat"><div class="sp-val">5</div><div class="sp-lbl">Semaines</div></div>
+          <div class="sp-stat"><div class="sp-val">0.4</div><div class="sp-lbl">Moy/sem</div></div>
+        </div>
+        <div class="sport-grid-wrap">
+          <div class="sport-legend">
+            <span>Moins</span>
+            <span class="leg-dot" style="background:#1a1a1a"></span>
+            <span class="leg-dot sq"></span>
+            <span>Plus</span>
+            <span class="spacer"></span>
+            <span class="leg-item"><span class="leg-dot sq"></span>Squash</span>
+            <span class="leg-item"><span class="leg-dot vl"></span>Volley</span>
+          </div>
+          <div class="sp-grid" id="sport-grid"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  
+  <div class="status-bar">
+    <div class="conn"><div class="conn-dot"></div>Connecté</div>
+  </div>
+  
+  <script>
+    // Tabs
+    document.querySelectorAll('.tab').forEach(t => {
+      t.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+        document.querySelectorAll('.section').forEach(x => x.classList.remove('active'));
+        t.classList.add('active');
+        document.getElementById('section-' + t.dataset.section).classList.add('active');
+      });
+    });
+    
+    // Floor toggle
+    document.querySelectorAll('.floor-btn').forEach(b => {
+      b.addEventListener('click', () => {
+        document.querySelectorAll('.floor-btn').forEach(x => x.classList.remove('active'));
+        document.querySelectorAll('.floor-layer').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        document.querySelector('.floor-layer[data-floor="' + b.dataset.floor + '"]').classList.add('active');
+      });
+    });
+    
+    // Clock
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('clock').textContent = now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+    
+    // Sport data
+    const sportDays = {
+      '2025-12-21': 'squash',
+      '2026-01-11': 'squash',
+      '2026-01-18': 'squash',
+      '2026-01-25': 'squash',
+      '2026-02-01': 'squash',
+    };
+    
+    // Generate heatmaps
+    function genHeatmap(container, weeks, size) {
+      const today = new Date();
+      const start = new Date(today);
+      start.setDate(start.getDate() - (weeks * 7));
+      while (start.getDay() !== 1) start.setDate(start.getDate() - 1);
+      
+      const d = new Date(start);
+      for (let w = 0; w < weeks; w++) {
+        const week = document.createElement('div');
+        week.className = size === 'mini' ? 'hm-week' : 'sp-week';
+        for (let i = 0; i < 7; i++) {
+          const day = document.createElement('div');
+          day.className = size === 'mini' ? 'hm-day' : 'sp-day';
+          const ds = d.toISOString().split('T')[0];
+          if (d > today) {
+            day.classList.add('future');
+          } else if (sportDays[ds]) {
+            day.classList.add(sportDays[ds] === 'volley' ? 'vl' : 's2');
+          }
+          week.appendChild(day);
+          d.setDate(d.getDate() + 1);
+        }
+        container.appendChild(week);
+      }
+    }
+    
+    genHeatmap(document.getElementById('heatmap-mini'), 12, 'mini');
+    genHeatmap(document.getElementById('sport-grid'), 13, 'full');
+    
+    // Controls toggle
+    document.querySelectorAll('.ctrl-btn').forEach(b => {
+      b.addEventListener('click', () => {
+        b.classList.toggle('active');
+        const st = b.querySelector('.ctrl-st');
+        st.textContent = b.classList.contains('active') ? 'On' : 'Off';
+      });
+    });
+    
+    // Voice
+    document.getElementById('voice-btn').addEventListener('click', function() {
+      this.classList.toggle('listening');
+    });
+  </script>
+</body>
+</html>

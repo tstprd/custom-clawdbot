@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>DeskPanel v3</title>
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --bg: #0a0a0a;
+      --bg-card: #141414;
+      --bg-hover: #1a1a1a;
+      --border: #222;
+      --text: #fff;
+      --text-dim: #666;
+      --text-muted: #444;
+      --accent: #0070AD;
+      --accent-light: #0090DD;
+      --success: #00A86B;
+      --warning: #F5A623;
+      --danger: #FF4757;
+    }
+    
+    html, body {
+      width: 2400px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: -apple-system, 'SF Pro Display', 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    .app {
+      display: flex;
+      height: 100%;
+    }
+    
+    /* ═══════════════════════════════════════════
+       SIDEBAR - Clean vertical nav
+    ═══════════════════════════════════════════ */
+    .sidebar {
+      width: 88px;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+      border-right: 1px solid var(--border);
+    }
+    
+    .nav-tabs {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 20px;
+    }
+    
+    .tab {
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--text-dim);
+      background: transparent;
+      border: none;
+    }
+    .tab:hover {
+      background: var(--bg-hover);
+      color: var(--text);
+    }
+    .tab.active {
+      background: var(--accent);
+      color: white;
+    }
+    .tab i {
+      font-size: 26px;
+    }
+    
+    .sidebar-spacer { flex: 1; }
+    
+    .sidebar-clock {
+      text-align: center;
+      padding: 16px 0;
+    }
+    .sidebar-time {
+      font-size: 20px;
+      font-weight: 300;
+      font-variant-numeric: tabular-nums;
+    }
+    .sidebar-date {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    /* ═══════════════════════════════════════════
+       MAIN CONTENT
+    ═══════════════════════════════════════════ */
+    .main {
+      flex: 1;
+      padding: 32px 40px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .section {
+      display: none;
+      flex: 1;
+      overflow: hidden;
+    }
+    .section.active {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* ═══════════════════════════════════════════
+       HOME SECTION - Floorplan + Stats
+    ═══════════════════════════════════════════ */
+    #section-home.active {
+      flex-direction: row;
+      gap: 40px;
+    }
+    
+    .home-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    
+    .home-sidebar {
+      width: 420px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    
+    /* Floorplan with temperature overlays */
+    .floorplan-container {
+      position: relative;
+      flex: 1;
+      background: var(--bg-card);
+      border-radius: 24px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .floorplan-header {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+    
+    .floor-toggle {
+      display: flex;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(8px);
+      border-radius: 10px;
+      padding: 4px;
+      gap: 4px;
+    }
+    
+    .floor-btn {
+      padding: 8px 16px;
+      border: none;
+      background: transparent;
+      color: var(--text-dim);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .floor-btn:hover {
+      color: var(--text);
+    }
+    .floor-btn.active {
+      background: var(--accent);
+      color: white;
+    }
+    
+    .floorplan-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .floorplan-layer {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .floorplan-layer.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    
+    .floorplan-img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+    }
+    
+    .temp-overlay {
+      position: absolute;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(8px);
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .temp-overlay .temp {
+      font-size: 20px;
+      font-weight: 600;
+    }
+    /* Étage (haut) */
+    .temp-overlay.salon { top: 65%; left: 65%; }
+    .temp-overlay.cuisine { top: 25%; left: 35%; }
+    .temp-overlay.ext { top: 8%; right: 8%; background: rgba(0,112,173,0.3); }
+    /* RDC (bas) */
+    .temp-overlay.chambre { top: 25%; right: 25%; }
+    .temp-overlay.bureau-jules { top: 55%; left: 45%; }
+    .temp-overlay.bureau-al { top: 65%; right: 20%; }
+    
+    /* Quick stats row */
+    .stats-row {
+      display: flex;
+      gap: 16px;
+    }
+    
+    .stat-card {
+      flex: 1;
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    .stat-icon.tasks { background: rgba(0,112,173,0.2); color: var(--accent); }
+    .stat-icon.mail { background: rgba(245,166,35,0.2); color: var(--warning); }
+    .stat-icon.events { background: rgba(0,168,107,0.2); color: var(--success); }
+    
+    .stat-content {}
+    .stat-value {
+      font-size: 28px;
+      font-weight: 600;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    /* Sport Heatmap */
+    .heatmap-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .heatmap-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .heatmap-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-dim);
+    }
+    .heatmap-legend {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+    }
+    .legend-dot.squash { background: var(--accent); }
+    .legend-dot.volley { background: var(--success); }
+    
+    .heatmap-grid {
+      display: flex;
+      gap: 3px;
+      flex-wrap: wrap;
+    }
+    .heatmap-week {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .heatmap-day {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      background: #1a1a1a;
+    }
+    .heatmap-day.level-1 { background: rgba(0,112,173,0.4); }
+    .heatmap-day.level-2 { background: rgba(0,112,173,0.7); }
+    .heatmap-day.level-3 { background: var(--accent); }
+    .heatmap-day.volley { background: var(--success) !important; }
+    .heatmap-day.both { background: linear-gradient(135deg, var(--accent) 50%, var(--success) 50%); }
+    
+    /* Dwight Message Card */
+    .message-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .message-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .message-avatar {
+      width: 44px;
+      height: 44px;
+      background: var(--accent);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+    .message-meta {}
+    .message-name {
+      font-weight: 600;
+      font-size: 15px;
+    }
+    .message-status {
+      font-size: 12px;
+      color: var(--success);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .message-status::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--success);
+      border-radius: 50%;
+    }
+    .message-content {
+      flex: 1;
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--text);
+    }
+    .message-time {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 12px;
+    }
+    
+    /* ═══════════════════════════════════════════
+       CONTROL SECTION
+    ═══════════════════════════════════════════ */
+    .controls-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      flex: 1;
+      align-content: start;
+    }
+    
+    .control-btn {
+      background: var(--bg-card);
+      border: none;
+      border-radius: 20px;
+      padding: 24px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .control-btn:hover {
+      background: var(--bg-hover);
+      transform: translateY(-2px);
+    }
+    .control-btn.active {
+      background: linear-gradient(135deg, var(--accent) 0%, #005a8c 100%);
+    }
+    .control-btn.active:hover {
+      background: linear-gradient(135deg, var(--accent-light) 0%, var(--accent) 100%);
+    }
+    
+    .control-icon {
+      font-size: 32px;
+      opacity: 0.9;
+    }
+    .control-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .control-state {
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+    .control-btn.active .control-state {
+      color: rgba(255,255,255,0.7);
+    }
+    
+    /* ═══════════════════════════════════════════
+       TASKS SECTION
+    ═══════════════════════════════════════════ */
+    .tasks-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-width: 800px;
+    }
+    
+    .task-item {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .task-item:hover {
+      background: var(--bg-hover);
+    }
+    
+    .task-check {
+      width: 24px;
+      height: 24px;
+      border: 2px solid var(--text-muted);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .task-item:hover .task-check {
+      border-color: var(--accent);
+    }
+    .task-item.done .task-check {
+      background: var(--success);
+      border-color: var(--success);
+      color: white;
+    }
+    
+    .task-text {
+      flex: 1;
+      font-size: 15px;
+    }
+    .task-item.done .task-text {
+      color: var(--text-dim);
+      text-decoration: line-through;
+    }
+    
+    .task-due {
+      font-size: 12px;
+      color: var(--text-muted);
+      padding: 4px 10px;
+      background: var(--bg);
+      border-radius: 6px;
+    }
+    
+    /* ═══════════════════════════════════════════
+       VOICE SECTION
+    ═══════════════════════════════════════════ */
+    .voice-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+    }
+    
+    .voice-btn {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent) 0%, #005a8c 100%);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      box-shadow: 0 12px 40px rgba(0, 112, 173, 0.4);
+    }
+    .voice-btn:hover {
+      transform: scale(1.05);
+    }
+    .voice-btn:active {
+      transform: scale(0.95);
+    }
+    .voice-btn.listening {
+      background: linear-gradient(135deg, var(--success) 0%, #008855 100%);
+      box-shadow: 0 12px 40px rgba(0, 168, 107, 0.4);
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 12px 40px rgba(0, 168, 107, 0.4); }
+      50% { box-shadow: 0 12px 60px rgba(0, 168, 107, 0.6); }
+    }
+    
+    .voice-btn i {
+      font-size: 80px;
+      color: white;
+    }
+    
+    .voice-text {
+      font-size: 18px;
+      color: var(--text-dim);
+    }
+    
+    .voice-transcript {
+      font-size: 20px;
+      color: var(--text);
+      min-height: 40px;
+      text-align: center;
+      max-width: 600px;
+    }
+    
+    /* ═══════════════════════════════════════════
+       STATUS INDICATORS
+    ═══════════════════════════════════════════ */
+    .status-bar {
+      position: fixed;
+      top: 20px;
+      right: 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      z-index: 100;
+    }
+    
+    .battery {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+    .battery-icon {
+      position: relative;
+      width: 28px;
+      height: 14px;
+      border: 1.5px solid var(--text-dim);
+      border-radius: 3px;
+    }
+    .battery-icon::after {
+      content: '';
+      position: absolute;
+      right: -4px;
+      top: 3px;
+      width: 2px;
+      height: 6px;
+      background: var(--text-dim);
+      border-radius: 0 1px 1px 0;
+    }
+    .battery-level {
+      height: 100%;
+      background: var(--success);
+      border-radius: 1px;
+      transition: width 0.3s;
+    }
+    .battery.low .battery-level { background: var(--danger); }
+    
+    .connection {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .connection-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+    .connection.disconnected .connection-dot {
+      background: var(--danger);
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    
+    /* ═══════════════════════════════════════════
+       FLOATING MIC
+    ═══════════════════════════════════════════ */
+    .floating-mic {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      z-index: 1000;
+      box-shadow: 0 6px 24px rgba(0, 112, 173, 0.4);
+    }
+    .floating-mic:hover {
+      transform: scale(1.08);
+    }
+    .floating-mic.listening {
+      background: var(--success);
+      box-shadow: 0 6px 24px rgba(0, 168, 107, 0.4);
+    }
+    .floating-mic i {
+      font-size: 32px;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="nav-tabs">
+        <button class="tab active" data-section="home">
+          <i class="ph ph-house"></i>
+        </button>
+        <button class="tab" data-section="control">
+          <i class="ph ph-sliders-horizontal"></i>
+        </button>
+        <button class="tab" data-section="tasks">
+          <i class="ph ph-check-square"></i>
+        </button>
+        <button class="tab" data-section="voice">
+          <i class="ph ph-microphone"></i>
+        </button>
+      </div>
+      
+      <div class="sidebar-spacer"></div>
+      
+      <div class="sidebar-clock">
+        <div class="sidebar-time" id="sidebar-time">00:00</div>
+        <div class="sidebar-date" id="sidebar-date">--</div>
+      </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="main">
+      
+      <!-- HOME -->
+      <section id="section-home" class="section active">
+        <div class="home-main">
+          <!-- Floorplan with temps -->
+          <div class="floorplan-container">
+            <div class="floorplan-header">
+              <div class="floor-toggle">
+                <button class="floor-btn active" data-floor="haut">Étage</button>
+                <button class="floor-btn" data-floor="bas">RDC</button>
+              </div>
+              <div class="temp-overlay ext" style="position: relative; top: auto; right: auto;">
+                <i class="ph ph-cloud"></i>
+                <span class="temp" id="temp-ext">7°</span>
+                <span>Ext.</span>
+              </div>
+            </div>
+            
+            <div class="floorplan-wrapper">
+              <!-- Étage (haut) - Salon/Cuisine/Entrée -->
+              <div class="floorplan-layer active" data-floor="haut">
+                <img src="floorplan.png" alt="Étage" class="floorplan-img">
+                <div class="temp-overlay salon">
+                  <i class="ph ph-thermometer"></i>
+                  <span class="temp" id="temp-salon">21°</span>
+                  <span>Salon</span>
+                </div>
+                <div class="temp-overlay cuisine">
+                  <i class="ph ph-thermometer"></i>
+                  <span class="temp" id="temp-cuisine">20°</span>
+                  <span>Cuisine</span>
+                </div>
+              </div>
+              
+              <!-- RDC (bas) - Chambres/Bureaux/SDB -->
+              <div class="floorplan-layer" data-floor="bas">
+                <img src="floorplan-bas.png" alt="RDC" class="floorplan-img">
+                <div class="temp-overlay chambre">
+                  <i class="ph ph-thermometer"></i>
+                  <span class="temp" id="temp-chambre">19°</span>
+                  <span>Chambre</span>
+                </div>
+                <div class="temp-overlay bureau-jules">
+                  <i class="ph ph-thermometer"></i>
+                  <span class="temp" id="temp-bureau-j">20°</span>
+                  <span>Bureau J.</span>
+                </div>
+                <div class="temp-overlay bureau-al">
+                  <i class="ph ph-thermometer"></i>
+                  <span class="temp" id="temp-bureau-al">22°</span>
+                  <span>Bureau AL</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Stats Row -->
+          <div class="stats-row">
+            <div class="stat-card">
+              <div class="stat-icon tasks"><i class="ph ph-check-circle"></i></div>
+              <div class="stat-content">
+                <div class="stat-value" id="stat-tasks">3</div>
+                <div class="stat-label">Tâches</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon mail"><i class="ph ph-envelope"></i></div>
+              <div class="stat-content">
+                <div class="stat-value" id="stat-unread">12</div>
+                <div class="stat-label">Non lus</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon events"><i class="ph ph-calendar-check"></i></div>
+              <div class="stat-content">
+                <div class="stat-value" id="stat-events">2</div>
+                <div class="stat-label">Événements</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="home-sidebar">
+          <!-- Sport Heatmap -->
+          <div class="heatmap-card">
+            <div class="heatmap-header">
+              <div class="heatmap-title">Activité Sport</div>
+              <div class="heatmap-legend">
+                <div class="legend-item"><div class="legend-dot squash"></div>Squash</div>
+                <div class="legend-item"><div class="legend-dot volley"></div>Volley</div>
+              </div>
+            </div>
+            <div class="heatmap-grid" id="heatmap-grid">
+              <!-- Generated by JS -->
+            </div>
+          </div>
+          
+          <!-- Dwight Message -->
+          <div class="message-card">
+            <div class="message-header">
+              <div class="message-avatar">🥋</div>
+              <div class="message-meta">
+                <div class="message-name">Dwight</div>
+                <div class="message-status">En ligne</div>
+              </div>
+            </div>
+            <div class="message-content" id="message">
+              Fact: Bears eat beets. Bears. Beets. Battlestar Galactica.
+            </div>
+            <div class="message-time" id="message-time">Il y a 2 min</div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- CONTROL -->
+      <section id="section-control" class="section">
+        <div class="controls-grid">
+          <button class="control-btn" data-entity="light.salon">
+            <i class="ph ph-lamp"></i>
+            <div class="control-label">Salon</div>
+            <div class="control-state">Off</div>
+          </button>
+          <button class="control-btn" data-entity="light.chambre">
+            <i class="ph ph-lamp"></i>
+            <div class="control-label">Chambre</div>
+            <div class="control-state">Off</div>
+          </button>
+          <button class="control-btn" data-entity="light.bureau">
+            <i class="ph ph-lamp"></i>
+            <div class="control-label">Bureau</div>
+            <div class="control-state">Off</div>
+          </button>
+          <button class="control-btn active" data-entity="climate.heating">
+            <i class="ph ph-fire"></i>
+            <div class="control-label">Chauffage</div>
+            <div class="control-state">22°C</div>
+          </button>
+          <button class="control-btn active" data-entity="input_boolean.presence_jules">
+            <i class="ph ph-user"></i>
+            <div class="control-label">Jules</div>
+            <div class="control-state">Présent</div>
+          </button>
+          <button class="control-btn" data-entity="input_boolean.presence_al">
+            <i class="ph ph-user"></i>
+            <div class="control-label">Anne-Laure</div>
+            <div class="control-state">Absente</div>
+          </button>
+          <button class="control-btn" data-entity="vacuum.rocky">
+            <i class="ph ph-robot"></i>
+            <div class="control-label">Aspirateur</div>
+            <div class="control-state">Dock</div>
+          </button>
+          <button class="control-btn" data-scene="night">
+            <i class="ph ph-moon"></i>
+            <div class="control-label">Mode Nuit</div>
+            <div class="control-state">Scène</div>
+          </button>
+        </div>
+      </section>
+      
+      <!-- TASKS -->
+      <section id="section-tasks" class="section">
+        <div class="tasks-container" id="tasks-list">
+          <div class="task-item" data-id="1">
+            <div class="task-check"></div>
+            <div class="task-text">Deskpanel V3 - Intégrer floorplan</div>
+            <div class="task-due">Aujourd'hui</div>
+          </div>
+          <div class="task-item" data-id="2">
+            <div class="task-check"></div>
+            <div class="task-text">LinkedIn Post #2 - 7 niveaux d'automatisation</div>
+            <div class="task-due">17 fév</div>
+          </div>
+          <div class="task-item done" data-id="3">
+            <div class="task-check"><i class="ph ph-check"></i></div>
+            <div class="task-text">Pi-hole rate limit config</div>
+            <div class="task-due">Fait</div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- VOICE -->
+      <section id="section-voice" class="section">
+        <div class="voice-container">
+          <button class="voice-btn" id="voice-btn">
+            <i class="ph ph-microphone"></i>
+          </button>
+          <div class="voice-text" id="voice-status">Appuie pour parler à Dwight</div>
+          <div class="voice-transcript" id="voice-transcript"></div>
+        </div>
+      </section>
+      
+    </main>
+  </div>
+  
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <div class="battery" id="battery">
+      <div class="battery-icon">
+        <div class="battery-level" id="battery-level" style="width: 80%"></div>
+      </div>
+      <span id="battery-text">80%</span>
+    </div>
+    <div class="connection" id="connection">
+      <div class="connection-dot"></div>
+      <span>Connecté</span>
+    </div>
+  </div>
+  
+  <!-- Floating Mic -->
+  <button class="floating-mic" id="floating-mic">
+    <i class="ph ph-microphone"></i>
+  </button>
+  
+  <script>
+    // Tab navigation
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const section = tab.dataset.section;
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(`section-${section}`).classList.add('active');
+      });
+    });
+    
+    // Floor toggle
+    document.querySelectorAll('.floor-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const floor = btn.dataset.floor;
+        document.querySelectorAll('.floor-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.floorplan-layer').forEach(l => l.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelector(`.floorplan-layer[data-floor="${floor}"]`).classList.add('active');
+      });
+    });
+    
+    // Clock
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('sidebar-time').textContent = 
+        now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('sidebar-date').textContent = 
+        now.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' });
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+    
+    // Generate Sport Heatmap (last 12 weeks)
+    function generateHeatmap() {
+      const grid = document.getElementById('heatmap-grid');
+      const today = new Date();
+      const weeks = 16;
+      
+      // Sample data - would come from API
+      const sportDays = {
+        '2026-02-01': ['squash'],
+        '2026-01-25': ['squash'],
+        '2026-01-18': ['squash'],
+        '2026-01-11': ['squash'],
+        '2025-12-21': ['squash'],
+      };
+      
+      for (let w = weeks - 1; w >= 0; w--) {
+        const weekDiv = document.createElement('div');
+        weekDiv.className = 'heatmap-week';
+        
+        for (let d = 0; d < 7; d++) {
+          const date = new Date(today);
+          date.setDate(date.getDate() - (w * 7) - (6 - d));
+          const dateStr = date.toISOString().split('T')[0];
+          
+          const dayDiv = document.createElement('div');
+          dayDiv.className = 'heatmap-day';
+          dayDiv.title = dateStr;
+          
+          const sports = sportDays[dateStr] || [];
+          if (sports.includes('squash') && sports.includes('volley')) {
+            dayDiv.classList.add('both');
+          } else if (sports.includes('squash')) {
+            dayDiv.classList.add('level-2');
+          } else if (sports.includes('volley')) {
+            dayDiv.classList.add('volley');
+          }
+          
+          weekDiv.appendChild(dayDiv);
+        }
+        grid.appendChild(weekDiv);
+      }
+    }
+    generateHeatmap();
+    
+    // Control buttons toggle
+    document.querySelectorAll('.control-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (!btn.dataset.scene) {
+          btn.classList.toggle('active');
+          const state = btn.querySelector('.control-state');
+          if (btn.classList.contains('active')) {
+            state.textContent = 'On';
+          } else {
+            state.textContent = 'Off';
+          }
+        }
+      });
+    });
+    
+    // Task completion
+    document.querySelectorAll('.task-item').forEach(task => {
+      task.addEventListener('click', () => {
+        task.classList.toggle('done');
+        const check = task.querySelector('.task-check');
+        if (task.classList.contains('done')) {
+          check.innerHTML = '<i class="ph ph-check"></i>';
+          task.querySelector('.task-due').textContent = 'Fait';
+        } else {
+          check.innerHTML = '';
+        }
+      });
+    });
+    
+    // Voice button
+    const voiceBtn = document.getElementById('voice-btn');
+    const floatingMic = document.getElementById('floating-mic');
+    const voiceStatus = document.getElementById('voice-status');
+    
+    [voiceBtn, floatingMic].forEach(btn => {
+      btn.addEventListener('click', () => {
+        const isListening = btn.classList.toggle('listening');
+        if (btn === voiceBtn) {
+          floatingMic.classList.toggle('listening', isListening);
+        } else {
+          voiceBtn.classList.toggle('listening', isListening);
+        }
+        voiceStatus.textContent = isListening ? 'Écoute en cours...' : 'Appuie pour parler à Dwight';
+      });
+    });
+    
+    // WebSocket connection (placeholder)
+    // const ws = new WebSocket('ws://localhost:8080');
+    // ws.onmessage = (event) => { ... };
+  </script>
+</body>
+</html>

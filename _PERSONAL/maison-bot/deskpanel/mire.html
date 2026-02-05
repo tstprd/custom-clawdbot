@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Mire de calibration</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      background: #000;
+      color: #fff;
+      font-family: -apple-system, sans-serif;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .info-panel {
+      background: #111;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #222;
+      font-size: 14px;
+    }
+    .info-row:last-child { border: none; }
+    .info-label { color: #888; }
+    .info-value { color: #0f0; font-family: monospace; }
+    
+    h2 {
+      font-size: 16px;
+      color: #0070AD;
+      margin: 24px 0 12px;
+    }
+    
+    /* Grille de référence */
+    .grid-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px;
+      background: #111;
+      padding: 10px;
+      border-radius: 8px;
+    }
+    
+    .grid-box {
+      width: 50px;
+      height: 50px;
+      background: #222;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #666;
+    }
+    .grid-box:nth-child(odd) { background: #1a1a1a; }
+    
+    /* Carrés de taille fixe en mm (simulé) */
+    .size-test {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    
+    .size-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .size-square {
+      background: #0070AD;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 11px;
+      font-weight: bold;
+    }
+    
+    .s10 { width: 10px; height: 10px; }
+    .s20 { width: 20px; height: 20px; }
+    .s50 { width: 50px; height: 50px; }
+    .s100 { width: 100px; height: 100px; }
+    .s200 { width: 200px; height: 200px; font-size: 14px; }
+    
+    .size-label {
+      font-size: 11px;
+      color: #666;
+    }
+    
+    /* Règle horizontale */
+    .ruler {
+      margin-top: 20px;
+      background: #111;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    
+    .ruler-h {
+      height: 30px;
+      background: linear-gradient(90deg, 
+        #fff 0px, #fff 1px, transparent 1px, transparent 10px,
+        #666 10px, #666 11px, transparent 11px, transparent 50px,
+        #fff 50px, #fff 51px, transparent 51px, transparent 100px
+      );
+      background-size: 100px 100%;
+      border-bottom: 2px solid #fff;
+      position: relative;
+    }
+    
+    .ruler-marks {
+      display: flex;
+      font-size: 10px;
+      color: #666;
+    }
+    .ruler-marks span {
+      width: 100px;
+      text-align: left;
+    }
+    
+    /* Croix centrale */
+    .crosshair {
+      position: relative;
+      height: 200px;
+      background: #111;
+      border-radius: 8px;
+      margin-top: 20px;
+      overflow: hidden;
+    }
+    
+    .cross-h, .cross-v {
+      position: absolute;
+      background: #f00;
+    }
+    .cross-h {
+      width: 100%;
+      height: 1px;
+      top: 50%;
+    }
+    .cross-v {
+      width: 1px;
+      height: 100%;
+      left: 50%;
+    }
+    .cross-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 20px;
+      height: 20px;
+      border: 2px solid #0f0;
+      border-radius: 50%;
+    }
+    
+    /* Full width bar */
+    .full-width {
+      background: #0070AD;
+      height: 40px;
+      margin-top: 20px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+    
+    /* Viewport corners */
+    .corner {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      border: 3px solid #f00;
+      z-index: 1000;
+    }
+    .corner-tl { top: 0; left: 0; border-right: none; border-bottom: none; }
+    .corner-tr { top: 0; right: 0; border-left: none; border-bottom: none; }
+    .corner-bl { bottom: 0; left: 0; border-right: none; border-top: none; }
+    .corner-br { bottom: 0; right: 0; border-left: none; border-top: none; }
+  </style>
+</head>
+<body>
+  <!-- Coins du viewport -->
+  <div class="corner corner-tl"></div>
+  <div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div>
+  <div class="corner corner-br"></div>
+
+  <div class="info-panel">
+    <div class="info-row">
+      <span class="info-label">Screen (physique)</span>
+      <span class="info-value" id="screen-size">-</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Viewport (CSS)</span>
+      <span class="info-value" id="viewport-size">-</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Device Pixel Ratio</span>
+      <span class="info-value" id="dpr">-</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Pixels réels</span>
+      <span class="info-value" id="real-pixels">-</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Orientation</span>
+      <span class="info-value" id="orientation">-</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">User Agent</span>
+      <span class="info-value" id="ua" style="font-size: 10px; word-break: break-all;">-</span>
+    </div>
+  </div>
+  
+  <h2>📏 Carrés de référence (CSS pixels)</h2>
+  <div class="size-test">
+    <div class="size-box">
+      <div class="size-square s10"></div>
+      <span class="size-label">10px</span>
+    </div>
+    <div class="size-box">
+      <div class="size-square s20"></div>
+      <span class="size-label">20px</span>
+    </div>
+    <div class="size-box">
+      <div class="size-square s50">50</div>
+      <span class="size-label">50px</span>
+    </div>
+    <div class="size-box">
+      <div class="size-square s100">100</div>
+      <span class="size-label">100px</span>
+    </div>
+    <div class="size-box">
+      <div class="size-square s200">200px</div>
+      <span class="size-label">200px</span>
+    </div>
+  </div>
+  
+  <h2>📐 Grille 50x50px (10 colonnes = 500px)</h2>
+  <div class="grid-container">
+    <div class="grid-box">1</div>
+    <div class="grid-box">2</div>
+    <div class="grid-box">3</div>
+    <div class="grid-box">4</div>
+    <div class="grid-box">5</div>
+    <div class="grid-box">6</div>
+    <div class="grid-box">7</div>
+    <div class="grid-box">8</div>
+    <div class="grid-box">9</div>
+    <div class="grid-box">10</div>
+  </div>
+  
+  <h2>📍 Règle (100px = 1 bloc)</h2>
+  <div class="ruler">
+    <div class="ruler-h"></div>
+    <div class="ruler-marks">
+      <span>0</span>
+      <span>100</span>
+      <span>200</span>
+      <span>300</span>
+      <span>400</span>
+      <span>500</span>
+    </div>
+  </div>
+  
+  <h2>🎯 Centre du viewport</h2>
+  <div class="crosshair">
+    <div class="cross-h"></div>
+    <div class="cross-v"></div>
+    <div class="cross-center"></div>
+  </div>
+  
+  <div class="full-width" id="full-width-bar">
+    ← Largeur complète du viewport →
+  </div>
+
+  <script>
+    function updateInfo() {
+      document.getElementById('screen-size').textContent = 
+        `${screen.width} × ${screen.height}`;
+      document.getElementById('viewport-size').textContent = 
+        `${window.innerWidth} × ${window.innerHeight}`;
+      document.getElementById('dpr').textContent = 
+        window.devicePixelRatio.toFixed(2);
+      document.getElementById('real-pixels').textContent = 
+        `${Math.round(window.innerWidth * window.devicePixelRatio)} × ${Math.round(window.innerHeight * window.devicePixelRatio)}`;
+      document.getElementById('orientation').textContent = 
+        window.innerWidth > window.innerHeight ? 'Paysage' : 'Portrait';
+      document.getElementById('ua').textContent = navigator.userAgent;
+      document.getElementById('full-width-bar').textContent = 
+        `← ${window.innerWidth}px de large →`;
+    }
+    
+    updateInfo();
+    window.addEventListener('resize', updateInfo);
+    window.addEventListener('orientationchange', () => {
+      setTimeout(updateInfo, 100);
+    });
+  </script>
+</body>
+</html>

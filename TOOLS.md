@@ -42,9 +42,17 @@ clawdbot/
 
 ## 📊 Où vont les données ?
 
-**⚠️ PRINCIPE FONDAMENTAL : Les fichiers .md = règles fixes. SQLite = données temporaires.**
+**⚠️ PRINCIPE FONDAMENTAL : Les fichiers .md = règles fixes. SQLite = données temporaires/structurées.**
 
 📖 **Skill complet : `skills/local-db/SKILL.md`** — Lire ce skill pour accéder aux tâches, rappels et briefs.
+
+### Règle : Listes → SQL, pas texte
+
+Quand une info est une **liste de ressources** (packs d'icônes, inspirations, références, liens utiles, etc.) :
+- ❌ Ne PAS écrire en markdown (pollue le contexte, pas requêtable)
+- ✅ Stocker en SQLite → stats possibles, filtres, contexte-efficient
+
+Tables à créer selon besoin : `resources`, `inspirations`, `references`, etc.
 
 | Type | Stockage | Pourquoi |
 |------|----------|----------|

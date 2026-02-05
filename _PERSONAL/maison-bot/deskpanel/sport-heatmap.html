@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sport Tracker - 3 derniers mois</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      min-height: 100vh;
+      background: #0d1117;
+      color: #e6edf3;
+      font-family: -apple-system, 'Segoe UI', sans-serif;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    h1 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .subtitle {
+      color: #7d8590;
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+    
+    .stats {
+      display: flex;
+      gap: 32px;
+      margin-bottom: 32px;
+    }
+    
+    .stat {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 36px;
+      font-weight: 700;
+      color: #39d353;
+    }
+    
+    .stat-label {
+      font-size: 12px;
+      color: #7d8590;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .heatmap-container {
+      background: #161b22;
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid #30363d;
+    }
+    
+    .months-header {
+      display: flex;
+      margin-bottom: 8px;
+      margin-left: 36px;
+    }
+    
+    .month-label {
+      font-size: 11px;
+      color: #7d8590;
+      flex: 1;
+    }
+    
+    .heatmap-body {
+      display: flex;
+      gap: 4px;
+    }
+    
+    .day-labels {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      margin-right: 8px;
+      padding-top: 2px;
+    }
+    
+    .day-label {
+      font-size: 10px;
+      color: #7d8590;
+      height: 13px;
+      line-height: 13px;
+    }
+    
+    .day-label:nth-child(even) {
+      visibility: hidden;
+    }
+    
+    .weeks-container {
+      display: flex;
+      gap: 3px;
+    }
+    
+    .week {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    
+    .day {
+      width: 13px;
+      height: 13px;
+      border-radius: 2px;
+      background: #161b22;
+      border: 1px solid rgba(27, 31, 35, 0.06);
+      cursor: pointer;
+      transition: all 0.1s;
+    }
+    
+    .day:hover {
+      outline: 2px solid #58a6ff;
+      outline-offset: -1px;
+    }
+    
+    .day.future {
+      background: #0d1117;
+      border-color: transparent;
+      cursor: default;
+    }
+    .day.future:hover {
+      outline: none;
+    }
+    
+    .day.level-0 { background: #161b22; }
+    .day.level-1 { background: #0e4429; }
+    .day.level-2 { background: #006d32; }
+    .day.level-3 { background: #26a641; }
+    .day.level-4 { background: #39d353; }
+    
+    .legend {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      justify-content: flex-end;
+    }
+    
+    .legend-text {
+      font-size: 11px;
+      color: #7d8590;
+    }
+    
+    .legend-squares {
+      display: flex;
+      gap: 3px;
+    }
+    
+    .legend-square {
+      width: 11px;
+      height: 11px;
+      border-radius: 2px;
+    }
+    
+    .tooltip {
+      position: fixed;
+      background: #1f2428;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 12px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+      z-index: 1000;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    
+    .tooltip.visible {
+      opacity: 1;
+    }
+    
+    .tooltip-date {
+      color: #7d8590;
+      font-size: 11px;
+    }
+    
+    .tooltip-sport {
+      color: #39d353;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    
+    .sport-list {
+      margin-top: 32px;
+      width: 100%;
+      max-width: 600px;
+    }
+    
+    .sport-list h2 {
+      font-size: 16px;
+      margin-bottom: 16px;
+      color: #e6edf3;
+    }
+    
+    .sport-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: #161b22;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      border: 1px solid #30363d;
+    }
+    
+    .sport-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #39d353;
+    }
+    
+    .sport-date {
+      color: #e6edf3;
+      flex: 1;
+    }
+    
+    .sport-type {
+      color: #7d8590;
+      font-size: 13px;
+      padding: 4px 10px;
+      background: #21262d;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🏃 Suivi Sport</h1>
+  <p class="subtitle">3 derniers mois d'activité</p>
+  
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-value" id="total-sessions">0</div>
+      <div class="stat-label">Sessions</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="current-streak">0</div>
+      <div class="stat-label">Semaines d'affilée</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="avg-week">0</div>
+      <div class="stat-label">Moy./semaine</div>
+    </div>
+  </div>
+  
+  <div class="heatmap-container">
+    <div class="months-header" id="months-header"></div>
+    <div class="heatmap-body">
+      <div class="day-labels">
+        <div class="day-label">Lun</div>
+        <div class="day-label">Mar</div>
+        <div class="day-label">Mer</div>
+        <div class="day-label">Jeu</div>
+        <div class="day-label">Ven</div>
+        <div class="day-label">Sam</div>
+        <div class="day-label">Dim</div>
+      </div>
+      <div class="weeks-container" id="weeks-container"></div>
+    </div>
+    <div class="legend">
+      <span class="legend-text">Moins</span>
+      <div class="legend-squares">
+        <div class="legend-square level-0"></div>
+        <div class="legend-square level-1"></div>
+        <div class="legend-square level-2"></div>
+        <div class="legend-square level-3"></div>
+        <div class="legend-square level-4"></div>
+      </div>
+      <span class="legend-text">Plus</span>
+    </div>
+  </div>
+  
+  <div class="sport-list">
+    <h2>Sessions récentes</h2>
+    <div id="sessions-list"></div>
+  </div>
+  
+  <div class="tooltip" id="tooltip">
+    <div class="tooltip-date"></div>
+    <div class="tooltip-sport"></div>
+  </div>
+  
+  <script>
+    // Sport data from SQLite
+    const sportData = {
+      "2025-12-21": { count: 1, sports: ["squash"] },
+      "2026-01-11": { count: 1, sports: ["squash"] },
+      "2026-01-18": { count: 1, sports: ["squash"] },
+      "2026-01-25": { count: 1, sports: ["squash"] },
+      "2026-02-01": { count: 1, sports: ["squash"] },
+    };
+    
+    const today = new Date();
+    const weeks = 13; // ~3 months
+    const startDate = new Date(today);
+    startDate.setDate(startDate.getDate() - (weeks * 7) + (7 - startDate.getDay()));
+    
+    // Adjust to Monday
+    while (startDate.getDay() !== 1) {
+      startDate.setDate(startDate.getDate() - 1);
+    }
+    
+    const weeksContainer = document.getElementById('weeks-container');
+    const monthsHeader = document.getElementById('months-header');
+    const tooltip = document.getElementById('tooltip');
+    
+    // Track months for header
+    const monthPositions = {};
+    let currentWeek = 0;
+    
+    // Generate heatmap
+    const tempDate = new Date(startDate);
+    for (let w = 0; w < weeks; w++) {
+      const weekDiv = document.createElement('div');
+      weekDiv.className = 'week';
+      
+      for (let d = 0; d < 7; d++) {
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'day';
+        
+        const dateStr = tempDate.toISOString().split('T')[0];
+        const isFuture = tempDate > today;
+        
+        if (isFuture) {
+          dayDiv.classList.add('future');
+        } else {
+          const data = sportData[dateStr];
+          if (data) {
+            const level = Math.min(4, data.count + 2);
+            dayDiv.classList.add(`level-${level}`);
+            dayDiv.dataset.sports = data.sports.join(', ');
+          } else {
+            dayDiv.classList.add('level-0');
+          }
+        }
+        
+        dayDiv.dataset.date = dateStr;
+        
+        // Track first day of each month
+        if (tempDate.getDate() <= 7 && d === 0) {
+          const monthName = tempDate.toLocaleDateString('fr-FR', { month: 'short' });
+          if (!monthPositions[monthName]) {
+            monthPositions[monthName] = w;
+          }
+        }
+        
+        weekDiv.appendChild(dayDiv);
+        tempDate.setDate(tempDate.getDate() + 1);
+      }
+      
+      weeksContainer.appendChild(weekDiv);
+    }
+    
+    // Generate month headers
+    const monthNames = Object.keys(monthPositions);
+    monthNames.forEach((month, i) => {
+      const span = document.createElement('span');
+      span.className = 'month-label';
+      span.textContent = month;
+      const nextPos = monthPositions[monthNames[i + 1]] || weeks;
+      span.style.width = `${(nextPos - monthPositions[month]) * 16}px`;
+      monthsHeader.appendChild(span);
+    });
+    
+    // Tooltip
+    document.querySelectorAll('.day:not(.future)').forEach(day => {
+      day.addEventListener('mouseenter', (e) => {
+        const date = new Date(day.dataset.date);
+        const formatted = date.toLocaleDateString('fr-FR', { 
+          weekday: 'long', 
+          day: 'numeric', 
+          month: 'long',
+          year: 'numeric'
+        });
+        
+        tooltip.querySelector('.tooltip-date').textContent = formatted;
+        
+        const sports = day.dataset.sports;
+        if (sports) {
+          tooltip.querySelector('.tooltip-sport').textContent = `🏸 ${sports}`;
+        } else {
+          tooltip.querySelector('.tooltip-sport').textContent = 'Pas de sport';
+        }
+        
+        const rect = day.getBoundingClientRect();
+        tooltip.style.left = `${rect.left + rect.width/2}px`;
+        tooltip.style.top = `${rect.top - 50}px`;
+        tooltip.style.transform = 'translateX(-50%)';
+        tooltip.classList.add('visible');
+      });
+      
+      day.addEventListener('mouseleave', () => {
+        tooltip.classList.remove('visible');
+      });
+    });
+    
+    // Stats
+    const totalSessions = Object.keys(sportData).length;
+    document.getElementById('total-sessions').textContent = totalSessions;
+    
+    // Calculate streak (consecutive weeks with sport)
+    let streak = 0;
+    const checkDate = new Date(today);
+    while (checkDate >= startDate) {
+      const weekStart = new Date(checkDate);
+      weekStart.setDate(weekStart.getDate() - weekStart.getDay() + 1);
+      
+      let hasSession = false;
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(weekStart);
+        d.setDate(d.getDate() + i);
+        const ds = d.toISOString().split('T')[0];
+        if (sportData[ds]) {
+          hasSession = true;
+          break;
+        }
+      }
+      
+      if (hasSession) {
+        streak++;
+        checkDate.setDate(checkDate.getDate() - 7);
+      } else {
+        break;
+      }
+    }
+    document.getElementById('current-streak').textContent = streak;
+    
+    // Average per week
+    const avgWeek = (totalSessions / weeks).toFixed(1);
+    document.getElementById('avg-week').textContent = avgWeek;
+    
+    // Sessions list
+    const sessionsList = document.getElementById('sessions-list');
+    const sortedDates = Object.keys(sportData).sort().reverse();
+    sortedDates.forEach(dateStr => {
+      const data = sportData[dateStr];
+      const date = new Date(dateStr);
+      const formatted = date.toLocaleDateString('fr-FR', { 
+        weekday: 'long', 
+        day: 'numeric', 
+        month: 'long'
+      });
+      
+      data.sports.forEach(sport => {
+        const item = document.createElement('div');
+        item.className = 'sport-item';
+        item.innerHTML = `
+          <div class="sport-dot"></div>
+          <div class="sport-date">${formatted}</div>
+          <div class="sport-type">${sport === 'squash' ? '🏸 Squash' : '🏐 Volley'}</div>
+        `;
+        sessionsList.appendChild(item);
+      });
+    });
+  </script>
+</body>
+</html>
