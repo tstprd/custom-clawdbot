@@ -1,6 +1,6 @@
 # HEARTBEAT.md
 
-**Aujourd'hui : Mardi 3 février 2026**
+**Aujourd'hui : Dimanche 8 février 2026**
 
 *Contexte urgent pour le prochain reset. Pas de données techniques ici.*
 
@@ -19,10 +19,11 @@
 - CV Anthropic envoyé (28/01)
 - Pi-hole configuré (192.168.1.89)
 - MaisonBot installé sur Raspberry Pi
+- Séjour Strasbourg (5-8 fév) ✓
 
 ## 📍 Contexte actif
 
-- **Strasbourg** : Départ mercredi 5 fév soir → fin de semaine (penser chauffage)
+- **Retour Strasbourg** : Train demain 8h22 → Rennes
 
 ---
 
