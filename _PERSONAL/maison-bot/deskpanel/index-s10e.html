@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Dashboard S10e</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --bg: #0a0a0a;
+      --card: #151515;
+      --border: #252525;
+      --text: #f5f5f5;
+      --text-dim: #888;
+      --accent: #0070AD;
+      --green: #00c853;
+      --orange: #ff9800;
+      --red: #f44336;
+    }
+    
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      padding: 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto 1fr auto;
+      gap: 12px;
+    }
+    
+    /* Header - full width */
+    .header {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 16px;
+      background: var(--card);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    
+    .time {
+      font-size: 28px;
+      font-weight: 300;
+      letter-spacing: -1px;
+    }
+    
+    .date {
+      font-size: 14px;
+      color: var(--text-dim);
+    }
+    
+    .status-dots {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+    .dot.warning { background: var(--orange); }
+    .dot.error { background: var(--red); }
+    
+    /* Cards */
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .card-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+    
+    .card-value {
+      font-size: 32px;
+      font-weight: 200;
+      line-height: 1;
+    }
+    
+    .card-unit {
+      font-size: 14px;
+      color: var(--text-dim);
+      margin-left: 4px;
+    }
+    
+    .card-sub {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-top: auto;
+    }
+    
+    /* Message card - spans 2 columns */
+    .message-card {
+      grid-column: span 2;
+    }
+    
+    .message-text {
+      font-size: 16px;
+      line-height: 1.4;
+      flex: 1;
+    }
+    
+    .message-time {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 8px;
+    }
+    
+    /* Footer */
+    .footer {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 16px;
+      background: var(--card);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+    
+    .tasks-badge {
+      background: var(--accent);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+    
+    /* Connection status */
+    .conn-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .conn-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--red);
+    }
+    .conn-dot.connected { background: var(--green); }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div>
+      <div class="time" id="time">--:--</div>
+      <div class="date" id="date">--</div>
+    </div>
+    <div class="status-dots">
+      <div class="dot" id="dot-ha" title="Home Assistant"></div>
+      <div class="dot" id="dot-openclaw" title="OpenClaw"></div>
+      <div class="dot" id="dot-network" title="Network"></div>
+    </div>
+  </header>
+  
+  <div class="card">
+    <div class="card-title">🌡️ Salon</div>
+    <div class="card-value" id="temp-salon">--<span class="card-unit">°C</span></div>
+    <div class="card-sub" id="temp-salon-target">Cible: --°C</div>
+  </div>
+  
+  <div class="card">
+    <div class="card-title">🛏️ Chambre</div>
+    <div class="card-value" id="temp-chambre">--<span class="card-unit">°C</span></div>
+    <div class="card-sub" id="temp-chambre-target">Cible: --°C</div>
+  </div>
+  
+  <div class="card">
+    <div class="card-title">💡 Lumières</div>
+    <div class="card-value" id="lights-on">--</div>
+    <div class="card-sub" id="lights-detail">-- allumées</div>
+  </div>
+  
+  <div class="card message-card">
+    <div class="card-title">💬 Dwight</div>
+    <div class="message-text" id="message">En attente de connexion...</div>
+    <div class="message-time" id="message-time">--</div>
+  </div>
+  
+  <div class="card">
+    <div class="card-title">📅 Prochain</div>
+    <div class="message-text" id="next-event" style="font-size: 14px;">--</div>
+    <div class="card-sub" id="next-event-time">--</div>
+  </div>
+  
+  <footer class="footer">
+    <div class="conn-status">
+      <div class="conn-dot" id="conn-dot"></div>
+      <span id="conn-text">Déconnecté</span>
+    </div>
+    <div>
+      <span class="tasks-badge" id="tasks-count">0 tâches</span>
+    </div>
+    <div id="last-update">--</div>
+  </footer>
+
+  <script>
+    // WebSocket connection
+    let ws;
+    let reconnectTimeout;
+    
+    function connect() {
+      const wsUrl = `ws://${location.host}`;
+      ws = new WebSocket(wsUrl);
+      
+      ws.onopen = () => {
+        console.log('Connected');
+        document.getElementById('conn-dot').classList.add('connected');
+        document.getElementById('conn-text').textContent = 'Connecté';
+        document.getElementById('dot-openclaw').classList.remove('error', 'warning');
+      };
+      
+      ws.onclose = () => {
+        console.log('Disconnected');
+        document.getElementById('conn-dot').classList.remove('connected');
+        document.getElementById('conn-text').textContent = 'Déconnecté';
+        document.getElementById('dot-openclaw').classList.add('error');
+        reconnectTimeout = setTimeout(connect, 3000);
+      };
+      
+      ws.onerror = (err) => {
+        console.error('WebSocket error:', err);
+      };
+      
+      ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          updateUI(data);
+        } catch (e) {
+          console.error('Parse error:', e);
+        }
+      };
+    }
+    
+    function updateUI(data) {
+      if (data.message) {
+        document.getElementById('message').textContent = data.message.text || '--';
+        document.getElementById('message-time').textContent = data.message.time || '--';
+      }
+      
+      if (data.temps) {
+        if (data.temps.salon) {
+          document.getElementById('temp-salon').innerHTML = 
+            `${data.temps.salon.current}<span class="card-unit">°C</span>`;
+          document.getElementById('temp-salon-target').textContent = 
+            `Cible: ${data.temps.salon.target}°C`;
+        }
+        if (data.temps.chambre) {
+          document.getElementById('temp-chambre').innerHTML = 
+            `${data.temps.chambre.current}<span class="card-unit">°C</span>`;
+          document.getElementById('temp-chambre-target').textContent = 
+            `Cible: ${data.temps.chambre.target}°C`;
+        }
+      }
+      
+      if (data.lights !== undefined) {
+        document.getElementById('lights-on').textContent = data.lights;
+        document.getElementById('lights-detail').textContent = 
+          `${data.lights} allumée${data.lights > 1 ? 's' : ''}`;
+      }
+      
+      if (data.nextEvent) {
+        document.getElementById('next-event').textContent = data.nextEvent.title || '--';
+        document.getElementById('next-event-time').textContent = data.nextEvent.time || '--';
+      }
+      
+      if (data.tasks !== undefined) {
+        document.getElementById('tasks-count').textContent = 
+          `${data.tasks} tâche${data.tasks > 1 ? 's' : ''}`;
+      }
+      
+      if (data.status) {
+        ['ha', 'openclaw', 'network'].forEach(s => {
+          const dot = document.getElementById(`dot-${s}`);
+          dot.classList.remove('error', 'warning');
+          if (data.status[s] === 'error') dot.classList.add('error');
+          else if (data.status[s] === 'warning') dot.classList.add('warning');
+        });
+      }
+      
+      document.getElementById('last-update').textContent = 
+        `MAJ: ${new Date().toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'})}`;
+    }
+    
+    // Clock
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('time').textContent = 
+        now.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'});
+      document.getElementById('date').textContent = 
+        now.toLocaleDateString('fr-FR', {weekday: 'long', day: 'numeric', month: 'long'});
+    }
+    
+    // Init
+    updateClock();
+    setInterval(updateClock, 1000);
+    connect();
+  </script>
+</body>
+</html>

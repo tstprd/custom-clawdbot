@@ -4,8 +4,17 @@ Dashboard sur vieux téléphone Android pour contrôle maison + terminal Claude.
 
 ## Specs écran
 
-- **Xiaomi 11 Lite 5G** : 2400 × 1080 px (landscape)
-- Dashboard optimisé pour cet écran
+| Téléphone | Résolution | Paysage | Dashboard |
+|-----------|------------|---------|-----------|
+| Xiaomi 11 Lite 5G | 2400 × 1080 | 1080 × 2400 | index.html |
+| Pixel 9 | 2424 × 1080 | 1080 × 2424 | index-pixel9.html |
+| **Samsung S10e** | 2280 × 1080 | 1080 × 2280 | index-s10e.html |
+
+### Samsung Galaxy S10e (actuel)
+- **Résolution physique** : 2280 × 1080 px
+- **Viewport CSS (landscape)** : ~760 × 360 px (DPR ~3.0)
+- **Encoche** : caméra punch-hole à droite en landscape
+- Dashboard optimisé : `index-s10e.html`
 
 ## Installation sur Raspberry Pi
 

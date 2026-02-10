@@ -1,0 +1,123 @@
+{
+  "description": "Master cron config - recurring jobs only. Briefs incluent Dwight + italien.",
+  "updatedAt": "2026-02-09",
+  "jobs": [
+    {
+      "name": "Daily Backup Commit",
+      "schedule": {"kind": "cron", "expr": "0 2 * * *", "tz": "Europe/Paris"},
+      "sessionTarget": "isolated",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Backup quotidien:\n1. Exporte les crons actuels vers _config/crons-backup.json\n2. Git add + commit + push vers jules/main"
+      }
+    },
+    {
+      "name": "Morning Brief - Weekday",
+      "schedule": {"kind": "cron", "expr": "40 8 * * 1-5", "tz": "Europe/Paris"},
+      "sessionTarget": "isolated",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Génère et envoie le brief du matin à Jules sur Telegram. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute\n- 3 mots italiens (prononciation + exemple)\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nTout dans UN SEUL message. Sois concis."
+      }
+    },
+    {
+      "name": "Midday Brief - Weekday",
+      "schedule": {"kind": "cron", "expr": "0 12 * * 1-5", "tz": "Europe/Paris"},
+      "sessionTarget": "isolated",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Génère et envoie le brief de midi à Jules sur Telegram. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts midday.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute\n- 3 mots italiens (prononciation + exemple)\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nTout dans UN SEUL message. Ultra concis."
+      }
+    },
+    {
+      "name": "Evening Brief - Weekday",
+      "schedule": {"kind": "cron", "expr": "30 18 * * 1-5", "tz": "Europe/Paris"},
+      "sessionTarget": "isolated",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Génère et envoie le brief du soir à Jules sur Telegram. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts evening.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute\n- 3 mots italiens (prononciation + exemple)\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nTout dans UN SEUL message. Sois concis."
+      }
+    },
+    {
+      "name": "Morning Brief - Weekend",
+      "schedule": {"kind": "cron", "expr": "0 10 * * 0,6", "tz": "Europe/Paris"},
+      "sessionTarget": "isolated",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Génère et envoie le brief du matin (weekend) à Jules sur Telegram. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute\n- 3 mots italiens (prononciation + exemple)\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nTout dans UN SEUL message. Sois concis."
+      }
+    },
+    {
+      "name": "Afternoon Brief - Weekend",
+      "schedule": {"kind": "cron", "expr": "0 14 * * 0,6", "tz": "Europe/Paris"},
+      "sessionTarget": "isolated",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Génère et envoie le brief de l'après-midi (weekend) à Jules sur Telegram. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts afternoon.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute\n- 3 mots italiens (prononciation + exemple)\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nTout dans UN SEUL message. Sois concis."
+      }
+    },
+    {
+      "name": "Surveillance Marchés - Matin",
+      "schedule": {"kind": "cron", "expr": "0 9 * * 1-5", "tz": "Europe/Paris"},
+      "sessionTarget": "isolated",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Vérifie les marchés (Capgemini CAP.PA, Bitcoin, Ethereum). Alerte Jules sur Telegram UNIQUEMENT si variation >5% en 24h."
+      }
+    },
+    {
+      "name": "Surveillance Marchés - Soir",
+      "schedule": {"kind": "cron", "expr": "0 18 * * 1-5", "tz": "Europe/Paris"},
+      "sessionTarget": "isolated",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Vérifie les marchés (Capgemini CAP.PA, Bitcoin, Ethereum). Alerte Jules sur Telegram UNIQUEMENT si variation >5% en 24h."
+      }
+    },
+    {
+      "name": "Sorties Cinéma",
+      "schedule": {"kind": "cron", "expr": "0 10 * * 3", "tz": "Europe/Paris"},
+      "sessionTarget": "isolated",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Vérifie les sorties cinéma de la semaine sur Allociné. Filtre selon goûts Jules (SF, thrillers, auteur, 4+/5). Si film intéressant, envoie sur Telegram. Sinon, ne rien envoyer."
+      }
+    },
+    {
+      "name": "Sorties Rennes Weekend",
+      "schedule": {"kind": "cron", "expr": "0 12 * * 3", "tz": "Europe/Paris"},
+      "sessionTarget": "isolated",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Vérifie les événements du weekend à Rennes sur jds.fr/rennes. Filtre selon goûts Jules. Si événement intéressant, envoie sur Telegram. Sinon, ne rien envoyer."
+      }
+    },
+    {
+      "name": "Rappel Sauna Aqua Tonic",
+      "schedule": {"kind": "cron", "expr": "0 19 * * 2", "tz": "Europe/Paris"},
+      "sessionTarget": "main",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "🧖 Rappel : Réserver Aqua Tonic pour demain midi ? (35€)"
+      }
+    },
+    {
+      "name": "Volley Check",
+      "schedule": {"kind": "cron", "expr": "0 19 * * 4", "tz": "Europe/Paris"},
+      "sessionTarget": "main",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "🏐 Rappel Volley : Tu es allé au volley cette semaine ?"
+      }
+    },
+    {
+      "name": "LinkedIn GenAI Post Reminder",
+      "schedule": {"kind": "every", "everyMs": 1209600000, "anchorMs": 1739178000000},
+      "sessionTarget": "main",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "🔔 RAPPEL LinkedIn GenAI : C'est le moment de poster !"
+      }
+    }
+  ]
+}
