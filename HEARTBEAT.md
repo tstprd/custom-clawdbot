@@ -1,6 +1,6 @@
 # HEARTBEAT.md
 
-**Aujourd'hui : Dimanche 8 février 2026**
+**Aujourd'hui : Jeudi 13 février 2026**
 
 *Contexte urgent pour le prochain reset. Pas de données techniques ici.*
 
@@ -11,19 +11,22 @@
 ## ⚠️ À traiter
 
 - **Token Gmail** : `alejmurot@gmail.com` expiré → `gog auth login --account alejmurot@gmail.com`
-- **LinkedIn GenAI** : Pousser Jules à rédiger Post #2 (rappel 17 fév) — c'est son intérêt pro, construire sa crédibilité expert IA
+- **LinkedIn GenAI** : Post #2 à rédiger (rappel 17 fév) — crédibilité expert IA
+- **Tâches Grocy** : 2 tâches en retard (VMC, Vitres) — draps/SDB/charges faits ce soir
 
 ## ✅ Récemment complété
 
-- Anniversaire Mélo (2 février) — Costume Dal-mafieux ✓
-- CV Anthropic envoyé (28/01)
-- Pi-hole configuré (192.168.1.89)
-- MaisonBot installé sur Raspberry Pi
-- Séjour Strasbourg (5-8 fév) ✓
+- Numéros de semaine ajoutés au dashboard calendrier ✓
+- Grocy : draps, SDB, charges marqués faits (12 fév) ✓
+- Dashboard TV maison créé (`_PERSONAL/dashboard/`) ✓
+- Sport tracking corrigé (7 fév = squash) ✓
 
 ## 📍 Contexte actif
 
-- **Retour Strasbourg** : Train demain 8h22 → Rennes
+- **Anne-Laure** : Train pour Lyon ce soir (23h)
+- **Dimanche 15** : Squash Le Garden 14h45
+- **Lundi 16** : RDV prénatal 18h + KAYS 19h15
+- **17-20 fév** : Lille Adeo
 
 ---
 

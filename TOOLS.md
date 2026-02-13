@@ -284,18 +284,62 @@ pnpm tsx skills/homeassistant/scripts/ha.ts off input_boolean.presence_jules_mar
 Get-Content ha-output.txt
 ```
 
-### Gestion présences (chauffage auto)
+### 📅 Gestion présences (chauffage auto)
+
+**⚠️ IMPORTANT : Utiliser SQLite comme source de vérité, puis sync vers HA**
+
+**DB:** `~/.clawdbot/local.db` table `presence_schedule`
+**Script:** `pnpm tsx skills/local-db/scripts/db-presence.ts`
+**Cron:** Lundi 9h → demande présences de la semaine
 
 ```powershell
-# Booléens de présence par jour
-input_boolean.presence_jules_lundi      # on/off
-input_boolean.presence_anne_laure_mardi # on/off
-# ... etc pour chaque jour
+cd C:\Users\jules\repo\clawdbot
 
-# Modifier présence
-pnpm tsx skills/homeassistant/scripts/ha.ts off input_boolean.presence_anne_laure_mardi
-pnpm tsx skills/homeassistant/scripts/ha.ts on input_boolean.presence_jules_vendredi
+# Voir la semaine en cours
+pnpm tsx skills/local-db/scripts/db-presence.ts week
+
+# Voir une semaine spécifique
+pnpm tsx skills/local-db/scripts/db-presence.ts week 2026-W08
+
+# Set un jour
+pnpm tsx skills/local-db/scripts/db-presence.ts set jules 2026-02-17 away
+pnpm tsx skills/local-db/scripts/db-presence.ts set anne-laure 2026-02-17 home
+
+# Set une semaine entière (pattern: H=home, A=away, ?=unknown)
+pnpm tsx skills/local-db/scripts/db-presence.ts week-set jules 2026-W08 HAAAHHA
+pnpm tsx skills/local-db/scripts/db-presence.ts week-set anne-laure 2026-W08 HHHHHHH
+
+# Sync vers Home Assistant (met à jour les input_boolean)
+pnpm tsx skills/local-db/scripts/db-presence.ts sync
+
+# Historique
+pnpm tsx skills/local-db/scripts/db-presence.ts history
 ```
+
+**Entités HA synchronisées:**
+- `input_boolean.presence_jules_lundi` ... `_dimanche`
+- `input_boolean.presence_anne_laure_lundi` ... `_dimanche`
+
+### 🧹 Tâches Grocy (corvées maison)
+
+**Entité HA:** `todo.grocy_chores`
+
+```powershell
+# Lister les tâches Grocy via API
+$env = Get-Content "C:\Users\jules\repo\claude-home\.env" -Raw
+$token = ($env -split "`n" | Where-Object { $_ -match "^HA_API_TOKEN=" }) -replace "^HA_API_TOKEN=", ""
+$url = "http://192.168.1.98:8123/api/services/todo/get_items?return_response"
+$body = @{entity_id = "todo.grocy_chores"} | ConvertTo-Json
+$headers = @{Authorization = "Bearer $token"; "Content-Type" = "application/json"}
+(Invoke-RestMethod -Uri $url -Method POST -Headers $headers -Body $body).service_response
+
+# Marquer une tâche comme faite
+$url = "http://192.168.1.98:8123/api/services/todo/update_item"
+$body = @{entity_id = "todo.grocy_chores"; item = "Changer les draps"; status = "completed"} | ConvertTo-Json
+Invoke-RestMethod -Uri $url -Method POST -Headers $headers -Body $body
+```
+
+**Tâches récurrentes:** Changer draps, Laver vitres, Aspirer VMC, Laver SDB, Maintenance Rocky, Payer charges
 
 ### ⚠️ Règle importante
 **Toujours utiliser ce skill pour Home Assistant** — ne pas deviner ou improviser !
