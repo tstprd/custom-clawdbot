@@ -1,0 +1,129 @@
+{
+  "backupDate": "2026-02-13T09:20:00+01:00",
+  "jobs": [
+    {
+      "id": "77875bb0-92a9-4661-a8f8-f3a9a4c90ae6",
+      "name": "Noon Brief - Weekday",
+      "schedule": { "kind": "cron", "expr": "0 12 * * 1-5", "tz": "Europe/Paris" },
+      "sessionTarget": "isolated",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Génère le brief du midi pour Jules...",
+        "deliver": false
+      }
+    },
+    {
+      "id": "10f77259-8577-4df2-989c-4fd5baf4ca12",
+      "name": "Evening Brief - Weekday",
+      "schedule": { "kind": "cron", "expr": "30 18 * * 1-5", "tz": "Europe/Paris" },
+      "sessionTarget": "isolated",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Génère le brief du soir pour Jules...",
+        "deliver": false
+      }
+    },
+    {
+      "id": "5f5e91bd-6373-4a97-bb8b-c54849604732",
+      "name": "Rappel achat bébé - Vendredi",
+      "schedule": { "kind": "at", "atMs": 1771005000000 },
+      "sessionTarget": "main",
+      "payload": { "kind": "systemEvent", "text": "🍼 Dernier rappel : Session achat bébé..." }
+    },
+    {
+      "id": "0406f105-4d98-477b-a368-7e36cda1fbcc",
+      "name": "Daily Backup Commit",
+      "schedule": { "kind": "cron", "expr": "0 2 * * *", "tz": "Europe/Paris" },
+      "sessionTarget": "isolated",
+      "payload": { "kind": "agentTurn", "message": "Backup quotidien..." }
+    },
+    {
+      "id": "f227f14e-cb52-46af-9337-d19cdc4a8c71",
+      "name": "Morning Brief - Weekend",
+      "schedule": { "kind": "cron", "expr": "0 10 * * 0,6", "tz": "Europe/Paris" },
+      "sessionTarget": "isolated",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Génère le brief du matin (weekend)...",
+        "deliver": false
+      }
+    },
+    {
+      "id": "4b8e20a8-2cce-4c2f-a0cd-2d2fd707d71f",
+      "name": "Morning Brief - Weekday",
+      "schedule": { "kind": "cron", "expr": "40 8 * * 1-5", "tz": "Europe/Paris" },
+      "sessionTarget": "isolated",
+      "payload": { "kind": "agentTurn", "message": "Génère le brief du matin...", "deliver": false }
+    },
+    {
+      "id": "bb695765-6862-47d9-9704-51fc7ebc1fa7",
+      "name": "LinkedIn Post #2 - Email Reminder",
+      "schedule": { "kind": "at", "atMs": 1771315200000 },
+      "sessionTarget": "isolated",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Envoie un email à jules.mudes@capgemini.com..."
+      }
+    },
+    {
+      "id": "6d99fa25-48cc-44e4-824b-c3eaf5e63611",
+      "name": "Rappel Sauna Aqua Tonic",
+      "schedule": { "kind": "cron", "expr": "0 19 * * 2", "tz": "Europe/Paris" },
+      "sessionTarget": "main",
+      "payload": { "kind": "systemEvent", "text": "🧖 Rappel : Réserver Aqua Tonic..." }
+    },
+    {
+      "id": "3ac76763-3603-415b-b716-1a08a8bd5aea",
+      "name": "Sorties Cinéma",
+      "schedule": { "kind": "cron", "expr": "0 10 * * 3", "tz": "Europe/Paris" },
+      "sessionTarget": "isolated",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Vérifie les sorties cinéma...",
+        "deliver": false
+      }
+    },
+    {
+      "id": "cdf015db-b110-4393-8e35-98ae2b83bd8f",
+      "name": "Sorties Rennes Weekend",
+      "schedule": { "kind": "cron", "expr": "0 12 * * 3", "tz": "Europe/Paris" },
+      "sessionTarget": "isolated",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Vérifie les événements du weekend à Rennes...",
+        "deliver": false
+      }
+    },
+    {
+      "id": "2f7f8d51-39ba-400d-8ba9-fb766effccf0",
+      "name": "Volley Check",
+      "schedule": { "kind": "cron", "expr": "0 19 * * 4", "tz": "Europe/Paris" },
+      "sessionTarget": "main",
+      "payload": { "kind": "systemEvent", "text": "RAPPEL VOLLEY..." }
+    },
+    {
+      "id": "fd95f09c-e9ed-451b-8ddb-6574c03e1378",
+      "name": "Sport tracking hebdo",
+      "schedule": { "kind": "cron", "expr": "0 19 * * 4", "tz": "Europe/Paris" },
+      "sessionTarget": "main",
+      "payload": { "kind": "systemEvent", "text": "RAPPEL SPORT..." }
+    },
+    {
+      "id": "788923b3-45a0-4d4a-93f5-c28fece865a3",
+      "name": "LinkedIn GenAI Post Reminder",
+      "schedule": { "kind": "every", "everyMs": 1209600000, "anchorMs": 1739178000000 },
+      "sessionTarget": "main",
+      "payload": { "kind": "systemEvent", "text": "🔔 RAPPEL LinkedIn GenAI..." }
+    },
+    {
+      "id": "f1273251-a90d-4fe9-9bd9-903de309839f",
+      "name": "Check liste bébé avec AL",
+      "schedule": { "kind": "at", "atMs": 1772305200000 },
+      "sessionTarget": "main",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "RAPPEL: Demander à Jules où en est Anne-Laure..."
+      }
+    }
+  ]
+}

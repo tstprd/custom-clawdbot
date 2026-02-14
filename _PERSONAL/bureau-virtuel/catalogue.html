@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Catalogue Assets 3D</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        overflow: hidden;
+        background: #0a0a0a;
+        font-family: system-ui, sans-serif;
+      }
+      canvas {
+        display: block;
+      }
+
+      #loading {
+        position: fixed;
+        inset: 0;
+        background: #0a0a0a;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        color: #666;
+        font-size: 14px;
+        transition: opacity 0.5s;
+      }
+      #loading.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid #222;
+        border-top-color: #4a7c59;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 16px;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      #catalogue {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: rgba(0, 0, 0, 0.9);
+        padding: 20px;
+        border-radius: 12px;
+        color: #fff;
+        z-index: 100;
+        max-width: 300px;
+        font-size: 13px;
+        border: 1px solid #333;
+      }
+      #catalogue h2 {
+        margin-bottom: 12px;
+        color: #4a7c59;
+        font-size: 16px;
+      }
+      .item {
+        padding: 8px 0;
+        border-bottom: 1px solid #222;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .item:last-child {
+        border-bottom: none;
+      }
+      .num {
+        background: #4a7c59;
+        color: #fff;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 12px;
+        flex-shrink: 0;
+      }
+      .name {
+        flex: 1;
+      }
+      .desc {
+        color: #888;
+        font-size: 11px;
+      }
+
+      #info {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 11px;
+        z-index: 100;
+      }
+    </style>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="loading">
+      <div class="spinner"></div>
+      <div id="progress">Chargement des assets...</div>
+    </div>
+
+    <div id="catalogue">
+      <h2>🛒 Catalogue Assets</h2>
+      <div class="item">
+        <span class="num">1</span>
+        <div>
+          <div class="name">Helmet</div>
+          <div class="desc">Casque sci-fi détaillé (3.6 MB)</div>
+        </div>
+      </div>
+      <div class="item">
+        <span class="num">2</span>
+        <div>
+          <div class="name">Chair</div>
+          <div class="desc">Chaise design (3.9 MB)</div>
+        </div>
+      </div>
+      <div class="item">
+        <span class="num">3</span>
+        <div>
+          <div class="name">Dish + Olives</div>
+          <div class="desc">Plat irisé avec olives (5.5 MB)</div>
+        </div>
+      </div>
+      <div class="item">
+        <span class="num">4</span>
+        <div>
+          <div class="name">Dragon</div>
+          <div class="desc">Sculpture dragon verre (6.1 MB)</div>
+        </div>
+      </div>
+      <div class="item">
+        <span class="num">5</span>
+        <div>
+          <div class="name">Shoe</div>
+          <div class="desc">Sneaker détaillée (7.5 MB)</div>
+        </div>
+      </div>
+      <div class="item">
+        <span class="num">6</span>
+        <div>
+          <div class="name">Toy Car</div>
+          <div class="desc">Voiture jouet vintage (5.2 MB)</div>
+        </div>
+      </div>
+      <div class="item">
+        <span class="num">7</span>
+        <div>
+          <div class="name">Camera</div>
+          <div class="desc">Appareil photo antique (16.7 MB)</div>
+        </div>
+      </div>
+      <p style="margin-top: 12px; color: #888; font-size: 11px">Dis-moi lesquels garder !</p>
+    </div>
+
+    <div id="info">Glissez pour tourner autour</div>
+
+    <script type="module">
+      import * as THREE from "three";
+      import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+      import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+      import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+      import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+      import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+      import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        50,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        100,
+      );
+      camera.position.set(0, 3, 12);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.0;
+      renderer.shadowMap.enabled = true;
+      document.body.appendChild(renderer.domElement);
+
+      const composer = new EffectComposer(renderer);
+      composer.addPass(new RenderPass(scene, camera));
+      composer.addPass(
+        new UnrealBloomPass(
+          new THREE.Vector2(window.innerWidth, window.innerHeight),
+          0.2,
+          0.5,
+          0.9,
+        ),
+      );
+
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.target.set(0, 1, 0);
+      controls.enableDamping = true;
+
+      // Environment
+      const pmremGenerator = new THREE.PMREMGenerator(renderer);
+      new RGBELoader().load(
+        "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/studio_small_08_1k.hdr",
+        (texture) => {
+          const envMap = pmremGenerator.fromEquirectangular(texture).texture;
+          scene.environment = envMap;
+          scene.background = new THREE.Color(0x111111);
+          texture.dispose();
+        },
+      );
+
+      // Lights
+      scene.add(new THREE.AmbientLight(0xffffff, 0.3));
+      const sun = new THREE.DirectionalLight(0xffffff, 2);
+      sun.position.set(5, 10, 5);
+      sun.castShadow = true;
+      scene.add(sun);
+
+      // Floor
+      const floor = new THREE.Mesh(
+        new THREE.PlaneGeometry(30, 30),
+        new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.3 }),
+      );
+      floor.rotation.x = -Math.PI / 2;
+      floor.receiveShadow = true;
+      scene.add(floor);
+
+      // Grid of pedestals
+      const pedestalMat = new THREE.MeshStandardMaterial({
+        color: 0x2a2a2a,
+        roughness: 0.5,
+        metalness: 0.2,
+      });
+
+      const assets = [
+        { file: "helmet.glb", scale: 0.8, y: 1.2, label: "1" },
+        { file: "chair.glb", scale: 1.5, y: 0.8, label: "2" },
+        { file: "dish.glb", scale: 3, y: 1.1, label: "3" },
+        { file: "dragon.glb", scale: 0.015, y: 1.2, label: "4" },
+        { file: "shoe.glb", scale: 10, y: 1.1, label: "5" },
+        { file: "toycar.glb", scale: 40, y: 1.15, label: "6" },
+        { file: "camera.glb", scale: 0.03, y: 1.3, label: "7" },
+      ];
+
+      const positions = [
+        [-6, 0],
+        [-3, 0],
+        [0, 0],
+        [3, 0],
+        [-4.5, -4],
+        [-1.5, -4],
+        [1.5, -4],
+      ];
+
+      const loader = new GLTFLoader();
+      let loaded = 0;
+      const progress = document.getElementById("progress");
+
+      assets.forEach((asset, i) => {
+        const [x, z] = positions[i];
+
+        // Pedestal
+        const pedestal = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 0.9, 1, 32), pedestalMat);
+        pedestal.position.set(x, 0.5, z);
+        pedestal.castShadow = true;
+        pedestal.receiveShadow = true;
+        scene.add(pedestal);
+
+        // Number label
+        const labelCanvas = document.createElement("canvas");
+        labelCanvas.width = 128;
+        labelCanvas.height = 128;
+        const ctx = labelCanvas.getContext("2d");
+        ctx.fillStyle = "#4a7c59";
+        ctx.beginPath();
+        ctx.arc(64, 64, 50, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#fff";
+        ctx.font = "bold 60px sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(asset.label, 64, 64);
+
+        const labelTexture = new THREE.CanvasTexture(labelCanvas);
+        const labelSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: labelTexture }));
+        labelSprite.position.set(x, 2.5, z);
+        labelSprite.scale.set(0.5, 0.5, 1);
+        scene.add(labelSprite);
+
+        // Load model
+        loader.load(
+          `models/${asset.file}`,
+          (gltf) => {
+            const model = gltf.scene;
+            model.scale.setScalar(asset.scale);
+            model.position.set(x, asset.y, z);
+            model.traverse((child) => {
+              if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+              }
+            });
+            scene.add(model);
+
+            loaded++;
+            progress.textContent = `Chargement... ${loaded}/${assets.length}`;
+            if (loaded >= assets.length) {
+              document.getElementById("loading").classList.add("hidden");
+            }
+          },
+          undefined,
+          (err) => {
+            console.error(`Error loading ${asset.file}:`, err);
+            loaded++;
+            if (loaded >= assets.length) {
+              document.getElementById("loading").classList.add("hidden");
+            }
+          },
+        );
+      });
+
+      function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        composer.render();
+      }
+      animate();
+
+      window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        composer.setSize(window.innerWidth, window.innerHeight);
+      });
+    </script>
+  </body>
+</html>

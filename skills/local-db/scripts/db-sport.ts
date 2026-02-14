@@ -1,263 +1,206 @@
+#!/usr/bin/env npx tsx
 /**
- * Track sport sessions for heatmap display
- * Sports: squash, volley, etc.
+ * Sport Sessions Database
+ * Track actual completed sport sessions (not future bookings)
+ *
+ * Usage:
+ *   pnpm tsx skills/local-db/scripts/db-sport.ts add <date> <sport> [location] [duration_min] [notes]
+ *   pnpm tsx skills/local-db/scripts/db-sport.ts list [--month YYYY-MM]
+ *   pnpm tsx skills/local-db/scripts/db-sport.ts stats [--month YYYY-MM]
+ *   pnpm tsx skills/local-db/scripts/db-sport.ts delete <id>
  */
-import { getDb, saveDb } from "./db-init.js";
 
-interface SportSession {
-  id?: number;
-  date: string; // YYYY-MM-DD
-  sport: string;
-  source?: string; // email, manual, calendar
-  notes?: string;
-  created_at?: string;
-}
+import Database from "better-sqlite3";
+import * as os from "os";
+import * as path from "path";
 
-async function initSportTable() {
-  const db = await getDb();
-  db.run(`
-    CREATE TABLE IF NOT EXISTS sport_sessions (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      date TEXT NOT NULL,
-      sport TEXT NOT NULL,
-      source TEXT DEFAULT 'manual',
-      notes TEXT,
-      created_at TEXT DEFAULT (datetime('now')),
-      UNIQUE(date, sport)
-    );
+const DB_PATH = path.join(os.homedir(), ".clawdbot", "local.db");
+const db = new Database(DB_PATH);
+
+// Create table if not exists
+db.exec(`
+  CREATE TABLE IF NOT EXISTS sport_sessions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    date TEXT NOT NULL,
+    sport TEXT NOT NULL,
+    location TEXT,
+    duration_min INTEGER,
+    notes TEXT,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+  )
+`);
+
+const [, , command, ...args] = process.argv;
+
+function add(date: string, sport: string, location?: string, duration?: string, notes?: string) {
+  // Normalize sport name
+  const sportNorm = sport.toLowerCase();
+  const sportName = sportNorm.includes("squash")
+    ? "squash"
+    : sportNorm.includes("volley")
+      ? "volley"
+      : sport;
+
+  const stmt = db.prepare(`
+    INSERT INTO sport_sessions (date, sport, location, duration_min, notes)
+    VALUES (?, ?, ?, ?, ?)
   `);
-  db.run(`CREATE INDEX IF NOT EXISTS idx_sport_date ON sport_sessions(date);`);
-  db.run(`CREATE INDEX IF NOT EXISTS idx_sport_type ON sport_sessions(sport);`);
-  saveDb(db);
-  db.close();
+
+  const result = stmt.run(
+    date,
+    sportName,
+    location || null,
+    duration ? parseInt(duration) : null,
+    notes || null,
+  );
+  console.log(`✅ Session ajoutée: ${sportName} le ${date} (id: ${result.lastInsertRowid})`);
 }
 
-async function addSession(s: SportSession) {
-  const db = await getDb();
-  await initSportTable();
-  
-  try {
-    db.run(
-      `INSERT OR REPLACE INTO sport_sessions (date, sport, source, notes) VALUES (?, ?, ?, ?)`,
-      [s.date, s.sport, s.source || 'manual', s.notes || null]
-    );
-    saveDb(db);
-    console.log(`✅ Added ${s.sport} session on ${s.date}`);
-  } catch (e) {
-    console.log(`⚠️ Session already exists: ${s.sport} on ${s.date}`);
-  }
-  db.close();
-}
+function list(month?: string) {
+  let query = "SELECT * FROM sport_sessions";
+  const params: string[] = [];
 
-async function listSessions(options?: { sport?: string; year?: number; weeks?: number }) {
-  const db = await getDb();
-  await initSportTable();
-  
-  let query = "SELECT * FROM sport_sessions WHERE 1=1";
-  const params: (string | number)[] = [];
-  
-  if (options?.sport) {
-    query += " AND sport = ?";
-    params.push(options.sport);
+  if (month) {
+    query += " WHERE date LIKE ?";
+    params.push(`${month}%`);
   }
-  
-  if (options?.year) {
-    query += " AND date LIKE ?";
-    params.push(`${options.year}%`);
-  }
-  
-  if (options?.weeks) {
-    const cutoff = new Date();
-    cutoff.setDate(cutoff.getDate() - (options.weeks * 7));
-    query += " AND date >= ?";
-    params.push(cutoff.toISOString().split('T')[0]);
-  }
-  
+
   query += " ORDER BY date DESC";
-  
-  const result = db.exec(query, params);
-  db.close();
-  
-  if (!result.length) {
-    console.log("📭 No sessions found");
-    return [];
+
+  const rows = db.prepare(query).all(...params) as any[];
+
+  if (rows.length === 0) {
+    console.log("Aucune session trouvée.");
+    return;
   }
-  
-  const cols = result[0].columns;
-  const rows = result[0].values.map(row => {
-    const obj: Record<string, unknown> = {};
-    cols.forEach((col, i) => obj[col] = row[i]);
-    return obj;
-  });
-  
-  console.table(rows.map(r => ({
-    date: r.date,
-    sport: r.sport,
-    source: r.source
-  })));
-  
-  return rows;
+
+  console.log("\n📊 Sessions sport:\n");
+  for (const row of rows) {
+    const icon = row.sport === "squash" ? "🎾" : row.sport === "volley" ? "🏐" : "🏃";
+    const duration = row.duration_min ? ` (${row.duration_min}min)` : "";
+    const loc = row.location ? ` @ ${row.location}` : "";
+    console.log(`  ${icon} ${row.date} - ${row.sport}${duration}${loc}`);
+    if (row.notes) console.log(`     └─ ${row.notes}`);
+  }
+  console.log("");
 }
 
-async function stats(year?: number) {
-  const db = await getDb();
-  await initSportTable();
-  
-  const yearFilter = year ? `WHERE date LIKE '${year}%'` : '';
-  
-  const result = db.exec(`
+function stats(month?: string) {
+  let whereClause = "";
+  const params: string[] = [];
+
+  if (month) {
+    whereClause = "WHERE date LIKE ?";
+    params.push(`${month}%`);
+  }
+
+  // Current month stats
+  const now = new Date();
+  const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+  const lastMonth =
+    now.getMonth() === 0
+      ? `${now.getFullYear() - 1}-12`
+      : `${now.getFullYear()}-${String(now.getMonth()).padStart(2, "0")}`;
+
+  const currentStats = db
+    .prepare(`
     SELECT sport, COUNT(*) as count 
     FROM sport_sessions 
-    ${yearFilter}
-    GROUP BY sport 
-    ORDER BY count DESC
-  `);
-  
-  const weekly = db.exec(`
-    SELECT 
-      strftime('%Y-W%W', date) as week,
-      sport,
-      COUNT(*) as count
-    FROM sport_sessions
-    ${yearFilter}
-    GROUP BY week, sport
-    ORDER BY week DESC
-    LIMIT 20
-  `);
-  
-  db.close();
-  
-  console.log("\n🏆 Total par sport:");
-  if (result.length) {
-    for (const row of result[0].values) {
-      const emoji = row[0] === 'squash' ? '🏸' : row[0] === 'volley' ? '🏐' : '🏃';
-      console.log(`  ${emoji} ${row[0]}: ${row[1]} sessions`);
+    WHERE date LIKE ? 
+    GROUP BY sport
+  `)
+    .all(`${currentMonth}%`) as any[];
+
+  const lastStats = db
+    .prepare(`
+    SELECT sport, COUNT(*) as count 
+    FROM sport_sessions 
+    WHERE date LIKE ? 
+    GROUP BY sport
+  `)
+    .all(`${lastMonth}%`) as any[];
+
+  const getCounts = (stats: any[]) => {
+    const result: Record<string, number> = { squash: 0, volley: 0 };
+    for (const s of stats) {
+      result[s.sport] = s.count;
     }
-  }
-  
-  console.log("\n📅 Par semaine (récent):");
-  if (weekly.length) {
-    for (const row of weekly[0].values) {
-      console.log(`  ${row[0]} - ${row[1]}: ${row[2]}`);
-    }
+    return result;
+  };
+
+  const current = getCounts(currentStats);
+  const last = getCounts(lastStats);
+
+  console.log("\n📈 Stats sport:\n");
+  console.log(`  Mois en cours (${currentMonth}):`);
+  console.log(`    🎾 Squash: ${current.squash} (M-1: ${last.squash})`);
+  console.log(`    🏐 Volley: ${current.volley} (M-1: ${last.volley})`);
+  console.log("");
+
+  // Return JSON for dashboard
+  return { current, last };
+}
+
+function remove(id: string) {
+  const stmt = db.prepare("DELETE FROM sport_sessions WHERE id = ?");
+  const result = stmt.run(parseInt(id));
+  if (result.changes > 0) {
+    console.log(`✅ Session ${id} supprimée`);
+  } else {
+    console.log(`❌ Session ${id} non trouvée`);
   }
 }
 
-async function heatmapData(weeks = 52) {
-  const db = await getDb();
-  await initSportTable();
-  
-  const cutoff = new Date();
-  cutoff.setDate(cutoff.getDate() - (weeks * 7));
-  
-  const result = db.exec(`
-    SELECT date, GROUP_CONCAT(sport) as sports, COUNT(*) as count
-    FROM sport_sessions
-    WHERE date >= ?
-    GROUP BY date
-    ORDER BY date
-  `, [cutoff.toISOString().split('T')[0]]);
-  
-  db.close();
-  
-  if (!result.length) {
-    console.log("{}");
-    return {};
-  }
-  
-  const data: Record<string, { count: number; sports: string[] }> = {};
-  for (const row of result[0].values) {
-    data[row[0] as string] = {
-      count: row[2] as number,
-      sports: (row[1] as string).split(',')
-    };
-  }
-  
-  console.log(JSON.stringify(data, null, 2));
-  return data;
-}
-
-async function deleteSession(date: string, sport: string) {
-  const db = await getDb();
-  db.run("DELETE FROM sport_sessions WHERE date = ? AND sport = ?", [date, sport]);
-  saveDb(db);
-  db.close();
-  console.log(`🗑️ Deleted ${sport} on ${date}`);
-}
-
-// CLI
-const [,, cmd, ...args] = process.argv;
-
-switch (cmd) {
-  case "add": {
-    const date = args[0];
-    const sport = args[1];
-    const source = args.find(a => a.startsWith("--source="))?.split("=")[1];
-    const notes = args.find(a => a.startsWith("--notes="))?.split("=")[1];
-    
-    if (!date || !sport) {
-      console.log("Usage: db-sport.ts add <YYYY-MM-DD> <sport> [--source=...] [--notes=...]");
+// Parse command
+switch (command) {
+  case "add":
+    if (args.length < 2) {
+      console.log("Usage: db-sport.ts add <date> <sport> [location] [duration_min] [notes]");
+      console.log("Example: db-sport.ts add 2026-02-06 squash 'Le Garden' 60");
       process.exit(1);
     }
-    addSession({ date, sport, source, notes });
+    add(args[0], args[1], args[2], args[3], args[4]);
     break;
-  }
-  
-  case "list": {
-    const sport = args.find(a => !a.startsWith("--"));
-    const weeks = args.find(a => a.startsWith("--weeks="))?.split("=")[1];
-    const year = args.find(a => a.startsWith("--year="))?.split("=")[1];
-    listSessions({ 
-      sport, 
-      weeks: weeks ? parseInt(weeks) : undefined,
-      year: year ? parseInt(year) : undefined
-    });
+
+  case "list":
+    const monthArg = args.indexOf("--month");
+    const monthVal = monthArg >= 0 ? args[monthArg + 1] : undefined;
+    list(monthVal);
     break;
-  }
-  
-  case "stats": {
-    const year = args[0] ? parseInt(args[0]) : undefined;
-    stats(year);
+
+  case "stats":
+    const statsMonthArg = args.indexOf("--month");
+    const statsMonthVal = statsMonthArg >= 0 ? args[statsMonthArg + 1] : undefined;
+    const result = stats(statsMonthVal);
+    if (args.includes("--json")) {
+      console.log(JSON.stringify(result));
+    }
     break;
-  }
-  
-  case "heatmap": {
-    const weeks = args[0] ? parseInt(args[0]) : 52;
-    heatmapData(weeks);
-    break;
-  }
-  
-  case "delete": {
-    const date = args[0];
-    const sport = args[1];
-    if (!date || !sport) {
-      console.log("Usage: db-sport.ts delete <YYYY-MM-DD> <sport>");
+
+  case "delete":
+    if (!args[0]) {
+      console.log("Usage: db-sport.ts delete <id>");
       process.exit(1);
     }
-    deleteSession(date, sport);
+    remove(args[0]);
     break;
-  }
-  
-  case "init":
-    initSportTable().then(() => console.log("✅ Sport table ready"));
-    break;
-  
+
   default:
     console.log(`
-🏃 Sport Sessions Tracker
+Sport Sessions Database
 
 Commands:
-  init                          Create table
-  add <date> <sport> [options]  Log a session
-  list [sport] [--weeks=N]      List sessions
-  stats [year]                  Show statistics
-  heatmap [weeks]               JSON data for heatmap (default 52 weeks)
-  delete <date> <sport>         Remove a session
+  add <date> <sport> [location] [duration] [notes]  - Add a completed session
+  list [--month YYYY-MM]                            - List sessions
+  stats [--json]                                    - Show stats for dashboard
+  delete <id>                                       - Remove a session
 
 Examples:
-  pnpm tsx skills/local-db/scripts/db-sport.ts add 2026-02-01 squash --source=email
-  pnpm tsx skills/local-db/scripts/db-sport.ts add 2026-01-30 volley --source=manual
-  pnpm tsx skills/local-db/scripts/db-sport.ts list --weeks=8
-  pnpm tsx skills/local-db/scripts/db-sport.ts stats 2026
+  db-sport.ts add 2026-02-06 squash "Le Garden" 60
+  db-sport.ts add 2026-02-04 volley
+  db-sport.ts list --month 2026-02
+  db-sport.ts stats --json
 `);
 }
+
+db.close();

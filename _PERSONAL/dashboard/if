@@ -1,0 +1,2 @@
+fatal: path '_PERSONAL/dashboard/index.html' exists, but not 'index.html'
+hint: Did you mean 'HEAD:_PERSONAL/dashboard/index.html' aka 'HEAD:./index.html'?

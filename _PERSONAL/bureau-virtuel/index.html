@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bureau Virtuel</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        overflow: hidden;
+        background: #000;
+        font-family: system-ui, sans-serif;
+      }
+      canvas {
+        display: block;
+      }
+
+      #loading {
+        position: fixed;
+        inset: 0;
+        background: #050505;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        color: #444;
+        font-size: 14px;
+        transition: opacity 0.8s;
+      }
+      #loading.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid #1a1a1a;
+        border-top-color: #ff4466;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 16px;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      #joystick-zone {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90px;
+        height: 90px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 255, 255, 0.15);
+        border-radius: 50%;
+        touch-action: none;
+        z-index: 100;
+      }
+      #joystick-knob {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 36px;
+        height: 36px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      #info {
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        color: rgba(255, 255, 255, 0.3);
+        font-size: 10px;
+        z-index: 100;
+      }
+    </style>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="loading">
+      <div class="spinner"></div>
+      <div>Chargement...</div>
+    </div>
+    <div id="joystick-zone"><div id="joystick-knob"></div></div>
+    <div id="info">Glissez pour tourner • Joystick pour avancer</div>
+
+    <script type="module">
+      import * as THREE from "three";
+      import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+      import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+      import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+      import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+      import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+      import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+      import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
+
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x050508);
+      scene.fog = new THREE.Fog(0x050508, 8, 25);
+
+      const camera = new THREE.PerspectiveCamera(
+        55,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        100,
+      );
+      camera.position.set(0, 1.6, 4);
+
+      const renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        powerPreference: "high-performance",
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 0.8;
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      document.body.appendChild(renderer.domElement);
+
+      // Post-processing - bloom for neon glow
+      const composer = new EffectComposer(renderer);
+      composer.addPass(new RenderPass(scene, camera));
+      const bloomPass = new UnrealBloomPass(
+        new THREE.Vector2(window.innerWidth, window.innerHeight),
+        0.8,
+        0.4,
+        0.85,
+      );
+      composer.addPass(bloomPass);
+      composer.addPass(new OutputPass());
+
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.target.set(0, 0.8, 0);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.05;
+      controls.maxPolarAngle = Math.PI * 0.6;
+      controls.minPolarAngle = Math.PI * 0.35;
+      controls.maxDistance = 8;
+      controls.minDistance = 2;
+      controls.enablePan = false;
+
+      // Environment for reflections
+      const pmremGenerator = new THREE.PMREMGenerator(renderer);
+      new RGBELoader().load(
+        "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/studio_small_08_1k.hdr",
+        (texture) => {
+          const envMap = pmremGenerator.fromEquirectangular(texture).texture;
+          scene.environment = envMap;
+          texture.dispose();
+          pmremGenerator.dispose();
+        },
+      );
+
+      // === LIGHTING - Neon ambiance ===
+
+      // Minimal ambient
+      scene.add(new THREE.AmbientLight(0x111122, 0.3));
+
+      // RED neon strip (left side)
+      const redLight = new THREE.RectAreaLight(0xff2244, 15, 0.1, 4);
+      redLight.position.set(-5, 2, 0);
+      redLight.lookAt(0, 2, 0);
+      scene.add(redLight);
+
+      // Visible red neon tube
+      const redNeonGeo = new THREE.BoxGeometry(0.05, 3, 0.05);
+      const redNeonMat = new THREE.MeshBasicMaterial({ color: 0xff2244 });
+      const redNeon = new THREE.Mesh(redNeonGeo, redNeonMat);
+      redNeon.position.set(-4.95, 2, 0);
+      scene.add(redNeon);
+
+      // BLUE neon strip (right side)
+      const blueLight = new THREE.RectAreaLight(0x2266ff, 15, 0.1, 4);
+      blueLight.position.set(5, 2, 0);
+      blueLight.lookAt(0, 2, 0);
+      scene.add(blueLight);
+
+      // Visible blue neon tube
+      const blueNeonGeo = new THREE.BoxGeometry(0.05, 3, 0.05);
+      const blueNeonMat = new THREE.MeshBasicMaterial({ color: 0x2266ff });
+      const blueNeon = new THREE.Mesh(blueNeonGeo, blueNeonMat);
+      blueNeon.position.set(4.95, 2, 0);
+      scene.add(blueNeon);
+
+      // Subtle top light
+      const topLight = new THREE.SpotLight(0xffffff, 8, 10, Math.PI / 6, 0.5, 1);
+      topLight.position.set(0, 5, 0);
+      topLight.target.position.set(0, 0, 0);
+      topLight.castShadow = true;
+      topLight.shadow.mapSize.width = 1024;
+      topLight.shadow.mapSize.height = 1024;
+      scene.add(topLight);
+      scene.add(topLight.target);
+
+      // === ROOM ===
+
+      // Floor - dark reflective
+      const floorMat = new THREE.MeshStandardMaterial({
+        color: 0x0a0a0a,
+        roughness: 0.1,
+        metalness: 0.2,
+        envMapIntensity: 0.5,
+      });
+      const floor = new THREE.Mesh(new THREE.PlaneGeometry(20, 20), floorMat);
+      floor.rotation.x = -Math.PI / 2;
+      floor.receiveShadow = true;
+      scene.add(floor);
+
+      // Walls - very dark
+      const wallMat = new THREE.MeshStandardMaterial({ color: 0x080808, roughness: 0.95 });
+
+      const backWall = new THREE.Mesh(new THREE.PlaneGeometry(20, 8), wallMat);
+      backWall.position.set(0, 4, -6);
+      scene.add(backWall);
+
+      const leftWall = new THREE.Mesh(new THREE.PlaneGeometry(12, 8), wallMat);
+      leftWall.position.set(-5, 4, 0);
+      leftWall.rotation.y = Math.PI / 2;
+      scene.add(leftWall);
+
+      const rightWall = new THREE.Mesh(new THREE.PlaneGeometry(12, 8), wallMat);
+      rightWall.position.set(5, 4, 0);
+      rightWall.rotation.y = -Math.PI / 2;
+      scene.add(rightWall);
+
+      // === CENTRAL TABLE ===
+
+      const tableMat = new THREE.MeshStandardMaterial({
+        color: 0x1a1a1a,
+        roughness: 0.2,
+        metalness: 0.8,
+        envMapIntensity: 1.5,
+      });
+
+      // Table top - large, sleek
+      const tableTop = new THREE.Mesh(new THREE.BoxGeometry(2.5, 0.08, 1.5), tableMat);
+      tableTop.position.set(0, 0.75, 0);
+      tableTop.castShadow = true;
+      tableTop.receiveShadow = true;
+      scene.add(tableTop);
+
+      // Table legs - minimal
+      const legMat = new THREE.MeshStandardMaterial({
+        color: 0x111111,
+        roughness: 0.3,
+        metalness: 0.9,
+      });
+      const legGeo = new THREE.CylinderGeometry(0.03, 0.03, 0.72, 12);
+      [
+        [-1.1, -0.6],
+        [1.1, -0.6],
+        [-1.1, 0.6],
+        [1.1, 0.6],
+      ].forEach(([x, z]) => {
+        const leg = new THREE.Mesh(legGeo, legMat);
+        leg.position.set(x, 0.36, z);
+        leg.castShadow = true;
+        scene.add(leg);
+      });
+
+      // === WALL ART - Photo frames with nature/plants ===
+
+      // Frame material
+      const frameMat = new THREE.MeshStandardMaterial({
+        color: 0x1a1a1a,
+        roughness: 0.5,
+        metalness: 0.3,
+      });
+
+      // Create frames with colored "photos" (simulated)
+      function createFrame(x, y, z, rotY, w, h, photoColor) {
+        const group = new THREE.Group();
+
+        // Frame border
+        const frame = new THREE.Mesh(new THREE.BoxGeometry(w + 0.1, h + 0.1, 0.05), frameMat);
+        group.add(frame);
+
+        // Photo inside (gradient texture simulation)
+        const photoMat = new THREE.MeshBasicMaterial({ color: photoColor });
+        const photo = new THREE.Mesh(new THREE.PlaneGeometry(w - 0.05, h - 0.05), photoMat);
+        photo.position.z = 0.03;
+        group.add(photo);
+
+        group.position.set(x, y, z);
+        group.rotation.y = rotY;
+        return group;
+      }
+
+      // Back wall - large nature photo (dark green tones)
+      scene.add(createFrame(0, 2.5, -5.9, 0, 2, 1.2, 0x1a3020));
+      scene.add(createFrame(-2, 2, -5.9, 0, 0.8, 1, 0x152515));
+      scene.add(createFrame(2, 2.2, -5.9, 0, 0.6, 0.9, 0x0d1a0d));
+
+      // Left wall - plant photos
+      scene.add(createFrame(-4.9, 2.5, -1, Math.PI / 2, 1, 1.3, 0x1a2818));
+      scene.add(createFrame(-4.9, 2, 1.5, Math.PI / 2, 0.7, 0.9, 0x142214));
+
+      // Right wall - abstract nature
+      scene.add(createFrame(4.9, 2.3, 0, -Math.PI / 2, 1.2, 0.8, 0x181a28));
+
+      // === LOAD HELMET ON TABLE ===
+
+      let assetsLoaded = 0;
+      function checkLoaded() {
+        assetsLoaded++;
+        if (assetsLoaded >= 1) {
+          setTimeout(() => document.getElementById("loading").classList.add("hidden"), 500);
+        }
+      }
+
+      const gltfLoader = new GLTFLoader();
+      gltfLoader.load(
+        "models/helmet.glb",
+        (gltf) => {
+          const helmet = gltf.scene;
+          helmet.scale.setScalar(0.35);
+          helmet.position.set(0, 0.85, 0);
+          helmet.rotation.y = 0.3;
+          helmet.traverse((child) => {
+            if (child.isMesh) {
+              child.castShadow = true;
+              child.receiveShadow = true;
+            }
+          });
+          scene.add(helmet);
+          checkLoaded();
+        },
+        undefined,
+        () => checkLoaded(),
+      );
+
+      // === FLOATING FOLDERS ===
+
+      const folders = [
+        { name: "Fougères", pos: [-1.8, 1.5, -2], color: 0x4a7c59 },
+        { name: "Projets", pos: [1.8, 1.7, -1.5], color: 0x5d8aa8 },
+        { name: "Photos", pos: [0, 2, -3.5], color: 0xd4a574 },
+      ];
+
+      const folderMeshes = [];
+      folders.forEach((f) => {
+        const group = new THREE.Group();
+        const mat = new THREE.MeshStandardMaterial({
+          color: f.color,
+          roughness: 0.3,
+          metalness: 0.4,
+          emissive: f.color,
+          emissiveIntensity: 0.15,
+        });
+
+        const body = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.32, 0.04), mat);
+        body.castShadow = true;
+        group.add(body);
+
+        const tab = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.08, 0.04), mat);
+        tab.position.set(-0.12, 0.2, 0);
+        group.add(tab);
+
+        const glow = new THREE.PointLight(f.color, 0.4, 1.2);
+        glow.position.set(0, 0, 0.1);
+        group.add(glow);
+
+        group.position.set(...f.pos);
+        group.userData = { originalY: f.pos[1] };
+        scene.add(group);
+        folderMeshes.push(group);
+      });
+
+      // === JOYSTICK ===
+
+      const joystickZone = document.getElementById("joystick-zone");
+      const joystickKnob = document.getElementById("joystick-knob");
+      let joystickActive = false,
+        joystickX = 0,
+        joystickY = 0;
+
+      function onJoystick(e) {
+        if (!joystickActive) return;
+        e.preventDefault();
+        const rect = joystickZone.getBoundingClientRect();
+        const touch = e.touches ? e.touches[0] : e;
+        let dx = touch.clientX - (rect.left + rect.width / 2);
+        let dy = touch.clientY - (rect.top + rect.height / 2);
+        const max = rect.width / 2 - 18;
+        const dist = Math.hypot(dx, dy);
+        if (dist > max) {
+          dx = (dx / dist) * max;
+          dy = (dy / dist) * max;
+        }
+        joystickKnob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+        joystickX = dx / max;
+        joystickY = dy / max;
+      }
+
+      joystickZone.addEventListener("touchstart", (e) => {
+        joystickActive = true;
+        onJoystick(e);
+      });
+      joystickZone.addEventListener("mousedown", (e) => {
+        joystickActive = true;
+        onJoystick(e);
+      });
+      document.addEventListener("touchmove", onJoystick, { passive: false });
+      document.addEventListener("mousemove", onJoystick);
+      ["touchend", "mouseup"].forEach((ev) =>
+        document.addEventListener(ev, () => {
+          joystickActive = false;
+          joystickKnob.style.transform = "translate(-50%, -50%)";
+          joystickX = joystickY = 0;
+        }),
+      );
+
+      // === ANIMATION ===
+
+      const clock = new THREE.Clock();
+
+      function animate() {
+        requestAnimationFrame(animate);
+        const delta = clock.getDelta();
+        const time = clock.getElapsedTime();
+
+        // Floating folders
+        folderMeshes.forEach((f, i) => {
+          f.position.y = f.userData.originalY + Math.sin(time * 0.7 + i * 1.3) * 0.04;
+          f.rotation.y = Math.sin(time * 0.25 + i * 0.9) * 0.12;
+        });
+
+        // Subtle neon flicker
+        redNeonMat.color.setHSL(0, 0.9, 0.5 + Math.sin(time * 8) * 0.02);
+        blueNeonMat.color.setHSL(0.6, 0.9, 0.5 + Math.sin(time * 7 + 1) * 0.02);
+
+        // Joystick movement
+        if (Math.abs(joystickX) > 0.05 || Math.abs(joystickY) > 0.05) {
+          const speed = 2 * delta;
+          const forward = new THREE.Vector3();
+          camera.getWorldDirection(forward);
+          forward.y = 0;
+          forward.normalize();
+          const right = new THREE.Vector3().crossVectors(forward, new THREE.Vector3(0, 1, 0));
+          const move = forward
+            .multiplyScalar(-joystickY * speed)
+            .add(right.multiplyScalar(joystickX * speed));
+          camera.position.add(move);
+          controls.target.add(move);
+          camera.position.x = Math.max(-4, Math.min(4, camera.position.x));
+          camera.position.z = Math.max(-4, Math.min(5, camera.position.z));
+        }
+
+        controls.update();
+        composer.render();
+      }
+      animate();
+
+      window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        composer.setSize(window.innerWidth, window.innerHeight);
+      });
+    </script>
+  </body>
+</html>

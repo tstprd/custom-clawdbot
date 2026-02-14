@@ -1,12 +1,12 @@
 # HEARTBEAT.md
 
-**Aujourd'hui : Jeudi 13 février 2026**
+**Aujourd'hui : Samedi 14 février 2026**
 
-*Contexte urgent pour le prochain reset. Pas de données techniques ici.*
+_Contexte urgent pour le prochain reset. Pas de données techniques ici._
 
 ## 🔴 Urgent
 
-*(rien)*
+_(rien)_
 
 ## ⚠️ À traiter
 
@@ -20,14 +20,15 @@
 - Grocy : draps, SDB, charges marqués faits (12 fév) ✓
 - Dashboard TV maison créé (`_PERSONAL/dashboard/`) ✓
 - Sport tracking corrigé (7 fév = squash) ✓
+- Calendrier voyage corrigé : Lille 18-20, train retour 23 fév ✓
 
 ## 📍 Contexte actif
 
 - **Anne-Laure** : Train pour Lyon ce soir (23h)
 - **Dimanche 15** : Squash Le Garden 14h45
 - **Lundi 16** : RDV prénatal 18h + KAYS 19h15
-- **17-20 fév** : Lille Adeo
+- **18-20 fév** : Lille Adeo
 
 ---
 
-*Ce fichier doit rester court. Les tâches vont dans SQLite, les projets dans Obsidian.*
+_Ce fichier doit rester court. Les tâches vont dans SQLite, les projets dans Obsidian._

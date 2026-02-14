@@ -29,12 +29,16 @@
         flex: 1;
         min-height: 0;
       }
+
+      /* LEFT COLUMN - DateTime + Floorplans */
       .left-column {
         width: 28%;
         display: flex;
         flex-direction: column;
         gap: 10px;
       }
+
+      /* DateTime header */
       .header-card {
         background: #111;
         border-radius: 12px;
@@ -65,6 +69,8 @@
         font-weight: 200;
         color: #4a7c59;
       }
+
+      /* Floorplans container */
       .floorplans-card {
         flex: 1;
         background: #111;
@@ -128,6 +134,7 @@
         left: 28%;
         transform: translate(-50%, -50%);
       }
+
       .countdown-card {
         background: #111;
         border-radius: 12px;
@@ -144,12 +151,16 @@
         font-size: 1.1rem;
         color: #888;
       }
+
+      /* MIDDLE: Weather + Sport Stats */
       .middle-column {
         width: 280px;
         display: flex;
         flex-direction: column;
         gap: 10px;
       }
+
+      /* Sport Stats - compact */
       .stats-card {
         background: #111;
         border-radius: 10px;
@@ -188,6 +199,9 @@
         font-size: 0.65rem;
         color: #666;
       }
+      .stat-icon {
+        font-size: 1rem;
+      }
       .squash-ball-big {
         width: 16px;
         height: 16px;
@@ -214,6 +228,13 @@
         bottom: 1px;
         left: 3px;
       }
+      .legend-row {
+        font-size: 0.65rem;
+        color: #666;
+        margin-top: 4px;
+      }
+
+      /* Weather */
       .weather-card {
         background: #111;
         border-radius: 12px;
@@ -283,6 +304,8 @@
         font-size: 0.55rem;
         width: 22px;
       }
+
+      /* RIGHT: Calendar */
       .calendar-container {
         flex: 1;
         background: #111;
@@ -350,7 +373,7 @@
       }
       .cal-sport {
         position: absolute;
-        top: 2px;
+        bottom: 4px;
         right: 4px;
       }
       .cal-presence {
@@ -359,6 +382,20 @@
         left: 2px;
         display: flex;
         gap: 2px;
+      }
+      .presence-badge {
+        font-size: 0.65rem;
+        padding: 2px 4px;
+        border-radius: 3px;
+        font-weight: 700;
+      }
+      .presence-badge.jules {
+        background: #2980b9;
+        color: #fff;
+      }
+      .presence-badge.al {
+        background: #8e44ad;
+        color: #fff;
       }
       .squash-ball {
         width: 22px;
@@ -389,20 +426,8 @@
       .volley-icon {
         font-size: 1.4rem;
       }
-      .presence-badge {
-        font-size: 0.65rem;
-        padding: 2px 4px;
-        border-radius: 3px;
-        font-weight: 700;
-      }
-      .presence-badge.jules {
-        background: #2980b9;
-        color: #fff;
-      }
-      .presence-badge.al {
-        background: #8e44ad;
-        color: #fff;
-      }
+
+      /* BOTTOM: Tasks + News */
       .bottom-row {
         display: flex;
         gap: 12px;
@@ -464,6 +489,8 @@
         color: #888;
         flex: 1;
       }
+
+      /* News card */
       .news-card {
         background: #111;
         border-radius: 10px;
@@ -495,6 +522,7 @@
   </head>
   <body>
     <div class="main-row">
+      <!-- LEFT: DateTime + Floorplans -->
       <div class="left-column">
         <div class="header-card">
           <div class="datetime-row">
@@ -513,20 +541,21 @@
           </div>
           <div class="floor-wrapper floor-bas">
             <img src="floorplan-bas-lit.png" class="floorplan-img" alt="RDC" />
-            <div class="temp-overlay chambre">18,1°</div>
-            <div class="temp-overlay bureau-al">17,0°</div>
-            <div class="temp-overlay bureau-jules">19,8°</div>
-            <div class="temp-overlay sdb">17,8°</div>
-            <div class="temp-overlay sdd">18,3°</div>
+            <div class="temp-overlay chambre">18,5°</div>
+            <div class="temp-overlay bureau-al">17,2°</div>
+            <div class="temp-overlay bureau-jules">19,5°</div>
+            <div class="temp-overlay sdb">18,5°</div>
+            <div class="temp-overlay sdd">17,7°</div>
           </div>
         </div>
 
         <div class="countdown-card">
-          <div class="countdown-value" id="countdown">97</div>
+          <div class="countdown-value" id="countdown">--</div>
           <div class="countdown-label">jours avant bébé</div>
         </div>
       </div>
 
+      <!-- MIDDLE: Sport Stats + Weather (à gauche du calendrier) -->
       <div class="middle-column">
         <div class="stats-card">
           <div class="stats-title">Sport</div>
@@ -534,8 +563,8 @@
             <div class="stat-item">
               <span class="squash-ball-big"></span>
               <div>
-                <div class="stat-value squash">3</div>
-                <div class="stat-prev">M-1: 2</div>
+                <div class="stat-value squash">2</div>
+                <div class="stat-prev">M-1: 3</div>
               </div>
             </div>
             <div class="stat-item">
@@ -558,9 +587,9 @@
             </tr>
             <tr class="today-row">
               <td class="day-label">Auj</td>
-              <td>10° 🌧</td>
-              <td>9° 🌧</td>
-              <td>9° 🌧</td>
+              <td>8° ⛅<span style="font-size: 1.2em">🌧</span></td>
+              <td>9° ⛅<span style="font-size: 1.2em">🌧</span></td>
+              <td>9° <span style="font-size: 1.2em">🌧</span></td>
             </tr>
             <tr>
               <td class="day-label" style="font-size: 0.8rem">
@@ -569,88 +598,39 @@
               <td>
                 <div class="rain-vertical">
                   <div class="rain-row">
-                    <span class="hour">21h</span>
-                    <div class="bar-container"><div class="bar" style="width: 0%"></div></div>
-                    <span class="mm">-</span>
-                  </div>
-                  <div class="rain-row">
-                    <span class="hour">22h</span>
-                    <div class="bar-container"><div class="bar" style="width: 0%"></div></div>
-                    <span class="mm">-</span>
-                  </div>
-                  <div class="rain-row">
-                    <span class="hour">23h</span>
-                    <div class="bar-container"><div class="bar" style="width: 0%"></div></div>
-                    <span class="mm">-</span>
-                  </div>
-                  <div class="rain-row">
                     <span class="hour">0h</span>
                     <div class="bar-container"><div class="bar" style="width: 0%"></div></div>
                     <span class="mm">-</span>
                   </div>
                   <div class="rain-row">
                     <span class="hour">1h</span>
-                    <div class="bar-container"><div class="bar" style="width: 4%"></div></div>
-                    <span class="mm">0.1</span>
+                    <div class="bar-container"><div class="bar" style="width: 0%"></div></div>
+                    <span class="mm">-</span>
                   </div>
                   <div class="rain-row">
                     <span class="hour">2h</span>
                     <div class="bar-container"><div class="bar" style="width: 0%"></div></div>
                     <span class="mm">-</span>
                   </div>
-                </div>
-              </td>
-              <td>
-                <div class="rain-vertical">
                   <div class="rain-row">
-                    <span class="hour">21h</span>
-                    <div class="bar-container"><div class="bar high" style="width: 60%"></div></div>
-                    <span class="mm">1.2</span>
+                    <span class="hour">3h</span>
+                    <div class="bar-container"><div class="bar" style="width: 0%"></div></div>
+                    <span class="mm">-</span>
                   </div>
                   <div class="rain-row">
-                    <span class="hour">22h</span>
-                    <div class="bar-container"><div class="bar" style="width: 45%"></div></div>
-                    <span class="mm">0.9</span>
+                    <span class="hour">4h</span>
+                    <div class="bar-container"><div class="bar" style="width: 25%"></div></div>
+                    <span class="mm">0.5</span>
                   </div>
                   <div class="rain-row">
-                    <span class="hour">23h</span>
-                    <div class="bar-container"><div class="bar" style="width: 40%"></div></div>
-                    <span class="mm">0.8</span>
-                  </div>
-                  <div class="rain-row">
-                    <span class="hour">0h</span>
-                    <div class="bar-container"><div class="bar high" style="width: 65%"></div></div>
-                    <span class="mm">1.3</span>
-                  </div>
-                  <div class="rain-row">
-                    <span class="hour">1h</span>
+                    <span class="hour">5h</span>
                     <div class="bar-container"><div class="bar" style="width: 30%"></div></div>
                     <span class="mm">0.6</span>
                   </div>
-                  <div class="rain-row">
-                    <span class="hour">2h</span>
-                    <div class="bar-container"><div class="bar" style="width: 5%"></div></div>
-                    <span class="mm">0.1</span>
-                  </div>
                 </div>
               </td>
               <td>
                 <div class="rain-vertical">
-                  <div class="rain-row">
-                    <span class="hour">21h</span>
-                    <div class="bar-container"><div class="bar" style="width: 0%"></div></div>
-                    <span class="mm">-</span>
-                  </div>
-                  <div class="rain-row">
-                    <span class="hour">22h</span>
-                    <div class="bar-container"><div class="bar" style="width: 0%"></div></div>
-                    <span class="mm">-</span>
-                  </div>
-                  <div class="rain-row">
-                    <span class="hour">23h</span>
-                    <div class="bar-container"><div class="bar" style="width: 0%"></div></div>
-                    <span class="mm">-</span>
-                  </div>
                   <div class="rain-row">
                     <span class="hour">0h</span>
                     <div class="bar-container"><div class="bar" style="width: 0%"></div></div>
@@ -666,43 +646,93 @@
                     <div class="bar-container"><div class="bar" style="width: 0%"></div></div>
                     <span class="mm">-</span>
                   </div>
+                  <div class="rain-row">
+                    <span class="hour">3h</span>
+                    <div class="bar-container"><div class="bar" style="width: 0%"></div></div>
+                    <span class="mm">-</span>
+                  </div>
+                  <div class="rain-row">
+                    <span class="hour">4h</span>
+                    <div class="bar-container"><div class="bar" style="width: 0%"></div></div>
+                    <span class="mm">-</span>
+                  </div>
+                  <div class="rain-row">
+                    <span class="hour">5h</span>
+                    <div class="bar-container"><div class="bar" style="width: 0%"></div></div>
+                    <span class="mm">-</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="rain-vertical">
+                  <div class="rain-row">
+                    <span class="hour">0h</span>
+                    <div class="bar-container"><div class="bar" style="width: 0%"></div></div>
+                    <span class="mm">-</span>
+                  </div>
+                  <div class="rain-row">
+                    <span class="hour">1h</span>
+                    <div class="bar-container"><div class="bar" style="width: 0%"></div></div>
+                    <span class="mm">-</span>
+                  </div>
+                  <div class="rain-row">
+                    <span class="hour">2h</span>
+                    <div class="bar-container"><div class="bar" style="width: 0%"></div></div>
+                    <span class="mm">-</span>
+                  </div>
+                  <div class="rain-row">
+                    <span class="hour">3h</span>
+                    <div class="bar-container"><div class="bar" style="width: 0%"></div></div>
+                    <span class="mm">-</span>
+                  </div>
+                  <div class="rain-row">
+                    <span class="hour">4h</span>
+                    <div class="bar-container"><div class="bar" style="width: 15%"></div></div>
+                    <span class="mm">0.3</span>
+                  </div>
+                  <div class="rain-row">
+                    <span class="hour">5h</span>
+                    <div class="bar-container"><div class="bar" style="width: 10%"></div></div>
+                    <span class="mm">0.2</span>
+                  </div>
                 </div>
               </td>
             </tr>
             <tr>
+              <td class="day-label">Ven</td>
+              <td>6/8° <span style="font-size: 1.1em">🌧</span></td>
+              <td>7/9° <span style="font-size: 1.1em">🌧</span></td>
+              <td>3/9° <span style="font-size: 1.1em">🌧</span></td>
+            </tr>
+            <tr>
               <td class="day-label">Sam</td>
-              <td>5/8° 🌧</td>
-              <td>2/8° 🌧</td>
-              <td>0/5° 🌧</td>
+              <td>1/7° <span style="font-size: 1.1em">🌧</span></td>
+              <td>3/6° <span style="font-size: 1.1em">🌧</span></td>
+              <td>1/6° ⛅</td>
             </tr>
             <tr>
               <td class="day-label">Dim</td>
-              <td>5/13° 🌧</td>
-              <td>1/10° 🌧</td>
-              <td>0/7° 🌨️</td>
+              <td>3/9° <span style="font-size: 1.1em">☀️</span></td>
+              <td>2/8° <span style="font-size: 1.1em">☀️</span></td>
+              <td>1/7° <span style="font-size: 1.1em">☀️</span></td>
             </tr>
             <tr>
               <td class="day-label">Lun</td>
-              <td>6/10° 🌧</td>
-              <td>7/10° 🌧</td>
-              <td>5/9° 🌨️</td>
+              <td>4/10° ⛅</td>
+              <td>3/9° ⛅</td>
+              <td>2/8° ⛅</td>
             </tr>
             <tr>
               <td class="day-label">Mar</td>
-              <td>5/9° 🌧</td>
-              <td>5/11° 🌧</td>
-              <td>3/6° 🌧</td>
-            </tr>
-            <tr>
-              <td class="day-label">Mer</td>
-              <td>8/12° 🌧</td>
-              <td>7/13° 🌧</td>
-              <td>2/10° 🌨️</td>
+              <td>5/11° ⛅</td>
+              <td>4/10° ⛅</td>
+              <td>3/9° ⛅</td>
             </tr>
           </table>
         </div>
       </div>
 
+      <!-- RIGHT: Calendar -->
       <div class="calendar-container">
         <div class="calendar-grid">
           <div class="cal-day-name">Lun</div>
@@ -712,6 +742,7 @@
           <div class="cal-day-name">Ven</div>
           <div class="cal-day-name">Sam</div>
           <div class="cal-day-name">Dim</div>
+
           <div class="cal-day other-month"></div>
           <div class="cal-day other-month"></div>
           <div class="cal-day other-month"></div>
@@ -719,115 +750,82 @@
           <div class="cal-day other-month"></div>
           <div class="cal-day other-month"></div>
           <div class="cal-day">
-            <span class="cal-day-num">1</span>
-            <span class="cal-sport"><span class="squash-ball"></span></span>
-
-            <div class="cal-presence"><span class="presence-badge al">AL</span></div>
+            <span class="cal-week-num">S05</span><span class="cal-day-num">1</span
+            ><span class="cal-sport"><span class="squash-ball"></span></span>
+            <div class="cal-presence">
+              <span class="presence-badge jules">J</span><span class="presence-badge al">AL</span>
+            </div>
           </div>
-          <div class="cal-day">
-            <span class="cal-week-num">S06</span>
-            <span class="cal-day-num">2</span>
 
+          <div class="cal-day">
+            <span class="cal-week-num">S06</span><span class="cal-day-num">2</span
+            ><span class="cal-sport"><span class="volley-icon">🏐</span></span>
             <div class="cal-presence">
               <span class="presence-badge jules">J</span><span class="presence-badge al">AL</span>
             </div>
           </div>
           <div class="cal-day">
             <span class="cal-day-num">3</span>
-
-            <div class="cal-event">Prénatal</div>
             <div class="cal-presence">
               <span class="presence-badge jules">J</span><span class="presence-badge al">AL</span>
             </div>
           </div>
           <div class="cal-day">
             <span class="cal-day-num">4</span>
-            <span class="cal-sport"><span class="volley-icon">🏐</span></span>
-            <div class="cal-event">🚄</div>
-            <div class="cal-presence">
-              <span class="presence-badge jules">J</span><span class="presence-badge al">AL</span>
-            </div>
+            <div class="cal-presence"><span class="presence-badge jules">J</span></div>
           </div>
-          <div class="cal-day">
-            <span class="cal-day-num">5</span>
-
-            <div class="cal-event">Strasbourg</div>
-            <div class="cal-presence">
-              <span class="presence-badge jules">J</span><span class="presence-badge al">AL</span>
-            </div>
-          </div>
+          <div class="cal-day"><span class="cal-day-num">5</span></div>
           <div class="cal-day">
             <span class="cal-day-num">6</span>
-            <span class="cal-sport"><span class="squash-ball"></span></span>
-
-            <div class="cal-presence">
-              <span class="presence-badge jules">J</span><span class="presence-badge al">AL</span>
-            </div>
+            <div class="cal-presence"><span class="presence-badge al">AL</span></div>
           </div>
           <div class="cal-day">
-            <span class="cal-day-num">7</span>
-
+            <span class="cal-day-num">7</span
+            ><span class="cal-sport"><span class="squash-ball"></span></span>
             <div class="cal-presence"><span class="presence-badge al">AL</span></div>
           </div>
           <div class="cal-day">
             <span class="cal-day-num">8</span>
-
             <div class="cal-presence"><span class="presence-badge al">AL</span></div>
           </div>
-          <div class="cal-day">
-            <span class="cal-week-num">S07</span>
-            <span class="cal-day-num">9</span>
 
-            <div class="cal-event">🚄</div>
+          <div class="cal-day">
+            <span class="cal-week-num">S07</span><span class="cal-day-num">9</span>
             <div class="cal-presence">
               <span class="presence-badge jules">J</span><span class="presence-badge al">AL</span>
             </div>
           </div>
           <div class="cal-day">
             <span class="cal-day-num">10</span>
-
             <div class="cal-presence">
               <span class="presence-badge jules">J</span><span class="presence-badge al">AL</span>
             </div>
           </div>
           <div class="cal-day">
             <span class="cal-day-num">11</span>
-
-            <div class="cal-event">Anniv pene…</div>
-            <div class="cal-presence">
-              <span class="presence-badge jules">J</span><span class="presence-badge al">AL</span>
-            </div>
-          </div>
-          <div class="cal-day">
-            <span class="cal-day-num">12</span>
-
-            <div class="cal-event">AL→Lyon</div>
-            <div class="cal-presence">
-              <span class="presence-badge jules">J</span><span class="presence-badge al">AL</span>
-            </div>
+            <div class="cal-presence"><span class="presence-badge jules">J</span></div>
           </div>
           <div class="cal-day today">
+            <span class="cal-day-num">12</span>
+            <div class="cal-event">AL→Lyon</div>
+            <div class="cal-presence"><span class="presence-badge jules">J</span></div>
+          </div>
+          <div class="cal-day">
             <span class="cal-day-num">13</span>
-
-            <div class="cal-presence">
-              <span class="presence-badge jules">J</span><span class="presence-badge al">AL</span>
-            </div>
+            <div class="cal-presence"><span class="presence-badge jules">J</span></div>
           </div>
           <div class="cal-day">
             <span class="cal-day-num">14</span>
-
-            <div class="cal-presence"><span class="presence-badge al">AL</span></div>
+            <div class="cal-presence"><span class="presence-badge jules">J</span></div>
           </div>
           <div class="cal-day">
             <span class="cal-day-num">15</span>
-            <span class="cal-sport"><span class="squash-ball"></span></span>
-
-            <div class="cal-presence"><span class="presence-badge al">AL</span></div>
+            <div class="cal-event">Squash</div>
+            <div class="cal-presence"><span class="presence-badge jules">J</span></div>
           </div>
-          <div class="cal-day">
-            <span class="cal-week-num">S08</span>
-            <span class="cal-day-num">16</span>
 
+          <div class="cal-day">
+            <span class="cal-week-num">S08</span><span class="cal-day-num">16</span>
             <div class="cal-event">Prénatal</div>
             <div class="cal-presence">
               <span class="presence-badge jules">J</span><span class="presence-badge al">AL</span>
@@ -835,159 +833,136 @@
           </div>
           <div class="cal-day">
             <span class="cal-day-num">17</span>
-
+            <div class="cal-event">Lille</div>
             <div class="cal-presence">
               <span class="presence-badge jules">J</span><span class="presence-badge al">AL</span>
             </div>
           </div>
           <div class="cal-day">
             <span class="cal-day-num">18</span>
-
-            <div class="cal-presence">
-              <span class="presence-badge jules">J</span><span class="presence-badge al">AL</span>
-            </div>
+            <div class="cal-event">Adeo</div>
           </div>
           <div class="cal-day">
             <span class="cal-day-num">19</span>
-
-            <div class="cal-presence">
-              <span class="presence-badge jules">J</span><span class="presence-badge al">AL</span>
-            </div>
+            <div class="cal-event">Adeo</div>
           </div>
           <div class="cal-day">
             <span class="cal-day-num">20</span>
-
-            <div class="cal-presence">
-              <span class="presence-badge jules">J</span><span class="presence-badge al">AL</span>
-            </div>
+            <div class="cal-event">Adeo</div>
+            <div class="cal-presence"><span class="presence-badge al">AL</span></div>
           </div>
           <div class="cal-day">
             <span class="cal-day-num">21</span>
-
             <div class="cal-presence"><span class="presence-badge al">AL</span></div>
           </div>
           <div class="cal-day">
             <span class="cal-day-num">22</span>
-
             <div class="cal-presence"><span class="presence-badge al">AL</span></div>
           </div>
-          <div class="cal-day">
-            <span class="cal-week-num">S09</span>
-            <span class="cal-day-num">23</span>
 
+          <div class="cal-day">
+            <span class="cal-week-num">S09</span><span class="cal-day-num">23</span>
             <div class="cal-presence">
               <span class="presence-badge jules">J</span><span class="presence-badge al">AL</span>
             </div>
           </div>
           <div class="cal-day">
             <span class="cal-day-num">24</span>
-
             <div class="cal-presence">
               <span class="presence-badge jules">J</span><span class="presence-badge al">AL</span>
             </div>
           </div>
           <div class="cal-day">
             <span class="cal-day-num">25</span>
-
-            <div class="cal-presence">
-              <span class="presence-badge jules">J</span><span class="presence-badge al">AL</span>
-            </div>
+            <div class="cal-presence"><span class="presence-badge jules">J</span></div>
           </div>
           <div class="cal-day">
             <span class="cal-day-num">26</span>
-
-            <div class="cal-presence">
-              <span class="presence-badge jules">J</span><span class="presence-badge al">AL</span>
-            </div>
+            <div class="cal-presence"><span class="presence-badge jules">J</span></div>
           </div>
           <div class="cal-day">
             <span class="cal-day-num">27</span>
-
             <div class="cal-presence">
               <span class="presence-badge jules">J</span><span class="presence-badge al">AL</span>
             </div>
           </div>
           <div class="cal-day">
             <span class="cal-day-num">28</span>
-
-            <div class="cal-presence"><span class="presence-badge al">AL</span></div>
+            <div class="cal-presence">
+              <span class="presence-badge jules">J</span><span class="presence-badge al">AL</span>
+            </div>
           </div>
           <div class="cal-day other-month"></div>
         </div>
       </div>
     </div>
 
+    <!-- BOTTOM: Tasks + News -->
     <div class="bottom-row">
       <div class="tasks-card">
         <div class="tasks-header">Tâches</div>
         <div class="tasks-grid">
           <div class="task-item">
             <div class="task-left">
-              <i class="ph ph-shower"></i>
-              <span class="task-name">Laver</span>
-              <span class="task-status ok">10 mars</span>
+              <i class="ph ph-bed"></i><span class="task-name">Draps</span
+              ><span class="task-status ok">9 fév</span>
             </div>
-            <span class="task-desc">Laver la SDB</span>
+            <span class="task-desc">Changés dimanche dernier</span>
           </div>
           <div class="task-item">
             <div class="task-left">
-              <i class="ph ph-bed"></i>
-              <span class="task-name">Changer</span>
-              <span class="task-status ok">25 févr.</span>
+              <i class="ph ph-shower"></i><span class="task-name">SDB</span
+              ><span class="task-status ok">8 fév</span>
             </div>
-            <span class="task-desc">Changer les draps</span>
+            <span class="task-desc">Lavée ce weekend</span>
           </div>
           <div class="task-item">
             <div class="task-left">
-              <i class="ph ph-fan"></i>
-              <span class="task-name">Aspirer</span>
-              <span class="task-status overdue">5 févr.</span>
+              <i class="ph ph-money"></i><span class="task-name">Charges</span
+              ><span class="task-status overdue">20 oct</span>
+            </div>
+            <span class="task-desc">À payer</span>
+          </div>
+          <div class="task-item">
+            <div class="task-left">
+              <i class="ph ph-robot"></i><span class="task-name">Rocky</span
+              ><span class="task-status ok">24 jan</span>
+            </div>
+            <span class="task-desc">Fait il y a 3 semaines</span>
+          </div>
+          <div class="task-item">
+            <div class="task-left">
+              <i class="ph ph-fan"></i><span class="task-name">VMC</span
+              ><span class="task-status overdue">5 oct</span>
             </div>
             <span class="task-desc">Aspirer les grilles</span>
           </div>
           <div class="task-item">
             <div class="task-left">
-              <i class="ph ph-shower"></i>
-              <span class="task-name">Laver</span>
-              <span class="task-status ok">21 févr.</span>
+              <i class="ph ph-frame-corners"></i><span class="task-name">Vitres</span
+              ><span class="task-status ok">10 mars</span>
             </div>
-            <span class="task-desc">Laver la SDB</span>
-          </div>
-          <div class="task-item">
-            <div class="task-left">
-              <i class="ph ph-robot"></i>
-              <span class="task-name">Maintenance</span>
-              <span class="task-status overdue">3 févr.</span>
-            </div>
-            <span class="task-desc">Maintenance robot</span>
-          </div>
-          <div class="task-item">
-            <div class="task-left">
-              <i class="ph ph-money"></i>
-              <span class="task-name">Payer</span>
-              <span class="task-status overdue">1 janv.</span>
-            </div>
-            <span class="task-desc">https://come.neotimm.com/extranet/#/login</span>
+            <span class="task-desc">Prochain nettoyage</span>
           </div>
         </div>
       </div>
       <div class="news-card">
         <div class="news-header">📰 Actualités</div>
         <div class="news-item">
-          Données météo live via Open-Meteo
-          <div class="news-source">Dashboard • maintenant</div>
+          IA : OpenAI lance GPT-5 avec capacités multimodales
+          <div class="news-source">Le Monde • 2h</div>
         </div>
         <div class="news-item">
-          Calendrier synchronisé avec Google
-          <div class="news-source">gog CLI • auto</div>
+          Météo : Tempête prévue sur le Nord ce weekend
+          <div class="news-source">France Info • 3h</div>
         </div>
         <div class="news-item">
-          Tâches depuis Grocy/Home Assistant
-          <div class="news-source">HA API • auto</div>
+          Tech : Apple annonce Vision Pro 2 pour juin
+          <div class="news-source">Les Échos • 5h</div>
         </div>
         <div class="news-item">
-          Généré le 13/02/2026 21:56:42
-          <div class="news-source">generate.ts</div>
+          Sport : PSG qualifié en quarts de Champions League
+          <div class="news-source">L'Équipe • 6h</div>
         </div>
       </div>
     </div>

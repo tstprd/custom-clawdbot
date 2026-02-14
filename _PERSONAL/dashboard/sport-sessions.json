@@ -1,0 +1,16 @@
+{
+  "sessions": [
+    { "date": "2026-01-18", "sport": "squash", "location": "Le Garden", "time": "10:45" },
+    { "date": "2026-01-25", "sport": "squash", "location": "Le Garden" },
+    { "date": "2026-02-01", "sport": "squash", "location": "Le Garden" },
+    { "date": "2026-02-04", "sport": "volley" },
+    { "date": "2026-02-06", "sport": "squash", "location": "Le Garden" },
+    {
+      "date": "2026-02-15",
+      "sport": "squash",
+      "location": "Le Garden",
+      "time": "14:45",
+      "planned": true
+    }
+  ]
+}
