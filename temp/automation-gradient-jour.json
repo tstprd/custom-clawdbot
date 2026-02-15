@@ -1,0 +1,33 @@
+{
+  "id": "gradient_chambre_jour_auto",
+  "alias": "Gradient Chambre - Mode Jour Auto",
+  "description": "Met la lumiere du jour quand on allume le gradient entre lever et coucher du soleil",
+  "mode": "single",
+  "triggers": [
+    {
+      "trigger": "state",
+      "entity_id": "light.lampe_gradient",
+      "to": "on"
+    }
+  ],
+  "conditions": [
+    {
+      "condition": "sun",
+      "after": "sunrise",
+      "before": "sunset"
+    }
+  ],
+  "actions": [
+    {
+      "delay": { "seconds": 1 }
+    },
+    {
+      "action": "light.turn_on",
+      "target": { "entity_id": "light.lampe_gradient" },
+      "data": {
+        "color_temp_kelvin": 5500,
+        "brightness_pct": 100
+      }
+    }
+  ]
+}

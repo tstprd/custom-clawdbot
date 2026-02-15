@@ -1,0 +1,29 @@
+{
+  "id": "gradient_chambre_nuit_auto",
+  "alias": "Gradient Chambre - Mode Nuit Auto",
+  "description": "Met le mode Soir Cozy quand on allume le gradient apres le coucher du soleil",
+  "mode": "single",
+  "triggers": [
+    {
+      "trigger": "state",
+      "entity_id": "light.lampe_gradient",
+      "to": "on"
+    }
+  ],
+  "conditions": [
+    {
+      "condition": "sun",
+      "after": "sunset",
+      "before": "sunrise"
+    }
+  ],
+  "actions": [
+    {
+      "delay": { "seconds": 1 }
+    },
+    {
+      "action": "scene.turn_on",
+      "target": { "entity_id": "scene.lampe_gradient_soir_cosy_hass" }
+    }
+  ]
+}

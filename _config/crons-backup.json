@@ -477,7 +477,7 @@
       "name": "Morning Brief - Weekend",
       "enabled": true,
       "createdAtMs": 1770216072659,
-      "updatedAtMs": 1770970602987,
+      "updatedAtMs": 1771059704169,
       "schedule": {
         "kind": "cron",
         "expr": "0 10 * * 0,6",
@@ -490,10 +490,11 @@
         "message": "Génère le brief du matin (weekend) pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute\n- 3 mots italiens (prononciation + exemple)\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
       },
       "state": {
-        "nextRunAtMs": 1771059600000,
-        "lastRunAtMs": 1770541200008,
+        "nextRunAtMs": 1771146000000,
+        "lastRunAtMs": 1771059600043,
         "lastStatus": "ok",
-        "lastDurationMs": 47010
+        "lastDurationMs": 104126,
+        "consecutiveErrors": 0
       },
       "delivery": {
         "mode": "none",
@@ -505,7 +506,7 @@
       "agentId": "main",
       "name": "Afternoon Brief - Weekend",
       "createdAtMs": 1770659003253,
-      "updatedAtMs": 1770659581695,
+      "updatedAtMs": 1771098355409,
       "schedule": {
         "kind": "cron",
         "expr": "0 14 * * 0,6",
@@ -518,11 +519,38 @@
         "message": "Génère et envoie le brief de l'après-midi (weekend) à Jules sur Telegram. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts afternoon.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute\n- 3 mots italiens (prononciation + exemple)\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nTout dans UN SEUL message. Sois concis."
       },
       "state": {
-        "nextRunAtMs": 1771074000000
+        "nextRunAtMs": 1771160400000,
+        "lastError": "cron announce delivery failed",
+        "lastRunAtMs": 1771098238282,
+        "lastStatus": "error",
+        "lastDurationMs": 117127,
+        "consecutiveErrors": 1
       },
       "enabled": true,
       "delivery": {
         "mode": "announce"
+      }
+    },
+    {
+      "id": "8fab7b4f-7f42-4625-93ba-d21d3bd02216",
+      "agentId": "main",
+      "name": "Rappel automation lampe gradient chambre",
+      "enabled": true,
+      "deleteAfterRun": true,
+      "createdAtMs": 1771110037576,
+      "updatedAtMs": 1771110037576,
+      "schedule": {
+        "kind": "at",
+        "at": "2026-02-15T13:00:00.000Z"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "🔔 RAPPEL : On avait mis en pause l'automation lampe gradient chambre hier soir. Scène 'Soir cozy' créée, simulateur matin 5min créé. Reste à finaliser l'automation avec les horaires (coucher soleil → minuit = soir cozy, matin = simulateur)."
+      },
+      "state": {
+        "nextRunAtMs": 1771160400000
       }
     },
     {
@@ -531,7 +559,7 @@
       "name": "Daily Backup Commit",
       "enabled": true,
       "createdAtMs": 1770151010343,
-      "updatedAtMs": 1770944400016,
+      "updatedAtMs": 1771031059767,
       "schedule": {
         "kind": "cron",
         "expr": "0 2 * * *",
@@ -544,11 +572,12 @@
         "message": "Backup quotidien:\n1. Exporte les crons actuels vers _config/crons-backup.json (utilise cron action=list puis écris le JSON)\n2. Git add + commit + push: cd C:\\Users\\jules\\repo\\clawdbot && git add -A && git commit -m 'backup auto' --allow-empty && git push jules main\nSi erreur, log-la mais ne fail pas."
       },
       "state": {
-        "nextRunAtMs": 1771117200000,
-        "lastRunAtMs": 1770944400017,
+        "nextRunAtMs": 1771203600000,
+        "lastRunAtMs": 1771030800050,
         "lastStatus": "ok",
-        "lastDurationMs": 34149,
-        "runningAtMs": 1771030800050
+        "lastDurationMs": 259717,
+        "consecutiveErrors": 0,
+        "runningAtMs": 1771117200027
       },
       "delivery": {
         "mode": "announce"
@@ -869,6 +898,28 @@
       }
     },
     {
+      "id": "fca74492-c13a-4534-be00-d680af5fae32",
+      "agentId": "main",
+      "name": "Rappel acheter places volley REC",
+      "enabled": true,
+      "deleteAfterRun": true,
+      "createdAtMs": 1771098355423,
+      "updatedAtMs": 1771098438368,
+      "schedule": {
+        "kind": "at",
+        "at": "2026-02-25T09:00:00.000Z"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "🏐 Match Volley REC samedi 28 — tu veux acheter des places ou pas ? C'est le moment d'y penser !"
+      },
+      "state": {
+        "nextRunAtMs": 1772010000000
+      }
+    },
+    {
       "id": "f1273251-a90d-4fe9-9bd9-903de309839f",
       "agentId": "main",
       "name": "Check liste bébé avec AL",
@@ -890,5 +941,5 @@
       }
     }
   ],
-  "exportedAt": "2026-02-14T01:00:00.000Z"
+  "exportedAt": "2026-02-15T01:00:00.000Z"
 }

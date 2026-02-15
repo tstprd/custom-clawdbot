@@ -1,0 +1,45 @@
+{
+  "id": "simulateur_aube_gradient_reveil_20251029",
+  "alias": "Simulateur aube Gradient - Reveil automatique",
+  "description": "Demarre le simulateur d'aube 5 min avant l'heure du reveil du telephone (pas le weekend)",
+  "mode": "single",
+  "triggers": [
+    {
+      "trigger": "template",
+      "value_template": "{{ now().timestamp() | int >= ((as_timestamp(states('sensor.pixel_9_pro_next_alarm')) | int) - 300) and now().timestamp() | int < ((as_timestamp(states('sensor.pixel_9_pro_next_alarm')) | int) - 295) }}"
+    }
+  ],
+  "conditions": [
+    {
+      "condition": "state",
+      "entity_id": "input_boolean.chambre",
+      "state": "on"
+    },
+    {
+      "condition": "time",
+      "weekday": ["mon", "tue", "wed", "thu", "fri"]
+    }
+  ],
+  "actions": [
+    {
+      "action": "light.turn_on",
+      "target": { "entity_id": "light.lampe_gradient" },
+      "data": {
+        "color_temp_kelvin": 2000,
+        "brightness_pct": 1
+      }
+    },
+    {
+      "delay": { "seconds": 2 }
+    },
+    {
+      "action": "light.turn_on",
+      "target": { "entity_id": "light.lampe_gradient" },
+      "data": {
+        "color_temp_kelvin": 5500,
+        "brightness_pct": 100,
+        "transition": 300
+      }
+    }
+  ]
+}

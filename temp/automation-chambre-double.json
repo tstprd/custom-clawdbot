@@ -1,0 +1,28 @@
+{
+  "id": "1764662515124",
+  "alias": "Eteindre chambre (double clic)",
+  "description": "Double clic eteint toutes les lampes de la chambre",
+  "mode": "single",
+  "triggers": [
+    {
+      "trigger": "device",
+      "device_id": "0519a0bce67dfd1c8967ccfa51a0b19b",
+      "domain": "zha",
+      "type": "remote_button_double_press",
+      "subtype": "button"
+    },
+    {
+      "trigger": "device",
+      "device_id": "5dd30350bd26ad81e990e915d42b7923",
+      "domain": "zha",
+      "type": "remote_button_double_press",
+      "subtype": "button"
+    }
+  ],
+  "conditions": [],
+  "actions": [
+    { "action": "switch.turn_off", "target": { "entity_id": "switch.sonoff_zbminil2_2" } },
+    { "action": "switch.turn_off", "target": { "entity_id": "switch.lampe_chevet_jules" } },
+    { "action": "light.turn_off", "target": { "entity_id": "light.lampe_gradient" } }
+  ]
+}

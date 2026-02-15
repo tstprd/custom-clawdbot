@@ -1,0 +1,36 @@
+﻿{
+  "id": "simulateur_matin_5min",
+  "description": "Simule un lever de soleil: 2000K 1% -\u003e 5500K 100% en 5 minutes",
+  "actions": [
+    {
+      "data": {
+        "color_temp_kelvin": 2000,
+        "brightness_pct": 1
+      },
+      "target": {
+        "entity_id": "light.lampe_gradient"
+      },
+      "action": "light.turn_on"
+    },
+    {
+      "delay": {
+        "seconds": 2
+      }
+    },
+    {
+      "data": {
+        "color_temp_kelvin": 5500,
+        "transition": 300,
+        "brightness_pct": 100
+      },
+      "target": {
+        "entity_id": "light.lampe_gradient"
+      },
+      "action": "light.turn_on"
+    }
+  ],
+  "alias": "Simulateur Matin 5min",
+  "conditions": [],
+  "mode": "single",
+  "triggers": []
+}

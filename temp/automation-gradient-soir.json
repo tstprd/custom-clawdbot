@@ -1,0 +1,26 @@
+{
+  "id": "gradient_chambre_soir_auto",
+  "alias": "Gradient Chambre - Mode Soir Auto",
+  "description": "Active la scene Soir Cozy au coucher du soleil",
+  "mode": "single",
+  "triggers": [
+    {
+      "trigger": "sun",
+      "event": "sunset",
+      "offset": "00:00:00"
+    }
+  ],
+  "conditions": [
+    {
+      "condition": "state",
+      "entity_id": "light.lampe_gradient",
+      "state": "on"
+    }
+  ],
+  "actions": [
+    {
+      "action": "scene.turn_on",
+      "target": { "entity_id": "scene.lampe_gradient_soir_cosy_hass" }
+    }
+  ]
+}

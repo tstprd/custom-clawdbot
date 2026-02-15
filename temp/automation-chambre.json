@@ -1,0 +1,87 @@
+{
+  "id": "1764499896994",
+  "alias": "Cycle lampes chambre (clic simple)",
+  "description": "Cycle: Tout ON > AL+Gradient > Jules+Gradient > Gradient seul > Tout OFF",
+  "mode": "single",
+  "triggers": [
+    {
+      "trigger": "device",
+      "device_id": "0519a0bce67dfd1c8967ccfa51a0b19b",
+      "domain": "zha",
+      "type": "remote_button_short_press",
+      "subtype": "button"
+    },
+    {
+      "trigger": "device",
+      "device_id": "5dd30350bd26ad81e990e915d42b7923",
+      "domain": "zha",
+      "type": "remote_button_short_press",
+      "subtype": "button"
+    }
+  ],
+  "conditions": [],
+  "actions": [
+    {
+      "choose": [
+        {
+          "conditions": [
+            { "condition": "state", "entity_id": "switch.sonoff_zbminil2_2", "state": "off" },
+            { "condition": "state", "entity_id": "switch.lampe_chevet_jules", "state": "off" },
+            { "condition": "state", "entity_id": "light.lampe_gradient", "state": "off" }
+          ],
+          "sequence": [
+            { "action": "switch.turn_on", "target": { "entity_id": "switch.sonoff_zbminil2_2" } },
+            { "action": "switch.turn_on", "target": { "entity_id": "switch.lampe_chevet_jules" } },
+            { "action": "light.turn_on", "target": { "entity_id": "light.lampe_gradient" } }
+          ]
+        },
+        {
+          "conditions": [
+            { "condition": "state", "entity_id": "switch.sonoff_zbminil2_2", "state": "on" },
+            { "condition": "state", "entity_id": "switch.lampe_chevet_jules", "state": "on" },
+            { "condition": "state", "entity_id": "light.lampe_gradient", "state": "on" }
+          ],
+          "sequence": [
+            { "action": "switch.turn_off", "target": { "entity_id": "switch.lampe_chevet_jules" } }
+          ]
+        },
+        {
+          "conditions": [
+            { "condition": "state", "entity_id": "switch.sonoff_zbminil2_2", "state": "on" },
+            { "condition": "state", "entity_id": "switch.lampe_chevet_jules", "state": "off" },
+            { "condition": "state", "entity_id": "light.lampe_gradient", "state": "on" }
+          ],
+          "sequence": [
+            { "action": "switch.turn_off", "target": { "entity_id": "switch.sonoff_zbminil2_2" } },
+            { "action": "switch.turn_on", "target": { "entity_id": "switch.lampe_chevet_jules" } }
+          ]
+        },
+        {
+          "conditions": [
+            { "condition": "state", "entity_id": "switch.sonoff_zbminil2_2", "state": "off" },
+            { "condition": "state", "entity_id": "switch.lampe_chevet_jules", "state": "on" },
+            { "condition": "state", "entity_id": "light.lampe_gradient", "state": "on" }
+          ],
+          "sequence": [
+            { "action": "switch.turn_off", "target": { "entity_id": "switch.lampe_chevet_jules" } }
+          ]
+        },
+        {
+          "conditions": [
+            { "condition": "state", "entity_id": "switch.sonoff_zbminil2_2", "state": "off" },
+            { "condition": "state", "entity_id": "switch.lampe_chevet_jules", "state": "off" },
+            { "condition": "state", "entity_id": "light.lampe_gradient", "state": "on" }
+          ],
+          "sequence": [
+            { "action": "light.turn_off", "target": { "entity_id": "light.lampe_gradient" } }
+          ]
+        }
+      ],
+      "default": [
+        { "action": "switch.turn_off", "target": { "entity_id": "switch.sonoff_zbminil2_2" } },
+        { "action": "switch.turn_off", "target": { "entity_id": "switch.lampe_chevet_jules" } },
+        { "action": "light.turn_off", "target": { "entity_id": "light.lampe_gradient" } }
+      ]
+    }
+  ]
+}
