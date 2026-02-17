@@ -1,6 +1,6 @@
 # TOOLS.md - Local Notes
 
-Skills define *how* tools work. This file is for *your* specifics — the stuff that's unique to your setup.
+Skills define _how_ tools work. This file is for _your_ specifics — the stuff that's unique to your setup.
 
 ---
 
@@ -34,6 +34,7 @@ clawdbot/
 5. `_PERSONAL/` = important, organisé par projet
 
 ### Backup Git
+
 - `_PERSONAL/` et `temp/` sont trackés par git
 - **Cron quotidien à 2h** : commit + push vers `jules` (repo privé `tstprd/custom-clawdbot`)
 - Le repo `origin` reste le repo public OpenClaw (ne pas push les fichiers perso dessus)
@@ -49,20 +50,21 @@ clawdbot/
 ### Règle : Listes → SQL, pas texte
 
 Quand une info est une **liste de ressources** (packs d'icônes, inspirations, références, liens utiles, etc.) :
+
 - ❌ Ne PAS écrire en markdown (pollue le contexte, pas requêtable)
 - ✅ Stocker en SQLite → stats possibles, filtres, contexte-efficient
 
 Tables à créer selon besoin : `resources`, `inspirations`, `references`, etc.
 
-| Type | Stockage | Pourquoi |
-|------|----------|----------|
-| **Tâches ponctuelles** | SQLite `~/.clawdbot/local.db` | Temporaire, requêtable |
-| **Tâches récurrentes maison** | Grocy (Home Assistant) | Déjà en place |
-| **Config briefs** | SQLite `brief_config` | Heures, sections |
-| **Contexte urgent** | `~/.clawdbot/HEARTBEAT.md` | Lu à chaque reset |
-| **Projets/docs long terme** | Obsidian vault | Persistant, wikilinks |
-| **Historique sessions** | `memory/` | Archive (pas en contexte) |
-| **Identité/préférences Jules** | `USER.md` | Fixe, rarement modifié |
+| Type                           | Stockage                      | Pourquoi                  |
+| ------------------------------ | ----------------------------- | ------------------------- |
+| **Tâches ponctuelles**         | SQLite `~/.clawdbot/local.db` | Temporaire, requêtable    |
+| **Tâches récurrentes maison**  | Grocy (Home Assistant)        | Déjà en place             |
+| **Config briefs**              | SQLite `brief_config`         | Heures, sections          |
+| **Contexte urgent**            | `~/.clawdbot/HEARTBEAT.md`    | Lu à chaque reset         |
+| **Projets/docs long terme**    | Obsidian vault                | Persistant, wikilinks     |
+| **Historique sessions**        | `memory/`                     | Archive (pas en contexte) |
+| **Identité/préférences Jules** | `USER.md`                     | Fixe, rarement modifié    |
 
 ### Scripts SQLite
 
@@ -78,9 +80,28 @@ pnpm tsx skills/local-db/scripts/db-config.ts set morning weekday 8 40
 ```
 
 ### Règle d'or
+
 - **Temporaire** (tâches, rappels, événements) → SQLite ou crons
 - **Permanent** (préférences, règles, identité) → fichiers .md
 - **Pour les briefs** → Lire le skill `local-db` et utiliser `generate-brief.ts`
+
+### Citations Dwight (rotation automatique)
+
+```powershell
+# Obtenir la prochaine citation (LRU = least recently used)
+pnpm tsx skills/local-db/scripts/db-quotes.ts get
+
+# Voir toutes les citations avec stats d'usage
+pnpm tsx skills/local-db/scripts/db-quotes.ts list
+
+# Ajouter une citation
+pnpm tsx skills/local-db/scripts/db-quotes.ts add "Citation ici"
+
+# Reset les compteurs
+pnpm tsx skills/local-db/scripts/db-quotes.ts reset
+```
+
+**⚠️ RÈGLE : Dans les briefs (matin/midi/soir), TOUJOURS utiliser `db-quotes.ts get` pour la citation Dwight. Ne jamais hardcoder une citation.**
 
 ---
 
@@ -97,12 +118,14 @@ browser action=act request={kind:"click", ref:"e12"}  # interagir
 ```
 
 ### Cas d'usage
+
 - Vérifier prix sur Amazon, LDLC, etc.
 - Rechercher des infos sur Google
 - Remplir des formulaires web
 - Réserver (squash, restaurants, etc.)
 
 ### Profils
+
 - `profile="clawd"` — navigateur isolé Clawdbot (par défaut)
 - `profile="chrome"` — prendre le contrôle d'un onglet Chrome existant (nécessite extension)
 
@@ -116,12 +139,14 @@ browser action=act request={kind:"click", ref:"e12"}  # interagir
 **Shell:** PowerShell (PAS Bash)
 
 ### Règles critiques
+
 - ❌ **PAS de syntaxe Bash** : `for...do...done`, `2>/dev/null`, `$()` imbriqués
 - ✅ **Utiliser PowerShell** : `foreach ($x in $arr) { }`, `$null`, `$()`
 - ❌ **PAS de `/dev/null`** → utiliser `$null` ou `| Out-Null`
 - ✅ **Chemins Windows** : `C:\Users\jules\...` (pas `/home/...`)
 
 ### Exemples PowerShell
+
 ```powershell
 # Boucle sur une liste
 $ids = @("id1", "id2", "id3")
@@ -246,17 +271,21 @@ for segment in segments:
 ```
 
 ### Paramètres
+
 - **Modèle :** `base` (bon compromis vitesse/qualité)
 - **Device :** `cpu` (pas de GPU nécessaire)
 - **Langue :** `fr` (forcer français pour Jules)
 
 ### Formats supportés
+
 ogg, mp3, m4a, wav, webm, flac, etc.
 
 ### Chemin des messages vocaux Telegram
+
 `C:\Users\jules\.clawdbot\media\inbound\<uuid>.ogg`
 
 ### ⚠️ Règle importante
+
 Quand Jules envoie un **message vocal** (audio/ogg), **TOUJOURS transcrire** avec faster-whisper avant de répondre. Ne jamais demander de retaper le message.
 
 ---
@@ -317,6 +346,7 @@ pnpm tsx skills/local-db/scripts/db-presence.ts history
 ```
 
 **Entités HA synchronisées:**
+
 - `input_boolean.presence_jules_lundi` ... `_dimanche`
 - `input_boolean.presence_anne_laure_lundi` ... `_dimanche`
 
@@ -342,6 +372,7 @@ Invoke-RestMethod -Uri $url -Method POST -Headers $headers -Body $body
 **Tâches récurrentes:** Changer draps, Laver vitres, Aspirer VMC, Laver SDB, Maintenance Rocky, Payer charges
 
 ### ⚠️ Règle importante
+
 **Toujours utiliser ce skill pour Home Assistant** — ne pas deviner ou improviser !
 
 ---
@@ -353,11 +384,13 @@ Invoke-RestMethod -Uri $url -Method POST -Headers $headers -Body $body
 **Skill:** `skills/obsidian/`
 
 ### Règles
+
 1. **Quand j'apprends une nouvelle info sur Jules** → créer/mettre à jour une note avec `[[wikilinks]]`
 2. **Quand Jules pose une question complexe** → lire le vault pour contexte
 3. **Sync automatique** → Cron à 2h chaque nuit
 
 ### Structure
+
 - `People/` - Jules, Anne-Laure, contacts
 - `Projects/` - Travaux, business ideas, investissements
 - `Places/` - Appartement, lieux fréquentés
@@ -366,6 +399,7 @@ Invoke-RestMethod -Uri $url -Method POST -Headers $headers -Body $body
 - `Daily/` - Notes quotidiennes (auto-générées à 22h)
 
 ### Scripts Obsidian
+
 ```powershell
 # Chercher dans le vault
 pnpm tsx skills/obsidian/scripts/search.ts "SCPI"
@@ -381,6 +415,7 @@ pnpm tsx skills/obsidian/scripts/sync.ts
 ```
 
 ### Crons automatiques
+
 - **22h** : Génère la note quotidienne (tâches complétées, en cours)
 - **2h** : Sync vers GitHub
 
@@ -389,8 +424,9 @@ pnpm tsx skills/obsidian/scripts/sync.ts
 ## What Goes Here
 
 Things like:
+
 - Camera names and locations
-- SSH hosts and aliases  
+- SSH hosts and aliases
 - Preferred voices for TTS
 - Speaker/room names
 - Device nicknames
@@ -400,13 +436,16 @@ Things like:
 
 ```markdown
 ### Cameras
+
 - living-room → Main area, 180° wide angle
 - front-door → Entrance, motion-triggered
 
 ### SSH
+
 - home-server → 192.168.1.100, user: admin
 
 ### TTS
+
 - Preferred voice: "Nova" (warm, slightly British)
 - Default speaker: Kitchen HomePod
 ```
@@ -420,6 +459,7 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 ## Lieux importants
 
 ### Aqua tonic (Sauna)
+
 - Type : Centre bien-être / sauna
 - Créneaux préférés : Midi en semaine
 - Habitude à développer : Rappels réguliers (tous les 2-3 jours)

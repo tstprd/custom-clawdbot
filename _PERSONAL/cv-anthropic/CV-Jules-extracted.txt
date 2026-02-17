@@ -1,0 +1,82 @@
+﻿Senior Supply Chain Project Consultant
+MAWM, Integration expert , Industrialization expert (Data migration, Automation, Ad-hoc tools development ) 
+JMU
+Technical skills:
+MAWM, WMOS
+API MAWM
+Python
+SCI,
+SQL,PL/SQL, Bash
+Functional/Business Skills
+Integration Design Supply Ecosystem
+Writing Technical-Functional Specifications
+Workshop Facilitation
+Languages:
+English: Fluent
+Italian: Beginner
+French: Native
+Team management
+Supply chain process design 
+WCS integration
+Industrialization expertise
+Business process 
+modelization
+Workshop facilitation with business stakeholders
+Technical-functional expertise in WMOS/MAWM
+Design, Configurations, Test Campaigns
+Key skills
+Graduated from the engineering school HEI (Lille, France)
+Diploma
+8 years of experience
+June 24â€™ â€“ Present : Solution Architect 
+Context: Migration Program to 
+Manhattan Active MAWM 
+(100+ sites) 
+Main responsibilities:
+Define Industrialization Roadmap to support for program migration 
+Track ROI on Industrialization tools
+Lead Interface development team (50 interfaces)
+Jan '23 â€“ June â€˜24: Capgemini â€“Technical-functional Expert MAWM
+Context: Migration to 
+Manhattan Active MAWM 
+(2 sites in France &amp; Italy, WMS decommissioned WMOS)
+Main responsibilities:
+- 
+Design and specification of project interfaces (50+ half-interfaces) for an iPaaS
+- Design and validation of MAWM extensions specifications
+- Design of the inventory synchronization process and technical solution
+Lead on the cutover strategy definition
+Coordination/Expertise of data migration
+Contributor to the Reporting stream
+Oct '21 â€“ Dec '22: Capgemini â€“ Team Leader Factory Team, MAWM Program Expert, responsible for testing and industrialization methods
+Context: International program, roll-out of 44 warehouses under 
+Manhattan Active MAWM
+Definition of processes for End-to-End TNR
+Team management responsible for test script writing and test campaign execution
+Contributor to processes related to role and authorization management in the MAWM solution for the program
+Implementation of test management tool
+Framing and design of data migration tool, bulk configuration, data updates.
+Sept '20 â€“ Sept '21: Capgemini - WMS Integration Manager, Technical Reference
+Context: Migration to 
+WMOS
+ (1 site, decommissioning INFOLOG WMS)
+- Project framing and solution design with the vendor
+- Definition of strategies and management of test phases
+- Definition and management of the cutover plan
+- Management of the reporting stream
+Oct '19 â€“ Mar '20: Capgemini â€“ Team Leader and Technical Lead on the project
+Context: Migration of Chanel PB central warehouse, Highly mechanized warehouse (4 WCS)
+- Preparation &amp; facilitation of test and UAT sessions
+- Implementation of code versioning, coordination of technical environments
+- Analysis and improvement of order packing algorithm
+- Analysis/Correction/Prevention of WMS/ERP/WCS stock discrepancies
+May â€“ Sept '19 &amp; April â€“ Sept '20: Capgemini â€“ Project Manager - Integration Testing
+Context: Integration with a conveyor, 2 iterations of the project: Pulse 2 and Pulse 3
+Main responsibilities:
+- Technical-functional reference for the project, responsible for revamping reporting
+- Writing test campaigns
+- Training support teams, assisting with startup and incident management
+Skills
+
+---SLIDE---
+

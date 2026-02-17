@@ -1,3 +1,3 @@
 Found 2 entities:
-  script.stop_tv_and_chromecast = off (Stop TV and Chromecast)
-  media_player.chromecastultra0413 = playing (Chromecast Salon)
+  light.signe_gradient_table_1 = off (Gradient Jules)
+  light.lampe_gradient = off (Lampe gradient)

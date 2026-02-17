@@ -1,0 +1,20 @@
+CV Anthropic v12 en PJ.
+
+MODIFICATIONS :
+
+PROFIL :
+- "je gere la dualite IT/Business" → "j'ai une expertise IT et je gere egalement les sujets business dans les projets de deploiement"
+- "retirer les taches repetitives" → "reduire les taches repetitives pour permettre aux equipes de se concentrer sur la valeur metier"
+- Academie : "GenAI et Agentic AI"
+- Environnement d'experimentation : "permet d'appeler des LLMs et de tester des comportements agentiques avec un agent qui interagit avec des ERP/WMS — les outils que nos equipes utilisent au quotidien"
+
+ADEO (cadrage transformation WMS) :
+- "Definition de la roadmap d'industrialisation et suivi de sa realisation — creation d'outils pour accelerer le projet"
+- "Conception d'outils automatisant la configuration, la migration de donnees, le testing et la formation utilisateurs"
+- "Presentations pedagogiques aux responsables de BU : benefices du projet, evolutions de la solution"
+
+PROGRAMME WMS (retail) :
+- "Definition de la liste des outils a creer pour industrialiser le programme"
+- "Supervision du developpement de ces outils et contribution directe via GitHub Copilot et Claude Code"
+- "Pilotage de l'equipe de developpement des interfaces (50 flux d'integration)"
+- Note : TU n'as pas developpe les interfaces toi-meme, tu as pilote l'equipe qui les a developpees

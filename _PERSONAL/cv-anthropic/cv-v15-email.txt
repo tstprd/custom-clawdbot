@@ -1,0 +1,16 @@
+CV Anthropic v15 en PJ.
+
+MODIFICATIONS :
+
+LANGUES :
+- Remises en bas dans une section dediee (a cote de Formation)
+
+COMPETENCES - WMS/TMS :
+- Liste : Manhattan, Hardis Reflex, Blue Yonder
+
+COMPETENCES - Outils IA :
+- Liste : GitHub Copilot, Claude Code, Codex
+
+PROJETS PERSO & CENTRES D'INTERET :
+- Domotique : "J'utilise le projet Home Assistant et j'ai connecte Claude Code a ce projet pour surveiller ma consommation electrique et automatiser le chauffage"
+- Supprime "modeles LLM fournis par Anthropic" → "Appel aux modeles LLM pour l'automatisation de mes taches administratives personnelles"

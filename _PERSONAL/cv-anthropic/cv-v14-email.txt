@@ -1,0 +1,21 @@
+CV Anthropic v14 en PJ.
+
+MODIFICATIONS v14 :
+
+EN-TETE :
+- Langues remontees sous les coordonnees
+- LinkedIn corrige : linkedin.com/in/jules-mudes-0a444992
+
+PROFIL :
+- Cadrage : archi fonctionnelle, env IT, interfacage, infra, orga taches/acteurs
+- Supprime "impact sur les postes de travail"
+- Acceleration : "outils et scripts (notamment Python)... se concentrer sur le deploiement et les taches a plus haute valeur ajoutee"
+- Academie : "propose une partie theorique ainsi qu'une session pratique que j'ai concue"
+
+SECTIONS FUSIONNEES "PROJETS PERSO & CENTRES D'INTERET" :
+- Domotique & IA (Home Assistant + Claude Code)
+- Bricolage electronique : Arduino, Raspberry Pi (arrosage plantes, surveillance temperature)
+- Sport : Squash (competition) - Volley (loisir)
+
+FORMATION :
+- Mise en bas, sur une seule ligne

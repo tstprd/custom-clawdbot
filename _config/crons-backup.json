@@ -477,7 +477,7 @@
       "name": "Morning Brief - Weekday",
       "enabled": true,
       "createdAtMs": 1770216068237,
-      "updatedAtMs": 1770970586250,
+      "updatedAtMs": 1771268998625,
       "schedule": {
         "kind": "cron",
         "expr": "40 8 * * 1-5",
@@ -487,159 +487,18 @@
       "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "agentTurn",
-        "message": "Génère le brief du matin pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning.\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute\n- 3 mots italiens (prononciation + exemple)\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
+        "message": "Génère le brief du matin pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning.\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n- 3 mots italiens (prononciation + exemple) - UNIQUEMENT LE MATIN\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
       },
       "state": {
-        "nextRunAtMs": 1771227600000,
-        "lastRunAtMs": 1770968400000,
-        "lastStatus": "error",
-        "lastDurationMs": 97495,
-        "lastError": "GrammyError: Call to 'sendMessage' failed! (403: Forbidden: bot was blocked by the user)"
-      },
-      "delivery": {
-        "mode": "none",
-        "channel": "telegram"
-      }
-    },
-    {
-      "id": "0b48b9a2-299e-400a-ac2b-1ffc2a692efd",
-      "agentId": "main",
-      "name": "Planification présence hebdo",
-      "createdAtMs": 1770937813180,
-      "updatedAtMs": 1770937813180,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 9 * * 1",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "main",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "systemEvent",
-        "text": "📅 PLANIFICATION PRÉSENCE HEBDO\n\nDemande à Jules les présences pour cette semaine (et la suivante si besoin).\nFormat: qui est présent/absent quel jour?\n\nCommandes:\n- Voir semaine: pnpm tsx skills/local-db/scripts/db-presence.ts week [YYYY-Www]\n- Set jour: pnpm tsx skills/local-db/scripts/db-presence.ts set <jules|anne-laure> <YYYY-MM-DD> <home|away>\n- Set semaine: pnpm tsx skills/local-db/scripts/db-presence.ts week-set <person> <YYYY-Www> <HHHHHHH>\n- Sync vers HA: pnpm tsx skills/local-db/scripts/db-presence.ts sync\n\nAprès avoir reçu les infos, sync vers Home Assistant."
-      },
-      "state": {
-        "nextRunAtMs": 1771228800000
-      },
-      "enabled": true
-    },
-    {
-      "id": "ade522ae-f4d6-4f0c-b9af-6a1e8cd06d00",
-      "agentId": "main",
-      "name": "Midday Brief - Weekday",
-      "createdAtMs": 1770659465593,
-      "updatedAtMs": 1770980474654,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 12 * * 1-5",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Génère et envoie le brief de midi à Jules sur Telegram. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts midday.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute\n- 3 mots italiens (prononciation + exemple)\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nTout dans UN SEUL message. Ultra concis."
-      },
-      "state": {
-        "nextRunAtMs": 1771239600000,
-        "lastRunAtMs": 1770980400028,
+        "nextRunAtMs": 1771314000000,
+        "lastRunAtMs": 1771227600016,
         "lastStatus": "ok",
-        "lastDurationMs": 74626,
-        "consecutiveErrors": 0
-      },
-      "enabled": true,
-      "delivery": {
-        "mode": "announce"
-      }
-    },
-    {
-      "id": "77875bb0-92a9-4661-a8f8-f3a9a4c90ae6",
-      "agentId": "main",
-      "name": "Noon Brief - Weekday",
-      "enabled": true,
-      "createdAtMs": 1770737934433,
-      "updatedAtMs": 1770980574102,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 12 * * 1-5",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Génère le brief du midi pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts noon.\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute\n- 3 mots italiens (prononciation + exemple)\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
-      },
-      "state": {
-        "nextRunAtMs": 1771239600000,
-        "lastRunAtMs": 1770980474654,
-        "lastStatus": "ok",
-        "lastDurationMs": 99448,
+        "lastDurationMs": 67876,
         "consecutiveErrors": 0
       },
       "delivery": {
         "mode": "none",
         "channel": "telegram"
-      }
-    },
-    {
-      "id": "10f77259-8577-4df2-989c-4fd5baf4ca12",
-      "agentId": "main",
-      "name": "Evening Brief - Weekday",
-      "enabled": true,
-      "createdAtMs": 1770216077273,
-      "updatedAtMs": 1771003886217,
-      "schedule": {
-        "kind": "cron",
-        "expr": "30 18 * * 1-5",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Génère le brief du soir pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts evening.\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute\n- 3 mots italiens (prononciation + exemple)\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
-      },
-      "state": {
-        "nextRunAtMs": 1771263000000,
-        "lastRunAtMs": 1771003800023,
-        "lastStatus": "ok",
-        "lastDurationMs": 86194,
-        "consecutiveErrors": 0
-      },
-      "delivery": {
-        "mode": "none",
-        "channel": "telegram"
-      }
-    },
-    {
-      "id": "0406f105-4d98-477b-a368-7e36cda1fbcc",
-      "agentId": "main",
-      "name": "Daily Backup Commit",
-      "enabled": true,
-      "createdAtMs": 1770151010343,
-      "updatedAtMs": 1771117409934,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 2 * * *",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Backup quotidien:\n1. Exporte les crons actuels vers _config/crons-backup.json (utilise cron action=list puis écris le JSON)\n2. Git add + commit + push: cd C:\\Users\\jules\\repo\\clawdbot && git add -A && git commit -m 'backup auto' --allow-empty && git push jules main\nSi erreur, log-la mais ne fail pas."
-      },
-      "state": {
-        "nextRunAtMs": 1771290000000,
-        "lastRunAtMs": 1771117200027,
-        "lastStatus": "ok",
-        "lastDurationMs": 209907,
-        "consecutiveErrors": 0,
-        "runningAtMs": 1771203600023
-      },
-      "delivery": {
-        "mode": "announce"
       }
     },
     {
@@ -667,6 +526,66 @@
       }
     },
     {
+      "id": "77875bb0-92a9-4661-a8f8-f3a9a4c90ae6",
+      "agentId": "main",
+      "name": "Noon Brief - Weekday",
+      "enabled": true,
+      "createdAtMs": 1770737934433,
+      "updatedAtMs": 1771268982727,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 12 * * 1-5",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Génère le brief du midi pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts noon.\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN AU MIDI - seulement au brief du matin.\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
+      },
+      "state": {
+        "nextRunAtMs": 1771326000000,
+        "lastRunAtMs": 1771239644933,
+        "lastStatus": "ok",
+        "lastDurationMs": 64143,
+        "consecutiveErrors": 0
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram"
+      }
+    },
+    {
+      "id": "10f77259-8577-4df2-989c-4fd5baf4ca12",
+      "agentId": "main",
+      "name": "Evening Brief - Weekday",
+      "enabled": true,
+      "createdAtMs": 1770216077273,
+      "updatedAtMs": 1771268989562,
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 18 * * 1-5",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Génère le brief du soir pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts evening.\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN LE SOIR - seulement au brief du matin.\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
+      },
+      "state": {
+        "nextRunAtMs": 1771349400000,
+        "lastRunAtMs": 1771263000023,
+        "lastStatus": "ok",
+        "lastDurationMs": 72723,
+        "consecutiveErrors": 0
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram"
+      }
+    },
+    {
       "id": "6d99fa25-48cc-44e4-824b-c3eaf5e63611",
       "agentId": "main",
       "name": "Rappel Sauna Aqua Tonic",
@@ -689,6 +608,36 @@
         "lastRunAtMs": 1770746400008,
         "lastStatus": "ok",
         "lastDurationMs": 21
+      }
+    },
+    {
+      "id": "0406f105-4d98-477b-a368-7e36cda1fbcc",
+      "agentId": "main",
+      "name": "Daily Backup Commit",
+      "enabled": true,
+      "createdAtMs": 1770151010343,
+      "updatedAtMs": 1771203819043,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 2 * * *",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Backup quotidien:\n1. Exporte les crons actuels vers _config/crons-backup.json (utilise cron action=list puis écris le JSON)\n2. Git add + commit + push: cd C:\\Users\\jules\\repo\\clawdbot && git add -A && git commit -m 'backup auto' --allow-empty && git push jules main\nSi erreur, log-la mais ne fail pas."
+      },
+      "state": {
+        "nextRunAtMs": 1771376400000,
+        "lastRunAtMs": 1771203600023,
+        "lastStatus": "ok",
+        "lastDurationMs": 219020,
+        "consecutiveErrors": 0,
+        "runningAtMs": 1771290000022
+      },
+      "delivery": {
+        "mode": "announce"
       }
     },
     {
@@ -796,7 +745,7 @@
       "name": "Morning Brief - Weekend",
       "enabled": true,
       "createdAtMs": 1770216072659,
-      "updatedAtMs": 1771146059808,
+      "updatedAtMs": 1771269005408,
       "schedule": {
         "kind": "cron",
         "expr": "0 10 * * 0,6",
@@ -806,7 +755,7 @@
       "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "agentTurn",
-        "message": "Génère le brief du matin (weekend) pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute\n- 3 mots italiens (prononciation + exemple)\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
+        "message": "Génère le brief du matin (weekend) pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n- 3 mots italiens (prononciation + exemple) - UNIQUEMENT LE MATIN\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
       },
       "state": {
         "nextRunAtMs": 1771664400000,
@@ -825,7 +774,7 @@
       "agentId": "main",
       "name": "Afternoon Brief - Weekend",
       "createdAtMs": 1770659003253,
-      "updatedAtMs": 1771160480484,
+      "updatedAtMs": 1771269011571,
       "schedule": {
         "kind": "cron",
         "expr": "0 14 * * 0,6",
@@ -835,7 +784,7 @@
       "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "agentTurn",
-        "message": "Génère et envoie le brief de l'après-midi (weekend) à Jules sur Telegram. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts afternoon.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute\n- 3 mots italiens (prononciation + exemple)\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nTout dans UN SEUL message. Sois concis."
+        "message": "Génère et envoie le brief de l'après-midi (weekend) à Jules sur Telegram. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts afternoon.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN L'APRÈS-MIDI - seulement au brief du matin.\n\nTout dans UN SEUL message. Sois concis."
       },
       "state": {
         "nextRunAtMs": 1771678800000,
@@ -874,6 +823,32 @@
       "state": {
         "nextRunAtMs": 1771751700000
       }
+    },
+    {
+      "id": "0b48b9a2-299e-400a-ac2b-1ffc2a692efd",
+      "agentId": "main",
+      "name": "Planification présence hebdo",
+      "createdAtMs": 1770937813180,
+      "updatedAtMs": 1771228800034,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 * * 1",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "📅 PLANIFICATION PRÉSENCE HEBDO\n\nDemande à Jules les présences pour cette semaine (et la suivante si besoin).\nFormat: qui est présent/absent quel jour?\n\nCommandes:\n- Voir semaine: pnpm tsx skills/local-db/scripts/db-presence.ts week [YYYY-Www]\n- Set jour: pnpm tsx skills/local-db/scripts/db-presence.ts set <jules|anne-laure> <YYYY-MM-DD> <home|away>\n- Set semaine: pnpm tsx skills/local-db/scripts/db-presence.ts week-set <person> <YYYY-Www> <HHHHHHH>\n- Sync vers HA: pnpm tsx skills/local-db/scripts/db-presence.ts sync\n\nAprès avoir reçu les infos, sync vers Home Assistant."
+      },
+      "state": {
+        "nextRunAtMs": 1771833600000,
+        "lastRunAtMs": 1771228800018,
+        "lastStatus": "ok",
+        "lastDurationMs": 16,
+        "consecutiveErrors": 0
+      },
+      "enabled": true
     },
     {
       "id": "788923b3-45a0-4d4a-93f5-c28fece865a3",
@@ -944,5 +919,5 @@
       }
     }
   ],
-  "exportedAt": "2026-02-16T01:00:00.000Z"
+  "exportedAt": "2026-02-17T01:00:00.000Z"
 }

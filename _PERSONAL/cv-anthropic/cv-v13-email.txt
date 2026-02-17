@@ -1,0 +1,10 @@
+CV Anthropic v13 en PJ.
+
+MODIFICATIONS :
+
+PROJETS PERSO :
+- Precise : "projets open-source faisant appel aux modeles LLM fournis par Anthropic"
+
+NOUVELLE SECTION - CENTRES D'INTERET :
+- Squash (competition)
+- Voile (loisir)

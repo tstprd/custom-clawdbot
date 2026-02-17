@@ -1,0 +1,15 @@
+CV Anthropic v11 en PJ.
+
+MODIFICATIONS :
+
+PROFIL (nouveau paragraphe sur le cadrage) :
+- "J'interviens sur le cadrage des projets pour decouvrir l'environnement et concevoir la solution dans son ensemble : architecture fonctionnelle, environnement technique IT, interactions avec les autres systemes et impact sur les postes de travail."
+
+PROFIL (passion techno) :
+- "Passionne par les avancees technologiques, je me tiens constamment informe des nouveaux concepts et techniques pour exploiter les LLMs et l'IA."
+
+ACADEMIE :
+- Renommee "academie GenAI et Agentique"
+
+LIGNE EQUIPE DEPLACEE :
+- "Equipe Supply Chain de ~100 consultants specialises..." maintenant sous "EXPERIENCE PROFESSIONNELLE - CAPGEMINI"

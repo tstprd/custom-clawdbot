@@ -1,0 +1,23 @@
+CV Anthropic v9 en PJ.
+
+NOUVELLES MODIFICATIONS :
+
+PROFIL :
+- Ajout "deploiement" en plus de transformation Supply Chain
+- Exposition aux fonctions Finance, Controle de gestion, Achats (par association avec la Supply Chain)
+- Ligne contexte ajoutee : equipe ~100 consultants specialises, fonctionnement agile, multiples environnements d'entreprise
+
+PROGRAMME WMS (retail) :
+- "Developpement d'applications avec interfaces utilisateur basees sur les APIs WMS/ERP"
+
+EXPERT TECHNIQUE-FONCTIONNEL (luxe) :
+- Ajout "Projet en anglais" dans la description
+
+CHEF D'EQUIPE 2019-2022 :
+- Ajout "Programmes internationaux en anglais"
+
+COMPETENCES :
+- "Developpement d'apps avec APIs WMS/ERP" remplace "Integration iPaaS, API REST"
+
+LANGUES :
+- "Anglais (courant, projets internationaux)"

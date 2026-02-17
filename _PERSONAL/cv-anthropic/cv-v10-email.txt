@@ -1,0 +1,29 @@
+CV Anthropic v10 en PJ.
+
+MODIFICATIONS :
+
+EN-TETE :
+- Emojis supprimes (localisation, mail, LinkedIn)
+- Nouveau titre : "Ingenieur Architecte Solutions & Innovation - Transformation Supply Chain"
+
+PROFIL (reecrit, ton plus pro) :
+- Expert WMS et TMS
+- Gestion dualite IT/Business : organisation, communication, moyens techniques, integrations, devices, configuration
+- "Par association, je collabore avec les departements Finance, Controle de gestion et Achats"
+- Formulation moins robotique, plus fluide
+
+CLIENTS :
+- Tous les noms supprimes (Kiabi, Chanel, etc.)
+- Remplace par "retailers et maisons du luxe francais"
+
+COMPETENCES :
+- Ajout HTML/CSS
+- Ajout Cloud : GCP, Azure, SAP
+- Ajout TMS a cote de WMS
+
+FORMATION :
+- Ajout "Specialite Conception Mecanique"
+
+PROJETS PERSO (reecrit) :
+- Domotique Home Assistant + Claude Code : surveillance conso electrique, automatisation chauffage selon presence
+- Projets open-source avec modeles Anthropic : lecture emails, RDV, gestion comptable

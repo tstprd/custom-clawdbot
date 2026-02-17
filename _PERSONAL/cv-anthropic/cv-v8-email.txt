@@ -1,0 +1,36 @@
+CV Anthropic v8 en PJ.
+
+MODIFICATIONS APPLIQUÉES :
+
+PROFIL :
+- 9 ans d'expérience (pas 8)
+- Expert WMS (sans détail Manhattan MAWM/WMOS)
+- Industrialisation = accélérer les projets de transformation
+- Académie GenAI avec sessions pratiques + environnement d'expérimentation
+- Ajout "industrie" aux secteurs clients
+- Nouveau texte sur l'optimisation : retirer les tâches fastidieuses, focus expertise business
+
+AVANT-VENTE :
+- Renommé "Contributeur Avant-Vente"
+- Trait vertical bleu à gauche pour le distinguer visuellement
+
+ADEO (actuel) :
+- Roadmap pour accélérer la migration
+- Outils GenAI pour config/migration de données
+- Présentations aux responsables BU
+- Supprimé "Cadrage du lancement"
+
+PROGRAMME WMS (retail) :
+- Précisé utilisation de Claude
+- "Contribution directe au développement"
+
+STELLANTIS :
+- "groupe automobile français" (pas international)
+- Présentation conclusions à la DSI
+
+FUSION ROLES 2019-2022 :
+- Regroupé Chef d'équipe Factory + Responsable Intégration + Responsable Technique
+- Clients cités : Kiabi (retail), Chanel (mode), grande maison du luxe français
+
+COMPÉTENCES :
+- "Expert WMS (Manhattan, Blue Yonder)" au lieu de la liste détaillée

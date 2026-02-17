@@ -1,0 +1,17 @@
+CV Anthropic v16 en PJ.
+
+MODIFICATIONS :
+
+EN-TETE :
+- Telephone ajoute : 06 61 03 01 64
+- Localisation : "Rennes, France (deplacement Paris regulier - 1h30 TGV)"
+
+PROFIL (nouveau paragraphe) :
+- "Grace a mon expertise WMS, je concois la configuration des solutions pour implementer les processus business. Je conseille les clients grace a ma connaissance metier acquise au fil de mes missions chez une multitude de clients de differents secteurs."
+
+AVANT-VENTE :
+- Titre : "Contributeur Avant-Vente - Team Solutionning, Practice Supply Chain"
+
+EXPERIENCE JAN 2023 - JUIN 2024 :
+- Titre change : "Consultant Senior Interface" (au lieu de "Expert Technique-Fonctionnel WMS")
+- Description : "Deploiement de 2 sites mecanises" (au lieu de "2 sites France & Italie")
