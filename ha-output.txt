@@ -1,3 +1,6 @@
-Found 2 entities:
-  light.signe_gradient_table_1 = off (Gradient Jules)
-  light.lampe_gradient = off (Lampe gradient)
+Found 5 entities:
+  input_datetime.derniere_alerte_pic_conso = 2026-02-17 20:23:12 (Derniere alerte pic consommation)
+  scene.salon_crepuscule_tropical = unknown (Salon Crépuscule tropical)
+  automation.alerte_pic_consommation_tempo_blanc_rouge_hp = on (Alerte Pic Consommation - Tempo ROUGE HP)
+  automation.pic_consommation_action_ok = on (Pic Consommation - Action OK)
+  automation.pic_consommation_action_ignorer_1h = on (Pic Consommation - Action Ignorer 1h)
