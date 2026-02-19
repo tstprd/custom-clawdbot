@@ -504,7 +504,7 @@
       "name": "Morning Brief - Weekday",
       "enabled": true,
       "createdAtMs": 1770216068237,
-      "updatedAtMs": 1771314086249,
+      "updatedAtMs": 1771400479550,
       "schedule": {
         "kind": "cron",
         "expr": "40 8 * * 1-5",
@@ -517,10 +517,10 @@
         "message": "Génère le brief du matin pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning.\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n- 3 mots italiens (prononciation + exemple) - UNIQUEMENT LE MATIN\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
       },
       "state": {
-        "nextRunAtMs": 1771400400000,
-        "lastRunAtMs": 1771314000029,
+        "nextRunAtMs": 1771486800000,
+        "lastRunAtMs": 1771400400035,
         "lastStatus": "ok",
-        "lastDurationMs": 86220,
+        "lastDurationMs": 79515,
         "consecutiveErrors": 0
       },
       "delivery": {
@@ -529,55 +529,25 @@
       }
     },
     {
-      "id": "3ac76763-3603-415b-b716-1a08a8bd5aea",
+      "id": "ad638353-9aa4-4c7d-a227-022b186958ff",
       "agentId": "main",
-      "name": "Sorties Cinéma",
+      "name": "Rappel Mabilais",
       "enabled": true,
-      "createdAtMs": 1770233747679,
-      "updatedAtMs": 1770970619501,
+      "deleteAfterRun": true,
+      "createdAtMs": 1771416924179,
+      "updatedAtMs": 1771416924179,
       "schedule": {
-        "kind": "cron",
-        "expr": "0 10 * * 3",
-        "tz": "Europe/Paris"
+        "kind": "at",
+        "at": "2026-02-19T09:00:00.000Z"
       },
-      "sessionTarget": "isolated",
-      "wakeMode": "next-heartbeat",
+      "sessionTarget": "main",
+      "wakeMode": "now",
       "payload": {
-        "kind": "agentTurn",
-        "message": "Vérifie les sorties cinéma de la semaine sur Allociné (browser). Filtre selon les goûts de Jules:\n✅ SF épique, Tarantino, Thrillers, Films d'auteur, Critique 4+/5\n❌ Pas de comédies françaises\n\nSi un film intéressant sort, envoie une recommandation à Jules avec le tool `message` (action=send, channel=telegram, target=8133218645) avec le titre, réalisateur, et note presse. Si l'envoi échoue, RETRY 2 fois. Sinon, ne rien envoyer."
+        "kind": "systemEvent",
+        "text": "🔔 Rappel : Appeler les Ateliers de la Mabilais pour RDV pose claustra + demander le vernissage"
       },
       "state": {
-        "nextRunAtMs": 1771405200000
-      },
-      "delivery": {
-        "mode": "none",
-        "channel": "telegram"
-      }
-    },
-    {
-      "id": "cdf015db-b110-4393-8e35-98ae2b83bd8f",
-      "agentId": "main",
-      "name": "Sorties Rennes Weekend",
-      "enabled": true,
-      "createdAtMs": 1770233753919,
-      "updatedAtMs": 1770970619532,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 12 * * 3",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Vérifie les événements du weekend à Rennes sur jds.fr/rennes (browser). Filtre selon les goûts de Jules:\n✅ Jeux de société, Gastronomie, Science, Plantes/botanique, Danse moderne, Débats, Humour intelligent\n\nSi un événement intéressant, envoie à Jules avec le tool `message` (action=send, channel=telegram, target=8133218645) avec titre, date, lieu. Si l'envoi échoue, RETRY 2 fois. Sinon, ne rien envoyer."
-      },
-      "state": {
-        "nextRunAtMs": 1771412400000
-      },
-      "delivery": {
-        "mode": "none",
-        "channel": "telegram"
+        "nextRunAtMs": 1771491600000
       }
     },
     {
@@ -586,7 +556,7 @@
       "name": "Noon Brief - Weekday",
       "enabled": true,
       "createdAtMs": 1770737934433,
-      "updatedAtMs": 1771326080764,
+      "updatedAtMs": 1771412602394,
       "schedule": {
         "kind": "cron",
         "expr": "0 12 * * 1-5",
@@ -599,10 +569,10 @@
         "message": "Génère le brief du midi pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts noon.\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN AU MIDI - seulement au brief du matin.\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
       },
       "state": {
-        "nextRunAtMs": 1771412400000,
-        "lastRunAtMs": 1771326000030,
+        "nextRunAtMs": 1771498800000,
+        "lastRunAtMs": 1771412513532,
         "lastStatus": "ok",
-        "lastDurationMs": 80734,
+        "lastDurationMs": 88862,
         "consecutiveErrors": 0
       },
       "delivery": {
@@ -616,7 +586,7 @@
       "name": "Evening Brief - Weekday",
       "enabled": true,
       "createdAtMs": 1770216077273,
-      "updatedAtMs": 1771349465314,
+      "updatedAtMs": 1771435865428,
       "schedule": {
         "kind": "cron",
         "expr": "30 18 * * 1-5",
@@ -629,45 +599,15 @@
         "message": "Génère le brief du soir pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts evening.\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN LE SOIR - seulement au brief du matin.\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
       },
       "state": {
-        "nextRunAtMs": 1771435800000,
-        "lastRunAtMs": 1771349400020,
+        "nextRunAtMs": 1771522200000,
+        "lastRunAtMs": 1771435800032,
         "lastStatus": "ok",
-        "lastDurationMs": 65294,
+        "lastDurationMs": 65396,
         "consecutiveErrors": 0
       },
       "delivery": {
         "mode": "none",
         "channel": "telegram"
-      }
-    },
-    {
-      "id": "0406f105-4d98-477b-a368-7e36cda1fbcc",
-      "agentId": "main",
-      "name": "Daily Backup Commit",
-      "enabled": true,
-      "createdAtMs": 1770151010343,
-      "updatedAtMs": 1771290217900,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 2 * * *",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Backup quotidien:\n1. Exporte les crons actuels vers _config/crons-backup.json (utilise cron action=list puis écris le JSON)\n2. Git add + commit + push: cd C:\\Users\\jules\\repo\\clawdbot && git add -A && git commit -m 'backup auto' --allow-empty && git push jules main\nSi erreur, log-la mais ne fail pas."
-      },
-      "state": {
-        "nextRunAtMs": 1771462800000,
-        "lastRunAtMs": 1771290000022,
-        "lastStatus": "ok",
-        "lastDurationMs": 217878,
-        "consecutiveErrors": 0,
-        "runningAtMs": 1771376400030
-      },
-      "delivery": {
-        "mode": "announce"
       }
     },
     {
@@ -715,6 +655,36 @@
       },
       "state": {
         "nextRunAtMs": 1771524000000
+      }
+    },
+    {
+      "id": "0406f105-4d98-477b-a368-7e36cda1fbcc",
+      "agentId": "main",
+      "name": "Daily Backup Commit",
+      "enabled": true,
+      "createdAtMs": 1770151010343,
+      "updatedAtMs": 1771376628088,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 2 * * *",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Backup quotidien:\n1. Exporte les crons actuels vers _config/crons-backup.json (utilise cron action=list puis écris le JSON)\n2. Git add + commit + push: cd C:\\Users\\jules\\repo\\clawdbot && git add -A && git commit -m 'backup auto' --allow-empty && git push jules main\nSi erreur, log-la mais ne fail pas."
+      },
+      "state": {
+        "nextRunAtMs": 1771549200000,
+        "lastRunAtMs": 1771376400030,
+        "lastStatus": "ok",
+        "lastDurationMs": 228058,
+        "consecutiveErrors": 0,
+        "runningAtMs": 1771462800035
+      },
+      "delivery": {
+        "mode": "announce"
       }
     },
     {
@@ -880,6 +850,36 @@
       }
     },
     {
+      "id": "3ac76763-3603-415b-b716-1a08a8bd5aea",
+      "agentId": "main",
+      "name": "Sorties Cinéma",
+      "enabled": true,
+      "createdAtMs": 1770233747679,
+      "updatedAtMs": 1771405290042,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 10 * * 3",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Vérifie les sorties cinéma de la semaine sur Allociné (browser). Filtre selon les goûts de Jules:\n✅ SF épique, Tarantino, Thrillers, Films d'auteur, Critique 4+/5\n❌ Pas de comédies françaises\n\nSi un film intéressant sort, envoie une recommandation à Jules avec le tool `message` (action=send, channel=telegram, target=8133218645) avec le titre, réalisateur, et note presse. Si l'envoi échoue, RETRY 2 fois. Sinon, ne rien envoyer."
+      },
+      "state": {
+        "nextRunAtMs": 1772010000000,
+        "lastRunAtMs": 1771405200022,
+        "lastStatus": "ok",
+        "lastDurationMs": 90020,
+        "consecutiveErrors": 0
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram"
+      }
+    },
+    {
       "id": "fca74492-c13a-4534-be00-d680af5fae32",
       "agentId": "main",
       "name": "Rappel acheter places volley REC",
@@ -899,6 +899,36 @@
       },
       "state": {
         "nextRunAtMs": 1772010000000
+      }
+    },
+    {
+      "id": "cdf015db-b110-4393-8e35-98ae2b83bd8f",
+      "agentId": "main",
+      "name": "Sorties Rennes Weekend",
+      "enabled": true,
+      "createdAtMs": 1770233753919,
+      "updatedAtMs": 1771412513532,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 12 * * 3",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Vérifie les événements du weekend à Rennes sur jds.fr/rennes (browser). Filtre selon les goûts de Jules:\n✅ Jeux de société, Gastronomie, Science, Plantes/botanique, Danse moderne, Débats, Humour intelligent\n\nSi un événement intéressant, envoie à Jules avec le tool `message` (action=send, channel=telegram, target=8133218645) avec titre, date, lieu. Si l'envoi échoue, RETRY 2 fois. Sinon, ne rien envoyer."
+      },
+      "state": {
+        "nextRunAtMs": 1772017200000,
+        "lastRunAtMs": 1771412400053,
+        "lastStatus": "ok",
+        "lastDurationMs": 113479,
+        "consecutiveErrors": 0
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram"
       }
     },
     {
@@ -945,5 +975,5 @@
       }
     }
   ],
-  "exportedAt": "2026-02-18T01:00:00.000Z"
+  "exportedAt": "2026-02-19T01:00:00.000Z"
 }
