@@ -1,6 +1,6 @@
 # HEARTBEAT.md
 
-**Aujourd'hui : Dimanche 15 février 2026**
+**Aujourd'hui : Jeudi 19 février 2026**
 
 _Contexte urgent pour le prochain reset. Pas de données techniques ici._
 
@@ -10,24 +10,24 @@ _(rien)_
 
 ## ⚠️ À traiter
 
+- **Mabilais** : Surveiller emails pour réponse Ateliers de la Mabilais → déplacer claustra du 17 mars au 18 ou 19 mars selon leur choix
 - **Token Gmail** : `alejmurot@gmail.com` expiré → `gog auth login --account alejmurot@gmail.com`
-- **LinkedIn GenAI** : Post #2 à rédiger (rappel 17 fév) — crédibilité expert IA
-- **Tâches Grocy** : 2 tâches en retard (VMC, Vitres) — draps/SDB/charges faits ce soir
+- **Tâches Grocy** : 2 tâches en retard (VMC, Vitres)
 
 ## ✅ Récemment complété
 
-- Numéros de semaine ajoutés au dashboard calendrier ✓
-- Grocy : draps, SDB, charges marqués faits (12 fév) ✓
-- Dashboard TV maison créé (`_PERSONAL/dashboard/`) ✓
-- Sport tracking corrigé (7 fév = squash) ✓
-- Calendrier voyage corrigé : Lille 18-20, train retour 23 fév ✓
+- LinkedIn article "Representation" prêt → rappel demain 8h40 ✓
+- RDV prep naissance décalé 10→13 avril ✓
+- RDV prep naissance ajouté 16 mars 15h ✓
+- Pose claustra ajoutée 17 mars (à confirmer avec Mabilais) ✓
+- DeFi Report généré (portfolio $57,912) ✓
 
 ## 📍 Contexte actif
 
-- **Anne-Laure** : Train pour Lyon ce soir (23h)
-- **Dimanche 15** : Squash Le Garden 14h45
-- **Lundi 16** : RDV prénatal 18h + KAYS 19h15
-- **18-20 fév** : Lille Adeo
+- **19 fév** : Lille Adeo (jour 2/3)
+- **20 fév** : Lille → Strasbourg (train 13h52)
+- **21-22 fév** : Rackethlon Strasbourg
+- **23 fév** : Train retour Rennes
 
 ---
 

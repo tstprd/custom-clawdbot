@@ -1,0 +1,51 @@
+Salut Jules,
+
+Voici les 3 tendances identifiées pour tes réflexions :
+
+---
+
+TENDANCE #1 : La mort de l'App Store
+
+L'idée d'un "app store" avec des apps discrètes qu'on télécharge devient obsolète. Quand un LLM agent peut improviser une app sur mesure en quelques secondes (~300 lignes de code), pourquoi chercher/télécharger un "Cardio experiment tracker" générique ?
+
+Le futur : des services de capteurs et actuateurs AI-native (API/CLI) orchestrés via LLM en apps éphémères et hyper-personnalisées.
+
+Le problème actuel : 99% des produits n'ont toujours pas de CLI AI-native. Ils maintiennent des docs HTML avec des instructions "cliquez ici, puis là". En 2026.
+
+Ce qui manque pour passer de 1h à 1 minute :
+- Contexte personnel préchargé
+- Skill libraries référençables
+- Services avec ergonomie agent-native
+- Maintenance automatique des micro-apps
+
+---
+
+TENDANCE #2 : Les AI agents comme signal de demande
+
+Si chaque personne a une IA perso capable d'estimer ses besoins (nourriture, produits), cette information devient un signal vendable aux entreprises.
+
+Sources :
+- McKinsey : "Agentic commerce: How agents are ushering in a new era" (Oct 2025)
+- BCG : "How AI Agents Are Transforming Consumer Goods" (Sept 2025)
+- Salesforce : "AI Agents in Consumer Goods"
+- Akira AI : "How AI Agents Are Changing Demand Forecasting" (Dec 2025)
+
+L'idée : l'agrégation des signaux d'intention des AI agents personnels pourrait remplacer les études de marché traditionnelles.
+
+---
+
+TENDANCE #3 : Prediction Markets comme hedging personnel (Vitalik)
+
+Vitalik Buterin propose de transformer les prediction markets en plateformes de couverture plutôt que de spéculation court-terme.
+
+Concept clé : Des marchés on-chain liés à des indices de prix régionaux pour biens/services. Combinés avec des modèles AI locaux qui analysent tes dépenses personnelles.
+
+Résultat : ton propre indice d'inflation (self inflation index) pour hedger ta valeur réelle, pas l'inflation officielle.
+
+Sources : Posts Vitalik (Feb 2026), CoinMarketCap, Yahoo Finance, BeInCrypto
+
+---
+
+À creuser pour LinkedIn ou réflexions stratégiques.
+
+Dwight
