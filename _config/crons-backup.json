@@ -504,7 +504,7 @@
       "name": "Morning Brief - Weekend",
       "enabled": true,
       "createdAtMs": 1770216072659,
-      "updatedAtMs": 1771536040865,
+      "updatedAtMs": 1771664478147,
       "schedule": {
         "kind": "cron",
         "expr": "0 10 * * 0,6",
@@ -517,74 +517,15 @@
         "message": "Génère le brief du matin (weekend) pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning.\n\n## EMAILS IMPORTANTS\nCheck les emails non-lus de jmudes76000@gmail.com avec: gog gmail search \"is:unread\" --account jmudes76000@gmail.com --json\nRésume les 3-5 emails les plus importants (ignore newsletters, notifs auto).\n⚠️ PRIORITÉ: Si email des Ateliers de la Mabilais → signaler en URGENT et mettre à jour le RDV claustra (17 mars → 18 ou 19 selon leur réponse).\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n- 3 mots italiens (prononciation + exemple) - UNIQUEMENT LE MATIN\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
       },
       "state": {
-        "nextRunAtMs": 1771664400000,
-        "lastRunAtMs": 1771146000018,
+        "nextRunAtMs": 1771750800000,
+        "lastRunAtMs": 1771664400023,
         "lastStatus": "ok",
-        "lastDurationMs": 59790,
+        "lastDurationMs": 78124,
         "consecutiveErrors": 0
       },
       "delivery": {
         "mode": "none",
         "channel": "telegram"
-      }
-    },
-    {
-      "id": "65b05ae0-d96c-4198-9587-839fe39a6f9a",
-      "agentId": "main",
-      "name": "Afternoon Brief - Weekend",
-      "createdAtMs": 1770659003253,
-      "updatedAtMs": 1771269011571,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 14 * * 0,6",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Génère et envoie le brief de l'après-midi (weekend) à Jules sur Telegram. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts afternoon.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN L'APRÈS-MIDI - seulement au brief du matin.\n\nTout dans UN SEUL message. Sois concis."
-      },
-      "state": {
-        "nextRunAtMs": 1771678800000,
-        "lastRunAtMs": 1771160400017,
-        "lastStatus": "ok",
-        "lastDurationMs": 80467,
-        "consecutiveErrors": 0
-      },
-      "enabled": true,
-      "delivery": {
-        "mode": "announce"
-      }
-    },
-    {
-      "id": "0406f105-4d98-477b-a368-7e36cda1fbcc",
-      "agentId": "main",
-      "name": "Daily Backup Commit",
-      "enabled": true,
-      "createdAtMs": 1770151010343,
-      "updatedAtMs": 1771549433619,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 2 * * *",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Backup quotidien:\n1. Exporte les crons actuels vers _config/crons-backup.json (utilise cron action=list puis écris le JSON)\n2. Git add + commit + push: cd C:\\Users\\jules\\repo\\clawdbot && git add -A && git commit -m 'backup auto' --allow-empty && git push jules main\nSi erreur, log-la mais ne fail pas."
-      },
-      "state": {
-        "nextRunAtMs": 1771722000000,
-        "lastRunAtMs": 1771549200031,
-        "lastStatus": "ok",
-        "lastDurationMs": 233588,
-        "consecutiveErrors": 0,
-        "runningAtMs": 1771635600024
-      },
-      "delivery": {
-        "mode": "announce"
       }
     },
     {
@@ -615,6 +556,65 @@
         "lastStatus": "ok",
         "lastDurationMs": 208507,
         "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "65b05ae0-d96c-4198-9587-839fe39a6f9a",
+      "agentId": "main",
+      "name": "Afternoon Brief - Weekend",
+      "createdAtMs": 1770659003253,
+      "updatedAtMs": 1771678822608,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 14 * * 0,6",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Génère et envoie le brief de l'après-midi (weekend) à Jules sur Telegram. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts afternoon.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN L'APRÈS-MIDI - seulement au brief du matin.\n\nTout dans UN SEUL message. Sois concis."
+      },
+      "state": {
+        "nextRunAtMs": 1771765200000,
+        "lastRunAtMs": 1771678800023,
+        "lastStatus": "ok",
+        "lastDurationMs": 22585,
+        "consecutiveErrors": 0
+      },
+      "enabled": true,
+      "delivery": {
+        "mode": "announce"
+      }
+    },
+    {
+      "id": "0406f105-4d98-477b-a368-7e36cda1fbcc",
+      "agentId": "main",
+      "name": "Daily Backup Commit",
+      "enabled": true,
+      "createdAtMs": 1770151010343,
+      "updatedAtMs": 1771635828510,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 2 * * *",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Backup quotidien:\n1. Exporte les crons actuels vers _config/crons-backup.json (utilise cron action=list puis écris le JSON)\n2. Git add + commit + push: cd C:\\Users\\jules\\repo\\clawdbot && git add -A && git commit -m 'backup auto' --allow-empty && git push jules main\nSi erreur, log-la mais ne fail pas."
+      },
+      "state": {
+        "nextRunAtMs": 1771808400000,
+        "lastRunAtMs": 1771635600024,
+        "lastStatus": "ok",
+        "lastDurationMs": 228486,
+        "consecutiveErrors": 0,
+        "runningAtMs": 1771722000020
+      },
+      "delivery": {
+        "mode": "announce"
       }
     },
     {
@@ -962,5 +962,5 @@
       }
     }
   ],
-  "exportedAt": "2026-02-21T01:00:00.000Z"
+  "exportedAt": "2026-02-22T01:00:00.000Z"
 }
