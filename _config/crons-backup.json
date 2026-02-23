@@ -499,125 +499,6 @@
       }
     },
     {
-      "id": "f227f14e-cb52-46af-9337-d19cdc4a8c71",
-      "agentId": "main",
-      "name": "Morning Brief - Weekend",
-      "enabled": true,
-      "createdAtMs": 1770216072659,
-      "updatedAtMs": 1771664478147,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 10 * * 0,6",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Génère le brief du matin (weekend) pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning.\n\n## EMAILS IMPORTANTS\nCheck les emails non-lus de jmudes76000@gmail.com avec: gog gmail search \"is:unread\" --account jmudes76000@gmail.com --json\nRésume les 3-5 emails les plus importants (ignore newsletters, notifs auto).\n⚠️ PRIORITÉ: Si email des Ateliers de la Mabilais → signaler en URGENT et mettre à jour le RDV claustra (17 mars → 18 ou 19 selon leur réponse).\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n- 3 mots italiens (prononciation + exemple) - UNIQUEMENT LE MATIN\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
-      },
-      "state": {
-        "nextRunAtMs": 1771750800000,
-        "lastRunAtMs": 1771664400023,
-        "lastStatus": "ok",
-        "lastDurationMs": 78124,
-        "consecutiveErrors": 0
-      },
-      "delivery": {
-        "mode": "none",
-        "channel": "telegram"
-      }
-    },
-    {
-      "id": "21a9087c-116e-4772-b624-3b57e9019784",
-      "agentId": "main",
-      "name": "DeFi Report Hebdo",
-      "enabled": true,
-      "createdAtMs": 1771154725942,
-      "updatedAtMs": 1771486962622,
-      "schedule": {
-        "kind": "cron",
-        "expr": "15 10 * * 0",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "now",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Génère le report DeFi hebdo pour Jules.\n\n## CONFIG\nWallet: 0x8cddeb3f2d0b56a2e2dd36bfe27f55b1630b647f\nSeuil: IGNORER positions < $5,000 (APY = 0)\nRéférence: _PERSONAL/crypto/DEFI-REPORT.md\n\n## SOURCES (browser snapshot)\n- Portfolio: https://debank.com/profile/0x8cddeb3f2d0b56a2e2dd36bfe27f55b1630b647f\n- Curve LlamaLend: https://www.curve.finance/llamalend/ethereum/markets\n- Llama Airforce: https://llama.airforce/pounders\n- Curve Savings: https://www.curve.finance/scrvusd\n- AAVE: https://app.aave.com/markets/\n\n## POSITIONS À SUIVRE (> $5k)\n1. scrvUSD (Curve Savings)\n2. frxETH (Fraxlend) - utiliser sfrxETH APR\n3. WETH (Aave V3)\n4. uCVX (Llama Airforce Pounders → Convex Pirex)\n\n## ÉTAPES\n1. Browser snapshot DeBank → valeurs positions\n2. Browser snapshot sources APY → taux actuels\n3. Calculer gains/semaine = (Valeur × APY) / 52\n4. Si position < $5k → ne pas inclure dans calcul yield\n5. Comparer APY avec semaine précédente (lire DEFI-REPORT.md)\n\n## FORMAT RAPPORT\n📊 DeFi Report — [date]\n\nPortfolio: $XX,XXX\n\n| Position | Valeur | APY | Gain/sem |\n|----------|--------|-----|----------|\n| scrvUSD  | $XX,XXX | X.XX% | $XX.XX |\n| frxETH   | $XX,XXX | X.XX% | $XX.XX |\n| WETH     | $XX,XXX | X.XX% | $XX.XX |\n| uCVX     | $XX,XXX | X.XX% | $XX.XX |\n\n💰 Total: ~$XXX/semaine (~$X,XXX/an)\n\n⚠️ Alertes si:\n- APY change > 5pts\n- Position passe sous $5k\n\n## FIN\nMet à jour _PERSONAL/crypto/DEFI-REPORT.md avec nouvelles valeurs\nEnvoie sur Telegram (target=8133218645)",
-        "timeoutSeconds": 600
-      },
-      "delivery": {
-        "mode": "announce"
-      },
-      "state": {
-        "nextRunAtMs": 1771751700000,
-        "lastRunAtMs": 1771486754115,
-        "lastStatus": "ok",
-        "lastDurationMs": 208507,
-        "consecutiveErrors": 0
-      }
-    },
-    {
-      "id": "65b05ae0-d96c-4198-9587-839fe39a6f9a",
-      "agentId": "main",
-      "name": "Afternoon Brief - Weekend",
-      "createdAtMs": 1770659003253,
-      "updatedAtMs": 1771678822608,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 14 * * 0,6",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Génère et envoie le brief de l'après-midi (weekend) à Jules sur Telegram. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts afternoon.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN L'APRÈS-MIDI - seulement au brief du matin.\n\nTout dans UN SEUL message. Sois concis."
-      },
-      "state": {
-        "nextRunAtMs": 1771765200000,
-        "lastRunAtMs": 1771678800023,
-        "lastStatus": "ok",
-        "lastDurationMs": 22585,
-        "consecutiveErrors": 0
-      },
-      "enabled": true,
-      "delivery": {
-        "mode": "announce"
-      }
-    },
-    {
-      "id": "0406f105-4d98-477b-a368-7e36cda1fbcc",
-      "agentId": "main",
-      "name": "Daily Backup Commit",
-      "enabled": true,
-      "createdAtMs": 1770151010343,
-      "updatedAtMs": 1771635828510,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 2 * * *",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Backup quotidien:\n1. Exporte les crons actuels vers _config/crons-backup.json (utilise cron action=list puis écris le JSON)\n2. Git add + commit + push: cd C:\\Users\\jules\\repo\\clawdbot && git add -A && git commit -m 'backup auto' --allow-empty && git push jules main\nSi erreur, log-la mais ne fail pas."
-      },
-      "state": {
-        "nextRunAtMs": 1771808400000,
-        "lastRunAtMs": 1771635600024,
-        "lastStatus": "ok",
-        "lastDurationMs": 228486,
-        "consecutiveErrors": 0,
-        "runningAtMs": 1771722000020
-      },
-      "delivery": {
-        "mode": "announce"
-      }
-    },
-    {
       "id": "4b8e20a8-2cce-4c2f-a0cd-2d2fd707d71f",
       "agentId": "main",
       "name": "Morning Brief - Weekday",
@@ -756,6 +637,36 @@
       "delivery": {
         "mode": "none",
         "channel": "telegram"
+      }
+    },
+    {
+      "id": "0406f105-4d98-477b-a368-7e36cda1fbcc",
+      "agentId": "main",
+      "name": "Daily Backup Commit",
+      "enabled": true,
+      "createdAtMs": 1770151010343,
+      "updatedAtMs": 1771722217764,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 2 * * *",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Backup quotidien:\n1. Exporte les crons actuels vers _config/crons-backup.json (utilise cron action=list puis écris le JSON)\n2. Git add + commit + push: cd C:\\Users\\jules\\repo\\clawdbot && git add -A && git commit -m 'backup auto' --allow-empty && git push jules main\nSi erreur, log-la mais ne fail pas."
+      },
+      "state": {
+        "nextRunAtMs": 1771894800000,
+        "lastRunAtMs": 1771722000020,
+        "lastStatus": "ok",
+        "lastDurationMs": 217744,
+        "consecutiveErrors": 0,
+        "runningAtMs": 1771808400029
+      },
+      "delivery": {
+        "mode": "announce"
       }
     },
     {
@@ -919,6 +830,65 @@
       }
     },
     {
+      "id": "f227f14e-cb52-46af-9337-d19cdc4a8c71",
+      "agentId": "main",
+      "name": "Morning Brief - Weekend",
+      "enabled": true,
+      "createdAtMs": 1770216072659,
+      "updatedAtMs": 1771750875257,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 10 * * 0,6",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Génère le brief du matin (weekend) pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning.\n\n## EMAILS IMPORTANTS\nCheck les emails non-lus de jmudes76000@gmail.com avec: gog gmail search \"is:unread\" --account jmudes76000@gmail.com --json\nRésume les 3-5 emails les plus importants (ignore newsletters, notifs auto).\n⚠️ PRIORITÉ: Si email des Ateliers de la Mabilais → signaler en URGENT et mettre à jour le RDV claustra (17 mars → 18 ou 19 selon leur réponse).\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n- 3 mots italiens (prononciation + exemple) - UNIQUEMENT LE MATIN\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
+      },
+      "state": {
+        "nextRunAtMs": 1772269200000,
+        "lastRunAtMs": 1771750800028,
+        "lastStatus": "ok",
+        "lastDurationMs": 75229,
+        "consecutiveErrors": 0
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram"
+      }
+    },
+    {
+      "id": "65b05ae0-d96c-4198-9587-839fe39a6f9a",
+      "agentId": "main",
+      "name": "Afternoon Brief - Weekend",
+      "createdAtMs": 1770659003253,
+      "updatedAtMs": 1771765223801,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 14 * * 0,6",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Génère et envoie le brief de l'après-midi (weekend) à Jules sur Telegram. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts afternoon.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN L'APRÈS-MIDI - seulement au brief du matin.\n\nTout dans UN SEUL message. Sois concis."
+      },
+      "state": {
+        "nextRunAtMs": 1772283600000,
+        "lastRunAtMs": 1771765200026,
+        "lastStatus": "ok",
+        "lastDurationMs": 23775,
+        "consecutiveErrors": 0
+      },
+      "enabled": true,
+      "delivery": {
+        "mode": "announce"
+      }
+    },
+    {
       "id": "f1273251-a90d-4fe9-9bd9-903de309839f",
       "agentId": "main",
       "name": "Check liste bébé avec AL",
@@ -937,6 +907,36 @@
       },
       "state": {
         "nextRunAtMs": 1772305200000
+      }
+    },
+    {
+      "id": "21a9087c-116e-4772-b624-3b57e9019784",
+      "agentId": "main",
+      "name": "DeFi Report Hebdo",
+      "enabled": true,
+      "createdAtMs": 1771154725942,
+      "updatedAtMs": 1771751982750,
+      "schedule": {
+        "kind": "cron",
+        "expr": "15 10 * * 0",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Génère le report DeFi hebdo pour Jules.\n\n## CONFIG\nWallet: 0x8cddeb3f2d0b56a2e2dd36bfe27f55b1630b647f\nSeuil: IGNORER positions < $5,000 (APY = 0)\nRéférence: _PERSONAL/crypto/DEFI-REPORT.md\n\n## SOURCES (browser snapshot)\n- Portfolio: https://debank.com/profile/0x8cddeb3f2d0b56a2e2dd36bfe27f55b1630b647f\n- Curve LlamaLend: https://www.curve.finance/llamalend/ethereum/markets\n- Llama Airforce: https://llama.airforce/pounders\n- Curve Savings: https://www.curve.finance/scrvusd\n- AAVE: https://app.aave.com/markets/\n\n## POSITIONS À SUIVRE (> $5k)\n1. scrvUSD (Curve Savings)\n2. frxETH (Fraxlend) - utiliser sfrxETH APR\n3. WETH (Aave V3)\n4. uCVX (Llama Airforce Pounders → Convex Pirex)\n\n## ÉTAPES\n1. Browser snapshot DeBank → valeurs positions\n2. Browser snapshot sources APY → taux actuels\n3. Calculer gains/semaine = (Valeur × APY) / 52\n4. Si position < $5k → ne pas inclure dans calcul yield\n5. Comparer APY avec semaine précédente (lire DEFI-REPORT.md)\n\n## FORMAT RAPPORT\n📊 DeFi Report — [date]\n\nPortfolio: $XX,XXX\n\n| Position | Valeur | APY | Gain/sem |\n|----------|--------|-----|----------|\n| scrvUSD  | $XX,XXX | X.XX% | $XX.XX |\n| frxETH   | $XX,XXX | X.XX% | $XX.XX |\n| WETH     | $XX,XXX | X.XX% | $XX.XX |\n| uCVX     | $XX,XXX | X.XX% | $XX.XX |\n\n💰 Total: ~$XXX/semaine (~$X,XXX/an)\n\n⚠️ Alertes si:\n- APY change > 5pts\n- Position passe sous $5k\n\n## FIN\nMet à jour _PERSONAL/crypto/DEFI-REPORT.md avec nouvelles valeurs\nEnvoie sur Telegram (target=8133218645)",
+        "timeoutSeconds": 600
+      },
+      "delivery": {
+        "mode": "announce"
+      },
+      "state": {
+        "nextRunAtMs": 1772356500000,
+        "lastRunAtMs": 1771751700023,
+        "lastStatus": "ok",
+        "lastDurationMs": 282727,
+        "consecutiveErrors": 0
       }
     },
     {
@@ -962,5 +962,5 @@
       }
     }
   ],
-  "exportedAt": "2026-02-22T01:00:00.000Z"
+  "exportedAt": "2026-02-23T01:00:00.000Z"
 }
