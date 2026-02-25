@@ -504,7 +504,7 @@
       "name": "Morning Brief - Weekday",
       "enabled": true,
       "createdAtMs": 1770216068237,
-      "updatedAtMs": 1771832501299,
+      "updatedAtMs": 1771918895924,
       "schedule": {
         "kind": "cron",
         "expr": "40 8 * * 1-5",
@@ -517,10 +517,10 @@
         "message": "Génère le brief du matin pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning.\n\n## EMAILS IMPORTANTS\nCheck les emails non-lus de jmudes76000@gmail.com avec: gog gmail search \"is:unread\" --account jmudes76000@gmail.com --json\nRésume les 3-5 emails les plus importants (ignore newsletters, notifs auto).\n⚠️ PRIORITÉ: Si email des Ateliers de la Mabilais → signaler en URGENT et mettre à jour le RDV claustra (17 mars → 18 ou 19 selon leur réponse).\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n- 3 mots italiens (prononciation + exemple) - UNIQUEMENT LE MATIN\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
       },
       "state": {
-        "nextRunAtMs": 1771918800000,
-        "lastRunAtMs": 1771832400029,
+        "nextRunAtMs": 1772005200000,
+        "lastRunAtMs": 1771918800030,
         "lastStatus": "ok",
-        "lastDurationMs": 101270,
+        "lastDurationMs": 95894,
         "consecutiveErrors": 0
       },
       "delivery": {
@@ -529,140 +529,25 @@
       }
     },
     {
-      "id": "78a77eea-c516-401b-b101-6c50b12ff983",
+      "id": "5c2500e1-29cb-4455-aa7d-01d2112f47cb",
       "agentId": "main",
-      "name": "Rappel procuration",
+      "name": "Rappel restaurant Fezi",
       "enabled": true,
       "deleteAfterRun": true,
-      "createdAtMs": 1771874523000,
-      "updatedAtMs": 1771874523000,
+      "createdAtMs": 1771967479226,
+      "updatedAtMs": 1771967479226,
       "schedule": {
         "kind": "at",
-        "at": "2026-02-24T07:40:00.000Z"
+        "at": "2026-02-25T07:40:00.000Z"
       },
       "sessionTarget": "main",
       "wakeMode": "now",
       "payload": {
         "kind": "systemEvent",
-        "text": "🔔 Rappel : Faire la procuration"
+        "text": "🍽️ RAPPEL : Si pas de retour de Fezi → appeler le restaurant pour Strasbourg (weekend 14-15 mars)"
       },
       "state": {
-        "nextRunAtMs": 1771918800000
-      }
-    },
-    {
-      "id": "77875bb0-92a9-4661-a8f8-f3a9a4c90ae6",
-      "agentId": "main",
-      "name": "Noon Brief - Weekday",
-      "enabled": true,
-      "createdAtMs": 1770737934433,
-      "updatedAtMs": 1771844453620,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 12 * * 1-5",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Génère le brief du midi pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts noon.\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN AU MIDI - seulement au brief du matin.\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
-      },
-      "state": {
-        "nextRunAtMs": 1771930800000,
-        "lastRunAtMs": 1771844400047,
-        "lastStatus": "ok",
-        "lastDurationMs": 53573,
-        "consecutiveErrors": 0
-      },
-      "delivery": {
-        "mode": "none",
-        "channel": "telegram"
-      }
-    },
-    {
-      "id": "10f77259-8577-4df2-989c-4fd5baf4ca12",
-      "agentId": "main",
-      "name": "Evening Brief - Weekday",
-      "enabled": true,
-      "createdAtMs": 1770216077273,
-      "updatedAtMs": 1771867875991,
-      "schedule": {
-        "kind": "cron",
-        "expr": "30 18 * * 1-5",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Génère le brief du soir pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts evening.\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN LE SOIR - seulement au brief du matin.\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
-      },
-      "state": {
-        "nextRunAtMs": 1771954200000,
-        "lastRunAtMs": 1771867800029,
-        "lastStatus": "ok",
-        "lastDurationMs": 75962,
-        "consecutiveErrors": 0
-      },
-      "delivery": {
-        "mode": "none",
-        "channel": "telegram"
-      }
-    },
-    {
-      "id": "6d99fa25-48cc-44e4-824b-c3eaf5e63611",
-      "agentId": "main",
-      "name": "Rappel Sauna Aqua Tonic",
-      "enabled": true,
-      "createdAtMs": 1770233758659,
-      "updatedAtMs": 1771351200032,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 19 * * 2",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "main",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "systemEvent",
-        "text": "🧖 Rappel : Réserver Aqua Tonic pour demain midi ? (35€ la séance)"
-      },
-      "state": {
-        "nextRunAtMs": 1771956000000,
-        "lastRunAtMs": 1771351200018,
-        "lastStatus": "ok",
-        "lastDurationMs": 14,
-        "consecutiveErrors": 0
-      }
-    },
-    {
-      "id": "0406f105-4d98-477b-a368-7e36cda1fbcc",
-      "agentId": "main",
-      "name": "Daily Backup Commit",
-      "enabled": true,
-      "createdAtMs": 1770151010343,
-      "updatedAtMs": 1771808630190,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 2 * * *",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Backup quotidien:\n1. Exporte les crons actuels vers _config/crons-backup.json (utilise cron action=list puis écris le JSON)\n2. Git add + commit + push: cd C:\\Users\\jules\\repo\\clawdbot && git add -A && git commit -m 'backup auto' --allow-empty && git push jules main\nSi erreur, log-la mais ne fail pas."
-      },
-      "state": {
-        "nextRunAtMs": 1771981200000,
-        "lastRunAtMs": 1771808400029,
-        "lastStatus": "ok",
-        "lastDurationMs": 230161,
-        "consecutiveErrors": 0
-      },
-      "delivery": {
-        "mode": "announce"
+        "nextRunAtMs": 1772005200000
       }
     },
     {
@@ -745,6 +630,96 @@
       "delivery": {
         "mode": "none",
         "channel": "telegram"
+      }
+    },
+    {
+      "id": "77875bb0-92a9-4661-a8f8-f3a9a4c90ae6",
+      "agentId": "main",
+      "name": "Noon Brief - Weekday",
+      "enabled": true,
+      "createdAtMs": 1770737934433,
+      "updatedAtMs": 1771930853097,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 12 * * 1-5",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Génère le brief du midi pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts noon.\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN AU MIDI - seulement au brief du matin.\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
+      },
+      "state": {
+        "nextRunAtMs": 1772017200000,
+        "lastRunAtMs": 1771930800031,
+        "lastStatus": "ok",
+        "lastDurationMs": 53066,
+        "consecutiveErrors": 0
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram"
+      }
+    },
+    {
+      "id": "10f77259-8577-4df2-989c-4fd5baf4ca12",
+      "agentId": "main",
+      "name": "Evening Brief - Weekday",
+      "enabled": true,
+      "createdAtMs": 1770216077273,
+      "updatedAtMs": 1771954268101,
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 18 * * 1-5",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Génère le brief du soir pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts evening.\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN LE SOIR - seulement au brief du matin.\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
+      },
+      "state": {
+        "nextRunAtMs": 1772040600000,
+        "lastRunAtMs": 1771954200031,
+        "lastStatus": "ok",
+        "lastDurationMs": 68070,
+        "consecutiveErrors": 0
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram"
+      }
+    },
+    {
+      "id": "0406f105-4d98-477b-a368-7e36cda1fbcc",
+      "agentId": "main",
+      "name": "Daily Backup Commit",
+      "enabled": true,
+      "createdAtMs": 1770151010343,
+      "updatedAtMs": 1771895029801,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 2 * * *",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Backup quotidien:\n1. Exporte les crons actuels vers _config/crons-backup.json (utilise cron action=list puis écris le JSON)\n2. Git add + commit + push: cd C:\\Users\\jules\\repo\\clawdbot && git add -A && git commit -m 'backup auto' --allow-empty && git push jules main\nSi erreur, log-la mais ne fail pas."
+      },
+      "state": {
+        "nextRunAtMs": 1772067600000,
+        "lastRunAtMs": 1771894800020,
+        "lastStatus": "ok",
+        "lastDurationMs": 229781,
+        "consecutiveErrors": 0,
+        "runningAtMs": 1771981200027
+      },
+      "delivery": {
+        "mode": "announce"
       }
     },
     {
@@ -958,6 +933,32 @@
       "enabled": true
     },
     {
+      "id": "6d99fa25-48cc-44e4-824b-c3eaf5e63611",
+      "agentId": "main",
+      "name": "Rappel Sauna Aqua Tonic",
+      "enabled": true,
+      "createdAtMs": 1770233758659,
+      "updatedAtMs": 1771956000040,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 19 * * 2",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "🧖 Rappel : Réserver Aqua Tonic pour demain midi ? (35€ la séance)"
+      },
+      "state": {
+        "nextRunAtMs": 1772560800000,
+        "lastRunAtMs": 1771956000026,
+        "lastStatus": "ok",
+        "lastDurationMs": 14,
+        "consecutiveErrors": 0
+      }
+    },
+    {
       "id": "c1d7af85-48c8-4164-8212-04854151d6c8",
       "agentId": "main",
       "name": "Rappel Aqua Tonic - semaine du 9 mars",
@@ -1006,5 +1007,5 @@
       }
     }
   ],
-  "exportedAt": "2026-02-24T01:00:00.000Z"
+  "exportedAt": "2026-02-25T01:00:00.000Z"
 }
