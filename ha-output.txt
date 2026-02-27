@@ -1,6 +1,10 @@
-Found 5 entities:
-  input_datetime.derniere_alerte_pic_conso = 2026-02-17 20:23:12 (Derniere alerte pic consommation)
-  scene.salon_crepuscule_tropical = unknown (Salon Crépuscule tropical)
-  automation.alerte_pic_consommation_tempo_blanc_rouge_hp = on (Alerte Pic Consommation - Tempo ROUGE HP)
-  automation.pic_consommation_action_ok = on (Pic Consommation - Action OK)
-  automation.pic_consommation_action_ignorer_1h = on (Pic Consommation - Action Ignorer 1h)
+Found 9 entities:
+  light.hue_lightstrip_plus_1 = off (Hue lightstrip plus 1)
+  light.cuisine = unavailable (Cuisine)
+  light.hue_filament_bulb_2 = unavailable (Hue filament bulb 2)
+  light.signe_gradient_table_1 = on (Gradient Jules)
+  light.hue_filament_bulb_1 = off (Hue filament bulb 1)
+  light.lampe_gradient = off (Lampe gradient)
+  light.salon = off (Salon)
+  light.lampe_bureau = on (Lampe Bureau)
+  light.esp32_s2mini_1_led_gpio2 = unavailable (esp32-s2mini-1 LED GPIO2)

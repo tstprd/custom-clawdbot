@@ -1,6 +1,6 @@
 # HEARTBEAT.md
 
-**Aujourd'hui : Mercredi 25 février 2026**
+**Aujourd'hui : Jeudi 26 février 2026**
 
 _Contexte urgent pour le prochain reset. Pas de données techniques ici._
 

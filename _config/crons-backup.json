@@ -69,7 +69,7 @@
       "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "agentTurn",
-        "message": "Envoie à Jules sur Telegram:\n1. Un meme Dwight Schrute (imgflip, URL directe)\n2. 3 mots italiens avec prononciation et exemple\n\nAvant d'envoyer, check ce qui a déjà été envoyé:\n  pnpm tsx skills/local-db/scripts/wisdom-log.ts list\n\nAprès envoi, log chaque élément:\n  pnpm tsx skills/local-db/scripts/wisdom-log.ts add meme \"<meme_id>\"\n  pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nChoisis des mots/memes différents de ceux déjà loggués."
+        "message": "Envoie à Jules sur Telegram:\n1. Un meme Dwight Schrute (imgflip, URL directe)\n2. 3 mots italiens avec prononciation et exemple\n\nAvant d'envoyer, check ce qui a déjà été envoyé:\n  pnpm tsx skills/local-db/scripts/wisdom-log.ts list\n\nAprès envoi, log chaque élément:\n  pnpm tsx skills/local-db/scripts/wisdom-log.ts add meme \"<meme_id>\"\n  pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nChoisis des mots/memes différents de ceux déjà loggés."
       },
       "state": {
         "lastRunAtMs": 1770638400005,
@@ -504,7 +504,7 @@
       "name": "Morning Brief - Weekday",
       "enabled": true,
       "createdAtMs": 1770216068237,
-      "updatedAtMs": 1772005286959,
+      "updatedAtMs": 1772091691487,
       "schedule": {
         "kind": "cron",
         "expr": "40 8 * * 1-5",
@@ -517,10 +517,10 @@
         "message": "Génère le brief du matin pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning.\n\n## EMAILS IMPORTANTS\nCheck les emails non-lus de jmudes76000@gmail.com avec: gog gmail search \"is:unread\" --account jmudes76000@gmail.com --json\nRésume les 3-5 emails les plus importants (ignore newsletters, notifs auto).\n⚠️ PRIORITÉ: Si email des Ateliers de la Mabilais → signaler en URGENT et mettre à jour le RDV claustra (17 mars → 18 ou 19 selon leur réponse).\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n- 3 mots italiens (prononciation + exemple) - UNIQUEMENT LE MATIN\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
       },
       "state": {
-        "nextRunAtMs": 1772091600000,
-        "lastRunAtMs": 1772005200024,
+        "nextRunAtMs": 1772178000000,
+        "lastRunAtMs": 1772091600040,
         "lastStatus": "ok",
-        "lastDurationMs": 86935,
+        "lastDurationMs": 91447,
         "consecutiveErrors": 0
       },
       "delivery": {
@@ -529,34 +529,12 @@
       }
     },
     {
-      "id": "6985ebf3-1183-4006-8e4d-066a59988f1e",
-      "agentId": "main",
-      "name": "Rappel Racketlon Calculator",
-      "enabled": true,
-      "deleteAfterRun": true,
-      "createdAtMs": 1772060373998,
-      "updatedAtMs": 1772060373998,
-      "schedule": {
-        "kind": "at",
-        "at": "2026-02-26T07:40:00.000Z"
-      },
-      "sessionTarget": "main",
-      "wakeMode": "now",
-      "payload": {
-        "kind": "systemEvent",
-        "text": "🎾 Rappel: Reprendre le Racketlon Score Calculator. État: v2.5, scores condensés OK. Reste à faire: retirer scores de test, push GitHub, vérifier Pages. Projet: _PERSONAL/racketlon-calc/"
-      },
-      "state": {
-        "nextRunAtMs": 1772091600000
-      }
-    },
-    {
       "id": "77875bb0-92a9-4661-a8f8-f3a9a4c90ae6",
       "agentId": "main",
       "name": "Noon Brief - Weekday",
       "enabled": true,
       "createdAtMs": 1770737934433,
-      "updatedAtMs": 1772017323508,
+      "updatedAtMs": 1772103655211,
       "schedule": {
         "kind": "cron",
         "expr": "0 12 * * 1-5",
@@ -569,10 +547,10 @@
         "message": "Génère le brief du midi pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts noon.\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN AU MIDI - seulement au brief du matin.\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
       },
       "state": {
-        "nextRunAtMs": 1772103600000,
-        "lastRunAtMs": 1772017262764,
+        "nextRunAtMs": 1772190000000,
+        "lastRunAtMs": 1772103600030,
         "lastStatus": "ok",
-        "lastDurationMs": 60744,
+        "lastDurationMs": 55181,
         "consecutiveErrors": 0
       },
       "delivery": {
@@ -586,7 +564,7 @@
       "name": "Evening Brief - Weekday",
       "enabled": true,
       "createdAtMs": 1770216077273,
-      "updatedAtMs": 1772040656512,
+      "updatedAtMs": 1772127050427,
       "schedule": {
         "kind": "cron",
         "expr": "30 18 * * 1-5",
@@ -599,10 +577,10 @@
         "message": "Génère le brief du soir pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts evening.\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN LE SOIR - seulement au brief du matin.\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
       },
       "state": {
-        "nextRunAtMs": 1772127000000,
-        "lastRunAtMs": 1772040600019,
+        "nextRunAtMs": 1772213400000,
+        "lastRunAtMs": 1772127000028,
         "lastStatus": "ok",
-        "lastDurationMs": 56493,
+        "lastDurationMs": 50399,
         "consecutiveErrors": 0
       },
       "delivery": {
@@ -611,86 +589,12 @@
       }
     },
     {
-      "id": "c1eba347-5074-453a-b2a6-605953f1cdfd",
-      "agentId": "main",
-      "name": "Rappel Racketlon App (relance)",
-      "enabled": true,
-      "deleteAfterRun": true,
-      "createdAtMs": 1771846834418,
-      "updatedAtMs": 1771846834418,
-      "schedule": {
-        "kind": "at",
-        "at": "2026-02-26T17:30:00.000Z"
-      },
-      "sessionTarget": "main",
-      "wakeMode": "now",
-      "payload": {
-        "kind": "systemEvent",
-        "text": "🏓 Relance : tu n'as pas eu le temps lundi, on reprend l'app Racketlon ? URL: https://tstprd.github.io/racketlon-score-calculator/ | Repo: C:\\Users\\jules\\repo\\clawdbot\\_PERSONAL\\racketlon-calc"
-      },
-      "state": {
-        "nextRunAtMs": 1772127000000
-      }
-    },
-    {
-      "id": "2f7f8d51-39ba-400d-8ba9-fb766effccf0",
-      "agentId": "main",
-      "name": "Volley Check",
-      "enabled": true,
-      "createdAtMs": 1770234883323,
-      "updatedAtMs": 1771524000036,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 19 * * 4",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "main",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "systemEvent",
-        "text": "RAPPEL VOLLEY: Demander à Jules s'il est allé au volley cette semaine. Si oui, logger la session avec: pnpm tsx skills/local-db/scripts/db-sport.ts add <date> volley --source=manual"
-      },
-      "state": {
-        "nextRunAtMs": 1772128800000,
-        "lastRunAtMs": 1771524000021,
-        "lastStatus": "ok",
-        "lastDurationMs": 15,
-        "consecutiveErrors": 0
-      }
-    },
-    {
-      "id": "fd95f09c-e9ed-451b-8ddb-6574c03e1378",
-      "agentId": "main",
-      "name": "Sport tracking hebdo",
-      "enabled": true,
-      "createdAtMs": 1770929894636,
-      "updatedAtMs": 1771524000036,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 19 * * 4",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "main",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "systemEvent",
-        "text": "RAPPEL SPORT: Demander à Jules quelles séances de volley (lundi/mercredi) et squash il a faites cette semaine. Logger avec: pnpm tsx skills/local-db/scripts/db-sport.ts add <date> <volley|squash> --source=manual"
-      },
-      "state": {
-        "nextRunAtMs": 1772128800000,
-        "lastRunAtMs": 1771524000036,
-        "lastStatus": "ok",
-        "lastDurationMs": 0,
-        "consecutiveErrors": 0
-      }
-    },
-    {
       "id": "0406f105-4d98-477b-a368-7e36cda1fbcc",
       "agentId": "main",
       "name": "Daily Backup Commit",
       "enabled": true,
       "createdAtMs": 1770151010343,
-      "updatedAtMs": 1771981432132,
+      "updatedAtMs": 1772067854745,
       "schedule": {
         "kind": "cron",
         "expr": "0 2 * * *",
@@ -703,12 +607,12 @@
         "message": "Backup quotidien:\n1. Exporte les crons actuels vers _config/crons-backup.json (utilise cron action=list puis écris le JSON)\n2. Git add + commit + push: cd C:\\Users\\jules\\repo\\clawdbot && git add -A && git commit -m 'backup auto' --allow-empty && git push jules main\nSi erreur, log-la mais ne fail pas."
       },
       "state": {
-        "nextRunAtMs": 1772154000000,
-        "lastRunAtMs": 1771981200027,
+        "nextRunAtMs": 1772240400000,
+        "lastRunAtMs": 1772067600027,
         "lastStatus": "ok",
-        "lastDurationMs": 232105,
+        "lastDurationMs": 254718,
         "consecutiveErrors": 0,
-        "runningAtMs": 1772067600027
+        "runningAtMs": 1772154000022
       },
       "delivery": {
         "mode": "announce"
@@ -937,6 +841,58 @@
       }
     },
     {
+      "id": "2f7f8d51-39ba-400d-8ba9-fb766effccf0",
+      "agentId": "main",
+      "name": "Volley Check",
+      "enabled": true,
+      "createdAtMs": 1770234883323,
+      "updatedAtMs": 1772128800047,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 19 * * 4",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "RAPPEL VOLLEY: Demander à Jules s'il est allé au volley cette semaine. Si oui, logger la session avec: pnpm tsx skills/local-db/scripts/db-sport.ts add <date> volley --source=manual"
+      },
+      "state": {
+        "nextRunAtMs": 1772733600000,
+        "lastRunAtMs": 1772128800030,
+        "lastStatus": "ok",
+        "lastDurationMs": 17,
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "fd95f09c-e9ed-451b-8ddb-6574c03e1378",
+      "agentId": "main",
+      "name": "Sport tracking hebdo",
+      "enabled": true,
+      "createdAtMs": 1770929894636,
+      "updatedAtMs": 1772128800048,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 19 * * 4",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "RAPPEL SPORT: Demander à Jules quelles séances de volley (lundi/mercredi) et squash il a faites cette semaine. Logger avec: pnpm tsx skills/local-db/scripts/db-sport.ts add <date> <volley|squash> --source=manual"
+      },
+      "state": {
+        "nextRunAtMs": 1772733600000,
+        "lastRunAtMs": 1772128800047,
+        "lastStatus": "ok",
+        "lastDurationMs": 1,
+        "consecutiveErrors": 0
+      }
+    },
+    {
       "id": "c1d7af85-48c8-4164-8212-04854151d6c8",
       "agentId": "main",
       "name": "Rappel Aqua Tonic - semaine du 9 mars",
@@ -984,6 +940,5 @@
         "consecutiveErrors": 0
       }
     }
-  ],
-  "exportedAt": "2026-02-26T02:00:00.000Z"
+  ]
 }
