@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ROI Automation - Avant/Après IA</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family:
+          "Segoe UI",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        min-height: 100vh;
+        padding: 40px 20px;
+        color: #fff;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        text-align: center;
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        background: linear-gradient(90deg, #00d4aa, #7c3aed);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .subtitle {
+        text-align: center;
+        color: #94a3b8;
+        font-size: 14px;
+        margin-bottom: 40px;
+      }
+
+      .scenario {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 24px;
+        backdrop-filter: blur(10px);
+      }
+
+      .scenario-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .scenario-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #e2e8f0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .scenario-title .num {
+        background: rgba(124, 58, 237, 0.3);
+        color: #a78bfa;
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .scenario.highlight {
+        border-color: rgba(0, 212, 170, 0.4);
+        background: rgba(0, 212, 170, 0.05);
+      }
+
+      .scenario.highlight .scenario-title .num {
+        background: rgba(0, 212, 170, 0.3);
+        color: #00d4aa;
+      }
+
+      .task-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+        gap: 12px;
+      }
+
+      .task-label {
+        width: 80px;
+        font-size: 11px;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        flex-shrink: 0;
+      }
+
+      .bar-container {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        height: 32px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 6px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .bar {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+        transition: width 0.5s ease;
+        position: relative;
+      }
+
+      .bar.gain {
+        background: linear-gradient(90deg, #10b981, #34d399);
+      }
+
+      .bar.cost {
+        background: linear-gradient(90deg, #ef4444, #f87171);
+      }
+
+      .bar.cost-auto {
+        background: linear-gradient(90deg, #3b82f6, #60a5fa);
+      }
+
+      .bar.cost-auto-reduced {
+        background: linear-gradient(90deg, #6366f1, #818cf8);
+        opacity: 0.7;
+      }
+
+      .bar.potential {
+        background: repeating-linear-gradient(
+          45deg,
+          #10b981,
+          #10b981 4px,
+          #059669 4px,
+          #059669 8px
+        );
+        opacity: 0.6;
+      }
+
+      .status {
+        width: 70px;
+        text-align: center;
+        flex-shrink: 0;
+      }
+
+      .status-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .status-badge.done {
+        background: rgba(16, 185, 129, 0.2);
+        color: #34d399;
+      }
+
+      .status-badge.not-done {
+        background: rgba(239, 68, 68, 0.2);
+        color: #f87171;
+      }
+
+      .status-badge.new {
+        background: rgba(0, 212, 170, 0.3);
+        color: #00d4aa;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.7;
+        }
+      }
+
+      .legend {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        color: #94a3b8;
+      }
+
+      .legend-color {
+        width: 16px;
+        height: 16px;
+        border-radius: 4px;
+      }
+
+      .legend-color.gain {
+        background: linear-gradient(90deg, #10b981, #34d399);
+      }
+      .legend-color.cost {
+        background: linear-gradient(90deg, #ef4444, #f87171);
+      }
+      .legend-color.cost-auto {
+        background: linear-gradient(90deg, #3b82f6, #60a5fa);
+      }
+
+      .insight-box {
+        background: rgba(124, 58, 237, 0.1);
+        border: 1px solid rgba(124, 58, 237, 0.3);
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin-top: 16px;
+      }
+
+      .insight-box p {
+        font-size: 13px;
+        color: #c4b5fd;
+        line-height: 1.5;
+      }
+
+      .insight-box strong {
+        color: #a78bfa;
+      }
+
+      .effect-tag {
+        display: inline-block;
+        background: rgba(0, 212, 170, 0.2);
+        color: #00d4aa;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 10px;
+        font-weight: 600;
+        margin-right: 6px;
+      }
+
+      .arrow-down {
+        text-align: center;
+        padding: 10px 0;
+        color: #475569;
+        font-size: 20px;
+      }
+
+      .roi-indicator {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 3px 8px;
+        border-radius: 6px;
+      }
+
+      .roi-positive {
+        background: rgba(16, 185, 129, 0.2);
+        color: #34d399;
+      }
+
+      .roi-negative {
+        background: rgba(239, 68, 68, 0.2);
+        color: #f87171;
+      }
+
+      .divider {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        margin: 16px 0;
+      }
+
+      .footer {
+        text-align: center;
+        margin-top: 30px;
+        font-size: 11px;
+        color: #475569;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>L'IA change l'équation du ROI</h1>
+      <p class="subtitle">Pourquoi l'automatisation devient rentable pour plus de tâches</p>
+
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-color gain"></div>
+          <span>Gain potentiel</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color cost"></div>
+          <span>Coût manuel</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color cost-auto"></div>
+          <span>Coût automation</span>
+        </div>
+      </div>
+
+      <!-- Scenario 1: Sans automation -->
+      <div class="scenario">
+        <div class="scenario-header">
+          <div class="scenario-title">
+            <span class="num">1</span>
+            Sans automation
+          </div>
+          <span class="roi-indicator roi-negative">ROI limité</span>
+        </div>
+
+        <div class="task-row">
+          <div class="task-label">Tâche A</div>
+          <div class="bar-container">
+            <div class="bar gain" style="width: 60%">Gain</div>
+            <div class="bar cost" style="width: 25%">Coût</div>
+          </div>
+          <div class="status"><span class="status-badge done">✓ Fait</span></div>
+        </div>
+
+        <div class="task-row">
+          <div class="task-label">Tâche B</div>
+          <div class="bar-container">
+            <div class="bar gain" style="width: 40%">Gain</div>
+            <div class="bar cost" style="width: 50%">Coût</div>
+          </div>
+          <div class="status"><span class="status-badge not-done">✗ Pas fait</span></div>
+        </div>
+
+        <div class="task-row">
+          <div class="task-label">Tâche C</div>
+          <div class="bar-container">
+            <div class="bar gain" style="width: 25%">Gain</div>
+            <div class="bar cost" style="width: 55%">Coût</div>
+          </div>
+          <div class="status"><span class="status-badge not-done">✗ Pas fait</span></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="task-row">
+          <div class="task-label" style="font-style: italic; color: #64748b">Si répété</div>
+          <div class="bar-container">
+            <div class="bar potential" style="width: 70%">Gain cumulé</div>
+          </div>
+          <div class="status"><span class="status-badge not-done">Non rentable</span></div>
+        </div>
+
+        <div class="insight-box">
+          <p>
+            💡 <strong>Problème :</strong> Seules les tâches à fort gain immédiat sont faites. Le
+            reste est abandonné car coût > gain.
+          </p>
+        </div>
+      </div>
+
+      <div class="arrow-down">↓</div>
+
+      <!-- Scenario 2: Avec automation (avant IA) -->
+      <div class="scenario">
+        <div class="scenario-header">
+          <div class="scenario-title">
+            <span class="num">2</span>
+            Avec automation · avant IA
+          </div>
+          <span class="roi-indicator roi-positive">ROI+</span>
+        </div>
+
+        <div class="task-row">
+          <div class="task-label">Tâche A</div>
+          <div class="bar-container">
+            <div class="bar gain" style="width: 60%">Gain</div>
+            <div class="bar cost-auto" style="width: 20%">Auto</div>
+          </div>
+          <div class="status"><span class="status-badge done">✓ Fait</span></div>
+        </div>
+
+        <div class="task-row">
+          <div class="task-label">Tâche B</div>
+          <div class="bar-container">
+            <div class="bar gain" style="width: 40%">Gain</div>
+            <div class="bar cost-auto" style="width: 35%">Auto</div>
+          </div>
+          <div class="status"><span class="status-badge done">✓ Fait</span></div>
+        </div>
+
+        <div class="task-row">
+          <div class="task-label">Tâche C</div>
+          <div class="bar-container">
+            <div class="bar gain" style="width: 25%">Gain</div>
+            <div class="bar cost-auto" style="width: 40%">Auto</div>
+          </div>
+          <div class="status"><span class="status-badge not-done">✗ Pas fait</span></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="task-row">
+          <div class="task-label" style="font-style: italic; color: #64748b">Si répété</div>
+          <div class="bar-container">
+            <div class="bar potential" style="width: 70%">Gain cumulé</div>
+            <div class="bar cost-auto" style="width: 25%">Setup</div>
+          </div>
+          <div class="status"><span class="status-badge not-done">Limite</span></div>
+        </div>
+
+        <div class="insight-box">
+          <p>
+            💡 <strong>Amélioration :</strong> L'automation remplace le coût manuel récurrent. Plus
+            de tâches passent le seuil de rentabilité.
+          </p>
+        </div>
+      </div>
+
+      <div class="arrow-down">↓</div>
+
+      <!-- Scenario 3: Avec IA -->
+      <div class="scenario highlight">
+        <div class="scenario-header">
+          <div class="scenario-title">
+            <span class="num">3</span>
+            Avec IA · coût automation effondré
+          </div>
+          <span class="roi-indicator roi-positive">ROI++</span>
+        </div>
+
+        <div class="task-row">
+          <div class="task-label">Tâche A</div>
+          <div class="bar-container">
+            <div class="bar gain" style="width: 60%">Gain</div>
+            <div class="bar cost-auto-reduced" style="width: 8%">IA</div>
+          </div>
+          <div class="status"><span class="status-badge done">✓ Fait</span></div>
+        </div>
+
+        <div class="task-row">
+          <div class="task-label">Tâche B</div>
+          <div class="bar-container">
+            <div class="bar gain" style="width: 40%">Gain</div>
+            <div class="bar cost-auto-reduced" style="width: 12%">IA</div>
+          </div>
+          <div class="status"><span class="status-badge done">✓ Fait</span></div>
+        </div>
+
+        <div class="task-row">
+          <div class="task-label">Tâche C</div>
+          <div class="bar-container">
+            <div class="bar gain" style="width: 25%">Gain</div>
+            <div class="bar cost-auto-reduced" style="width: 10%">IA</div>
+          </div>
+          <div class="status"><span class="status-badge new">✓ Nouveau</span></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="task-row">
+          <div class="task-label" style="font-style: italic; color: #64748b">Si répété</div>
+          <div class="bar-container">
+            <div class="bar potential" style="width: 70%">Gain cumulé</div>
+            <div class="bar cost-auto-reduced" style="width: 6%">IA</div>
+          </div>
+          <div class="status"><span class="status-badge new">✓ Rentable</span></div>
+        </div>
+
+        <div class="insight-box">
+          <p>
+            <span class="effect-tag">Effet 1</span> Plus de tâches deviennent immédiatement
+            rentables<br /><br />
+            <span class="effect-tag">Effet 2</span> Les tâches à "potentiel si répété" franchissent
+            aussi le seuil
+          </p>
+        </div>
+      </div>
+
+      <div class="footer">Visualisation · Jules Mudes · 2026</div>
+    </div>
+  </body>
+</html>

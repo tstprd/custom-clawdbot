@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ROI Automation Timeline</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        min-height: 100vh;
+        padding: 40px 20px;
+        color: #e2e8f0;
+      }
+
+      .container {
+        max-width: 940px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        text-align: center;
+        font-size: 26px;
+        font-weight: 700;
+        margin-bottom: 6px;
+        background: linear-gradient(90deg, #34d399, #818cf8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .subtitle {
+        text-align: center;
+        color: #64748b;
+        font-size: 13px;
+        margin-bottom: 36px;
+      }
+
+      /* ── Legend ── */
+      .legend {
+        display: flex;
+        justify-content: center;
+        gap: 28px;
+        margin-bottom: 32px;
+        flex-wrap: wrap;
+      }
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        color: #94a3b8;
+      }
+      .legend-dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 4px;
+      }
+      .legend-dot.gain {
+        background: #34d399;
+      }
+      .legend-dot.cost-manual {
+        background: #f87171;
+      }
+      .legend-dot.cost-auto {
+        background: #60a5fa;
+      }
+      .legend-dot.cost-ia {
+        background: #a78bfa;
+      }
+      .legend-dot.breakeven {
+        background: none;
+        border: 2px dashed #fbbf24;
+      }
+
+      /* ── Scenario card ── */
+      .scenario {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 28px;
+        margin-bottom: 20px;
+      }
+      .scenario.highlight {
+        border-color: rgba(0, 212, 170, 0.35);
+        background: rgba(0, 212, 170, 0.04);
+      }
+
+      .scenario-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+      .scenario-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .num {
+        width: 26px;
+        height: 26px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 700;
+        background: rgba(124, 58, 237, 0.25);
+        color: #a78bfa;
+      }
+      .highlight .num {
+        background: rgba(0, 212, 170, 0.25);
+        color: #00d4aa;
+      }
+
+      .tag {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .tag.neg {
+        background: rgba(239, 68, 68, 0.15);
+        color: #f87171;
+      }
+      .tag.pos {
+        background: rgba(16, 185, 129, 0.15);
+        color: #34d399;
+      }
+      .tag.pos2 {
+        background: rgba(0, 212, 170, 0.2);
+        color: #00d4aa;
+      }
+
+      /* ── Timeline chart ── */
+      .chart-area {
+        position: relative;
+        margin-bottom: 16px;
+      }
+
+      .task-block {
+        margin-bottom: 28px;
+      }
+      .task-block:last-child {
+        margin-bottom: 0;
+      }
+
+      .task-name {
+        font-size: 12px;
+        font-weight: 600;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .task-name .status {
+        font-size: 10px;
+        padding: 2px 8px;
+        border-radius: 6px;
+        text-transform: uppercase;
+        font-weight: 600;
+      }
+      .status.done {
+        background: rgba(16, 185, 129, 0.15);
+        color: #34d399;
+      }
+      .status.skip {
+        background: rgba(239, 68, 68, 0.15);
+        color: #f87171;
+      }
+      .status.new {
+        background: rgba(0, 212, 170, 0.25);
+        color: #00d4aa;
+      }
+
+      /* X axis */
+      .x-axis {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 60px 0 80px;
+        margin-bottom: 6px;
+      }
+      .x-label {
+        font-size: 10px;
+        color: #475569;
+        text-align: center;
+        width: 40px;
+      }
+
+      .timeline-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 6px;
+        height: 22px;
+      }
+
+      .row-label {
+        width: 72px;
+        font-size: 10px;
+        color: #64748b;
+        text-align: right;
+        flex-shrink: 0;
+      }
+
+      .bar-track {
+        flex: 1;
+        height: 18px;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 4px;
+        position: relative;
+        overflow: visible;
+      }
+
+      .bar-fill {
+        height: 100%;
+        border-radius: 4px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        transition: width 0.4s ease;
+      }
+
+      .bar-fill.gain {
+        background: linear-gradient(90deg, #059669, #34d399);
+      }
+      .bar-fill.cost-manual {
+        background: linear-gradient(90deg, #dc2626, #f87171);
+      }
+      .bar-fill.cost-auto {
+        background: linear-gradient(90deg, #2563eb, #60a5fa);
+      }
+      .bar-fill.cost-ia {
+        background: linear-gradient(90deg, #7c3aed, #a78bfa);
+      }
+
+      /* Break-even marker */
+      .breakeven-marker {
+        position: absolute;
+        top: -6px;
+        bottom: -6px;
+        width: 2px;
+        border-left: 2px dashed #fbbf24;
+        z-index: 10;
+      }
+      .breakeven-label {
+        position: absolute;
+        top: -22px;
+        transform: translateX(-50%);
+        font-size: 9px;
+        font-weight: 700;
+        color: #fbbf24;
+        white-space: nowrap;
+        background: rgba(15, 23, 42, 0.9);
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+
+      .divider {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+        margin: 20px 0;
+      }
+
+      /* Insight */
+      .insight {
+        background: rgba(124, 58, 237, 0.08);
+        border: 1px solid rgba(124, 58, 237, 0.2);
+        border-radius: 10px;
+        padding: 14px 18px;
+        margin-top: 18px;
+      }
+      .insight p {
+        font-size: 12px;
+        color: #c4b5fd;
+        line-height: 1.6;
+      }
+      .insight strong {
+        color: #a78bfa;
+      }
+
+      .effect-tag {
+        display: inline-block;
+        background: rgba(0, 212, 170, 0.2);
+        color: #00d4aa;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 10px;
+        font-weight: 700;
+        margin-right: 4px;
+      }
+
+      .arrow-between {
+        text-align: center;
+        padding: 8px 0;
+        color: #334155;
+        font-size: 22px;
+      }
+
+      .footer {
+        text-align: center;
+        margin-top: 28px;
+        font-size: 11px;
+        color: #334155;
+      }
+
+      /* ── Summary table ── */
+      .summary {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 12px;
+        margin-top: 24px;
+      }
+      .summary-card {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 16px;
+        text-align: center;
+      }
+      .summary-card .val {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+      .summary-card .label {
+        font-size: 11px;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .val.red {
+        color: #f87171;
+      }
+      .val.blue {
+        color: #60a5fa;
+      }
+      .val.green {
+        color: #34d399;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>L'IA déplace le seuil de rentabilité</h1>
+      <p class="subtitle">
+        Nombre de répétitions nécessaires pour rentabiliser une tâche automatisée
+      </p>
+
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-dot gain"></div>
+          Gain cumulé
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot cost-manual"></div>
+          Coût manuel
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot cost-auto"></div>
+          Coût automation classique
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot cost-ia"></div>
+          Coût automation IA
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot breakeven"></div>
+          Break-even
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- SCENARIO 1: Sans automation -->
+      <!-- ═══════════════════════════════════════ -->
+      <div class="scenario">
+        <div class="scenario-header">
+          <div class="scenario-title"><span class="num">1</span> Sans automation</div>
+          <span class="tag neg">Peu de tâches faites</span>
+        </div>
+
+        <div class="x-axis">
+          <span class="x-label">1x</span>
+          <span class="x-label">5x</span>
+          <span class="x-label">10x</span>
+          <span class="x-label">20x</span>
+          <span class="x-label">50x</span>
+        </div>
+
+        <!-- Tâche A: gain élevé, coût modéré → fait -->
+        <div class="task-block">
+          <div class="task-name">Tâche A · Fort gain <span class="status done">✓ Fait</span></div>
+          <div class="timeline-row">
+            <div class="row-label">Gain</div>
+            <div class="bar-track"><div class="bar-fill gain" style="width: 85%"></div></div>
+          </div>
+          <div class="timeline-row">
+            <div class="row-label">Coût</div>
+            <div class="bar-track"><div class="bar-fill cost-manual" style="width: 40%"></div></div>
+          </div>
+        </div>
+
+        <!-- Tâche B: gain moyen, coût élevé → pas fait -->
+        <div class="task-block">
+          <div class="task-name">
+            Tâche B · Gain moyen <span class="status skip">✗ Pas fait</span>
+          </div>
+          <div class="timeline-row">
+            <div class="row-label">Gain</div>
+            <div class="bar-track"><div class="bar-fill gain" style="width: 45%"></div></div>
+          </div>
+          <div class="timeline-row">
+            <div class="row-label">Coût</div>
+            <div class="bar-track"><div class="bar-fill cost-manual" style="width: 60%"></div></div>
+          </div>
+        </div>
+
+        <!-- Tâche C: gain faible → pas fait -->
+        <div class="task-block">
+          <div class="task-name">
+            Tâche C · Faible gain <span class="status skip">✗ Pas fait</span>
+          </div>
+          <div class="timeline-row">
+            <div class="row-label">Gain</div>
+            <div class="bar-track"><div class="bar-fill gain" style="width: 25%"></div></div>
+          </div>
+          <div class="timeline-row">
+            <div class="row-label">Coût</div>
+            <div class="bar-track"><div class="bar-fill cost-manual" style="width: 55%"></div></div>
+          </div>
+        </div>
+
+        <div class="insight">
+          <p>
+            💡 Seule la <strong>Tâche A</strong> est rentable. Les autres sont abandonnées car le
+            coût manuel dépasse le gain, même sur 50 répétitions.
+          </p>
+        </div>
+      </div>
+
+      <div class="arrow-between">↓</div>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- SCENARIO 2: Automation classique (RPA/dev) -->
+      <!-- ═══════════════════════════════════════ -->
+      <div class="scenario">
+        <div class="scenario-header">
+          <div class="scenario-title">
+            <span class="num">2</span> Automation classique · RPA / Dev
+          </div>
+          <span class="tag pos">ROI+ à long terme</span>
+        </div>
+
+        <div class="x-axis">
+          <span class="x-label">1x</span>
+          <span class="x-label">5x</span>
+          <span class="x-label">10x</span>
+          <span class="x-label">20x</span>
+          <span class="x-label">50x</span>
+        </div>
+
+        <!-- Tâche A: rentable rapidement -->
+        <div class="task-block">
+          <div class="task-name">Tâche A · Fort gain <span class="status done">✓ Fait</span></div>
+          <div class="timeline-row">
+            <div class="row-label">Gain</div>
+            <div class="bar-track"><div class="bar-fill gain" style="width: 85%"></div></div>
+          </div>
+          <div class="timeline-row">
+            <div class="row-label">Coût auto</div>
+            <div class="bar-track">
+              <div class="bar-fill cost-auto" style="width: 30%"></div>
+              <div class="breakeven-marker" style="left: 22%">
+                <span class="breakeven-label">Break-even 5x</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tâche B: break-even à ~20 répétitions -->
+        <div class="task-block">
+          <div class="task-name">
+            Tâche B · Gain moyen <span class="status done">✓ Fait (long terme)</span>
+          </div>
+          <div class="timeline-row">
+            <div class="row-label">Gain</div>
+            <div class="bar-track"><div class="bar-fill gain" style="width: 45%"></div></div>
+          </div>
+          <div class="timeline-row">
+            <div class="row-label">Coût auto</div>
+            <div class="bar-track">
+              <div class="bar-fill cost-auto" style="width: 42%"></div>
+              <div class="breakeven-marker" style="left: 40%">
+                <span class="breakeven-label">Break-even 20x</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tâche C: jamais rentable -->
+        <div class="task-block">
+          <div class="task-name">
+            Tâche C · Faible gain <span class="status skip">✗ Pas fait</span>
+          </div>
+          <div class="timeline-row">
+            <div class="row-label">Gain</div>
+            <div class="bar-track"><div class="bar-fill gain" style="width: 25%"></div></div>
+          </div>
+          <div class="timeline-row">
+            <div class="row-label">Coût auto</div>
+            <div class="bar-track">
+              <div class="bar-fill cost-auto" style="width: 50%"></div>
+              <div class="breakeven-marker" style="left: 92%">
+                <span class="breakeven-label">Break-even 50x+</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="insight">
+          <p>
+            💡 <strong>Tâche B</strong> devient rentable à 20 répétitions. Mais
+            <strong>Tâche C</strong> reste non viable — le coût de dev automation est trop élevé par
+            rapport au gain unitaire.
+          </p>
+        </div>
+      </div>
+
+      <div class="arrow-between">↓</div>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- SCENARIO 3: Avec IA -->
+      <!-- ═══════════════════════════════════════ -->
+      <div class="scenario highlight">
+        <div class="scenario-header">
+          <div class="scenario-title"><span class="num">3</span> Automation IA · coût effondré</div>
+          <span class="tag pos2">ROI++ immédiat</span>
+        </div>
+
+        <div class="x-axis">
+          <span class="x-label">1x</span>
+          <span class="x-label">5x</span>
+          <span class="x-label">10x</span>
+          <span class="x-label">20x</span>
+          <span class="x-label">50x</span>
+        </div>
+
+        <!-- Tâche A: rentable dès la 1ère exécution -->
+        <div class="task-block">
+          <div class="task-name">Tâche A · Fort gain <span class="status done">✓ Fait</span></div>
+          <div class="timeline-row">
+            <div class="row-label">Gain</div>
+            <div class="bar-track"><div class="bar-fill gain" style="width: 85%"></div></div>
+          </div>
+          <div class="timeline-row">
+            <div class="row-label">Coût IA</div>
+            <div class="bar-track">
+              <div class="bar-fill cost-ia" style="width: 8%"></div>
+              <div class="breakeven-marker" style="left: 5%">
+                <span class="breakeven-label">Break-even 1x</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tâche B: break-even à 3 répétitions -->
+        <div class="task-block">
+          <div class="task-name">Tâche B · Gain moyen <span class="status done">✓ Fait</span></div>
+          <div class="timeline-row">
+            <div class="row-label">Gain</div>
+            <div class="bar-track"><div class="bar-fill gain" style="width: 45%"></div></div>
+          </div>
+          <div class="timeline-row">
+            <div class="row-label">Coût IA</div>
+            <div class="bar-track">
+              <div class="bar-fill cost-ia" style="width: 12%"></div>
+              <div class="breakeven-marker" style="left: 10%">
+                <span class="breakeven-label">Break-even 3x</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tâche C: maintenant rentable à 5 répétitions -->
+        <div class="task-block">
+          <div class="task-name">
+            Tâche C · Faible gain <span class="status new">✦ Nouveau</span>
+          </div>
+          <div class="timeline-row">
+            <div class="row-label">Gain</div>
+            <div class="bar-track"><div class="bar-fill gain" style="width: 25%"></div></div>
+          </div>
+          <div class="timeline-row">
+            <div class="row-label">Coût IA</div>
+            <div class="bar-track">
+              <div class="bar-fill cost-ia" style="width: 15%"></div>
+              <div class="breakeven-marker" style="left: 14%">
+                <span class="breakeven-label">Break-even 5x</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tâche D: tâche qui n'existait même pas avant -->
+        <div class="task-block">
+          <div class="task-name">
+            Tâche D · Micro-gain répété <span class="status new">✦ Nouveau</span>
+          </div>
+          <div class="timeline-row">
+            <div class="row-label">Gain</div>
+            <div class="bar-track"><div class="bar-fill gain" style="width: 15%"></div></div>
+          </div>
+          <div class="timeline-row">
+            <div class="row-label">Coût IA</div>
+            <div class="bar-track">
+              <div class="bar-fill cost-ia" style="width: 6%"></div>
+              <div class="breakeven-marker" style="left: 18%">
+                <span class="breakeven-label">Break-even 8x</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="insight">
+          <p>
+            <span class="effect-tag">Effet 1</span> Le break-even chute : <strong>20x → 3x</strong>.
+            Plus de tâches rentables immédiatement.<br /><br />
+            <span class="effect-tag">Effet 2</span> Des tâches "jamais rentables" (C) le deviennent
+            en <strong>quelques répétitions</strong>.<br /><br />
+            <span class="effect-tag">Effet 3</span> De <strong>nouvelles tâches</strong> (D)
+            émergent — micro-gains qui n'auraient jamais justifié un dev classique.
+          </p>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- Summary -->
+      <!-- ═══════════════════════════════════════ -->
+      <div class="summary">
+        <div class="summary-card">
+          <div class="val red">50x+</div>
+          <div class="label">
+            Break-even sans IA<br /><small style="color: #475569">Tâche C</small>
+          </div>
+        </div>
+        <div class="summary-card">
+          <div class="val blue">20x</div>
+          <div class="label">
+            Break-even RPA/Dev<br /><small style="color: #475569">Tâche B</small>
+          </div>
+        </div>
+        <div class="summary-card">
+          <div class="val green">3–5x</div>
+          <div class="label">
+            Break-even avec IA<br /><small style="color: #475569">Tâches B & C</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">Jules Mudes · 2026</div>
+    </div>
+  </body>
+</html>

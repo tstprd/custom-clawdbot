@@ -1,0 +1,803 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ROI Automation — 4 profils de tâches</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family:
+          "Segoe UI",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background: #ffffff;
+        color: #1e293b;
+        padding: 48px 24px;
+        line-height: 1.5;
+      }
+
+      .container {
+        max-width: 960px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        font-size: 24px;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 4px;
+        color: #0f172a;
+      }
+      .subtitle {
+        text-align: center;
+        color: #64748b;
+        font-size: 13px;
+        margin-bottom: 40px;
+      }
+
+      /* ── Legend ── */
+      .legend {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        margin-bottom: 36px;
+        flex-wrap: wrap;
+      }
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        color: #64748b;
+      }
+      .legend-swatch {
+        width: 14px;
+        height: 14px;
+        border-radius: 3px;
+      }
+      .sw-cost {
+        background: #ef4444;
+      }
+      .sw-cost-auto {
+        background: #3b82f6;
+      }
+      .sw-cost-ia {
+        background: #8b5cf6;
+      }
+      .sw-gain-ct {
+        background: #22c55e;
+      }
+      .sw-gain-lt {
+        background: repeating-linear-gradient(135deg, #22c55e 0 3px, #86efac 3px 6px);
+      }
+      .sw-unlock {
+        width: 14px;
+        height: 14px;
+        border: 2px dashed #f59e0b;
+        border-radius: 3px;
+        background: none;
+      }
+
+      /* ── Section ── */
+      .section {
+        margin-bottom: 36px;
+      }
+      .section-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #f1f5f9;
+      }
+      .section-num {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 700;
+        color: #fff;
+        flex-shrink: 0;
+      }
+      .section-num.s1 {
+        background: #94a3b8;
+      }
+      .section-num.s2 {
+        background: #3b82f6;
+      }
+      .section-num.s3 {
+        background: #8b5cf6;
+      }
+      .section-title {
+        font-size: 15px;
+        font-weight: 600;
+        color: #0f172a;
+      }
+      .section-tag {
+        margin-left: auto;
+        font-size: 10px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .tag-grey {
+        background: #f1f5f9;
+        color: #64748b;
+      }
+      .tag-blue {
+        background: #eff6ff;
+        color: #3b82f6;
+      }
+      .tag-purple {
+        background: #f5f3ff;
+        color: #7c3aed;
+      }
+
+      /* ── Task grid ── */
+      .tasks-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .task-card {
+        border: 1.5px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 18px;
+        position: relative;
+        background: #fafbfc;
+      }
+      .task-card.unlocked {
+        border-color: #a78bfa;
+        background: #faf5ff;
+      }
+      .task-card.unlocked-new {
+        border-color: #8b5cf6;
+        background: #f5f3ff;
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+      }
+
+      .task-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+      }
+      .task-name {
+        font-size: 12px;
+        font-weight: 700;
+        color: #334155;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .task-profile {
+        font-size: 10px;
+        color: #94a3b8;
+      }
+
+      .task-status {
+        font-size: 10px;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: 5px;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+      }
+      .st-done {
+        background: #dcfce7;
+        color: #16a34a;
+      }
+      .st-skip {
+        background: #fee2e2;
+        color: #dc2626;
+      }
+      .st-new {
+        background: #f3e8ff;
+        color: #7c3aed;
+      }
+
+      /* ── Bars ── */
+      .bar-group {
+        margin-bottom: 8px;
+      }
+      .bar-group:last-child {
+        margin-bottom: 0;
+      }
+
+      .bar-label {
+        font-size: 9px;
+        font-weight: 600;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 3px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .bar-val {
+        font-size: 9px;
+        font-weight: 700;
+      }
+      .bar-val.cost-color {
+        color: #ef4444;
+      }
+      .bar-val.cost-auto-color {
+        color: #3b82f6;
+      }
+      .bar-val.cost-ia-color {
+        color: #8b5cf6;
+      }
+      .bar-val.gain-color {
+        color: #16a34a;
+      }
+
+      .bar-track {
+        height: 16px;
+        background: #f1f5f9;
+        border-radius: 4px;
+        overflow: visible;
+        position: relative;
+      }
+      .bar-fill {
+        height: 100%;
+        border-radius: 4px;
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+      .bf-cost {
+        background: #ef4444;
+      }
+      .bf-cost-auto {
+        background: #3b82f6;
+      }
+      .bf-cost-ia {
+        background: #8b5cf6;
+      }
+      .bf-gain-ct {
+        background: #22c55e;
+      }
+      .bf-gain-lt {
+        background: repeating-linear-gradient(135deg, #22c55e 0 4px, #86efac 4px 8px);
+        opacity: 0.7;
+      }
+
+      /* strike-through for reduced cost */
+      .bar-fill.reduced {
+        opacity: 0.25;
+      }
+      .bar-fill.new-cost {
+        z-index: 2;
+      }
+
+      .gain-split {
+        display: flex;
+        gap: 2px;
+        height: 16px;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      .gain-split .part-ct {
+        background: #22c55e;
+        border-radius: 4px 0 0 4px;
+      }
+      .gain-split .part-lt {
+        background: repeating-linear-gradient(135deg, #22c55e 0 4px, #86efac 4px 8px);
+        border-radius: 0 4px 4px 0;
+        opacity: 0.65;
+      }
+
+      .sep {
+        height: 1px;
+        background: #f1f5f9;
+        margin: 10px 0;
+      }
+
+      /* ── Repetition badge ── */
+      .repeat-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 9px;
+        font-weight: 600;
+        color: #f59e0b;
+        background: #fffbeb;
+        border: 1px solid #fde68a;
+        padding: 2px 8px;
+        border-radius: 4px;
+        margin-top: 8px;
+      }
+
+      /* ── Key insight ── */
+      .insight-box {
+        background: #f8fafc;
+        border: 1.5px solid #e2e8f0;
+        border-left: 4px solid #8b5cf6;
+        border-radius: 8px;
+        padding: 16px 20px;
+        margin-top: 20px;
+      }
+      .insight-box p {
+        font-size: 12px;
+        color: #475569;
+        line-height: 1.7;
+      }
+      .insight-box strong {
+        color: #1e293b;
+      }
+      .insight-box .eff {
+        display: inline-block;
+        background: #f3e8ff;
+        color: #7c3aed;
+        padding: 1px 7px;
+        border-radius: 3px;
+        font-size: 10px;
+        font-weight: 700;
+        margin-right: 4px;
+      }
+
+      .arrow-sep {
+        text-align: center;
+        padding: 12px 0;
+        color: #cbd5e1;
+        font-size: 24px;
+      }
+
+      .footer {
+        text-align: center;
+        margin-top: 36px;
+        font-size: 10px;
+        color: #94a3b8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>L'IA change l'équation du ROI</h1>
+      <p class="subtitle">
+        Comment la réduction du coût d'automatisation débloque des tâches à fort potentiel
+      </p>
+
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-swatch sw-cost"></div>
+          Coût manuel
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch sw-cost-auto"></div>
+          Coût autom. classique
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch sw-cost-ia"></div>
+          Coût autom. IA
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch sw-gain-ct"></div>
+          Gain court terme
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch sw-gain-lt"></div>
+          Gain si répété
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch sw-unlock"></div>
+          Débloqué
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════ -->
+      <!-- SCENARIO 1 : SANS AUTOMATION -->
+      <!-- ════════════════════════════════════════════ -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-num s1">1</div>
+          <div class="section-title">Sans automation</div>
+          <span class="section-tag tag-grey">1 tâche sur 4 faite</span>
+        </div>
+
+        <div class="tasks-grid">
+          <!-- A: Peu cher + Beaucoup de gain → FAIT -->
+          <div class="task-card">
+            <div class="task-header">
+              <div>
+                <div class="task-name">Tâche A</div>
+                <div class="task-profile">Peu cher · Fort gain</div>
+              </div>
+              <span class="task-status st-done">✓ Fait</span>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label">Coût <span class="bar-val cost-color">Faible</span></div>
+              <div class="bar-track"><div class="bar-fill bf-cost" style="width: 18%"></div></div>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label">Gain <span class="bar-val gain-color">Élevé</span></div>
+              <div class="gain-split">
+                <div class="part-ct" style="width: 55%"></div>
+                <div class="part-lt" style="width: 30%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- B: Peu cher + Énormément de gain → FAIT -->
+          <div class="task-card">
+            <div class="task-header">
+              <div>
+                <div class="task-name">Tâche B</div>
+                <div class="task-profile">Peu cher · Très fort gain</div>
+              </div>
+              <span class="task-status st-done">✓ Fait</span>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label">Coût <span class="bar-val cost-color">Faible</span></div>
+              <div class="bar-track"><div class="bar-fill bf-cost" style="width: 15%"></div></div>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label">Gain <span class="bar-val gain-color">Très élevé</span></div>
+              <div class="gain-split">
+                <div class="part-ct" style="width: 50%"></div>
+                <div class="part-lt" style="width: 42%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- C: Très cher + Beaucoup de gain → FAIT (mais cher) -->
+          <div class="task-card">
+            <div class="task-header">
+              <div>
+                <div class="task-name">Tâche C</div>
+                <div class="task-profile">Très cher · Fort gain</div>
+              </div>
+              <span class="task-status st-skip">✗ Pas fait</span>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label">Coût <span class="bar-val cost-color">Élevé</span></div>
+              <div class="bar-track"><div class="bar-fill bf-cost" style="width: 70%"></div></div>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label">Gain <span class="bar-val gain-color">Élevé</span></div>
+              <div class="gain-split">
+                <div class="part-ct" style="width: 45%"></div>
+                <div class="part-lt" style="width: 25%"></div>
+              </div>
+            </div>
+            <div class="repeat-badge">⏳ Potentiel si répété — non exploité</div>
+          </div>
+
+          <!-- D: Très cher + Peu de gain → PAS FAIT -->
+          <div class="task-card">
+            <div class="task-header">
+              <div>
+                <div class="task-name">Tâche D</div>
+                <div class="task-profile">Très cher · Faible gain</div>
+              </div>
+              <span class="task-status st-skip">✗ Pas fait</span>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label">Coût <span class="bar-val cost-color">Très élevé</span></div>
+              <div class="bar-track"><div class="bar-fill bf-cost" style="width: 82%"></div></div>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label">Gain <span class="bar-val gain-color">Faible</span></div>
+              <div class="gain-split">
+                <div class="part-ct" style="width: 12%"></div>
+                <div class="part-lt" style="width: 35%"></div>
+              </div>
+            </div>
+            <div class="repeat-badge">⏳ Fort potentiel long terme — invisible</div>
+          </div>
+        </div>
+
+        <div class="insight-box">
+          <p>
+            💡 Seules les tâches <strong>peu chères</strong> (A & B) sont faites. Les tâches C & D
+            ont un potentiel réel si répétées, mais le
+            <strong>coût initial bloque la décision</strong>. Le gain long terme reste invisible.
+          </p>
+        </div>
+      </div>
+
+      <div class="arrow-sep">↓</div>
+
+      <!-- ════════════════════════════════════════════ -->
+      <!-- SCENARIO 2 : AUTOMATION CLASSIQUE -->
+      <!-- ════════════════════════════════════════════ -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-num s2">2</div>
+          <div class="section-title">Automation classique · RPA / Dev</div>
+          <span class="section-tag tag-blue">3 tâches sur 4</span>
+        </div>
+
+        <div class="tasks-grid">
+          <!-- A: toujours fait, coût réduit -->
+          <div class="task-card">
+            <div class="task-header">
+              <div>
+                <div class="task-name">Tâche A</div>
+                <div class="task-profile">Peu cher · Fort gain</div>
+              </div>
+              <span class="task-status st-done">✓ Fait</span>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label">
+                Coût autom. <span class="bar-val cost-auto-color">↓ Réduit</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill bf-cost reduced" style="width: 18%"></div>
+                <div class="bar-fill bf-cost-auto new-cost" style="width: 12%"></div>
+              </div>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label">Gain <span class="bar-val gain-color">Élevé</span></div>
+              <div class="gain-split">
+                <div class="part-ct" style="width: 55%"></div>
+                <div class="part-lt" style="width: 30%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- B: toujours fait -->
+          <div class="task-card">
+            <div class="task-header">
+              <div>
+                <div class="task-name">Tâche B</div>
+                <div class="task-profile">Peu cher · Très fort gain</div>
+              </div>
+              <span class="task-status st-done">✓ Fait</span>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label">
+                Coût autom. <span class="bar-val cost-auto-color">↓ Réduit</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill bf-cost reduced" style="width: 15%"></div>
+                <div class="bar-fill bf-cost-auto new-cost" style="width: 10%"></div>
+              </div>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label">Gain <span class="bar-val gain-color">Très élevé</span></div>
+              <div class="gain-split">
+                <div class="part-ct" style="width: 50%"></div>
+                <div class="part-lt" style="width: 42%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- C: maintenant fait grâce à l'autom -->
+          <div class="task-card unlocked">
+            <div class="task-header">
+              <div>
+                <div class="task-name">Tâche C</div>
+                <div class="task-profile">Très cher · Fort gain</div>
+              </div>
+              <span class="task-status st-done">✓ Débloqué</span>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label">
+                Coût autom. <span class="bar-val cost-auto-color">↓↓ Réduit</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill bf-cost reduced" style="width: 70%"></div>
+                <div class="bar-fill bf-cost-auto new-cost" style="width: 35%"></div>
+              </div>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label">Gain <span class="bar-val gain-color">Élevé</span></div>
+              <div class="gain-split">
+                <div class="part-ct" style="width: 45%"></div>
+                <div class="part-lt" style="width: 25%"></div>
+              </div>
+            </div>
+            <div class="repeat-badge">🔁 Rentable à partir de ~20 répétitions</div>
+          </div>
+
+          <!-- D: toujours pas fait -->
+          <div class="task-card">
+            <div class="task-header">
+              <div>
+                <div class="task-name">Tâche D</div>
+                <div class="task-profile">Très cher · Faible gain</div>
+              </div>
+              <span class="task-status st-skip">✗ Pas fait</span>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label">
+                Coût autom. <span class="bar-val cost-auto-color">↓ Réduit</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill bf-cost reduced" style="width: 82%"></div>
+                <div class="bar-fill bf-cost-auto new-cost" style="width: 48%"></div>
+              </div>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label">Gain <span class="bar-val gain-color">Faible</span></div>
+              <div class="gain-split">
+                <div class="part-ct" style="width: 12%"></div>
+                <div class="part-lt" style="width: 35%"></div>
+              </div>
+            </div>
+            <div class="repeat-badge">⏳ Coût autom. encore trop élevé vs gain</div>
+          </div>
+        </div>
+
+        <div class="insight-box">
+          <p>
+            💡 L'automation classique <strong>débloque la Tâche C</strong> — le coût de dev/RPA
+            remplace le coût manuel. Mais la <strong>Tâche D reste bloquée</strong> : son faible
+            gain court terme ne justifie pas l'investissement, même si son potentiel long terme est
+            réel.
+          </p>
+        </div>
+      </div>
+
+      <div class="arrow-sep">↓</div>
+
+      <!-- ════════════════════════════════════════════ -->
+      <!-- SCENARIO 3 : AVEC IA -->
+      <!-- ════════════════════════════════════════════ -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-num s3">3</div>
+          <div class="section-title">Automation IA · coût effondré</div>
+          <span class="section-tag tag-purple">4 tâches sur 4</span>
+        </div>
+
+        <div class="tasks-grid">
+          <!-- A -->
+          <div class="task-card">
+            <div class="task-header">
+              <div>
+                <div class="task-name">Tâche A</div>
+                <div class="task-profile">Peu cher · Fort gain</div>
+              </div>
+              <span class="task-status st-done">✓ Fait</span>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label">
+                Coût IA <span class="bar-val cost-ia-color">↓↓↓ Minimal</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill bf-cost reduced" style="width: 18%"></div>
+                <div class="bar-fill bf-cost-ia new-cost" style="width: 5%"></div>
+              </div>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label">Gain <span class="bar-val gain-color">Élevé</span></div>
+              <div class="gain-split">
+                <div class="part-ct" style="width: 55%"></div>
+                <div class="part-lt" style="width: 30%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- B -->
+          <div class="task-card">
+            <div class="task-header">
+              <div>
+                <div class="task-name">Tâche B</div>
+                <div class="task-profile">Peu cher · Très fort gain</div>
+              </div>
+              <span class="task-status st-done">✓ Fait</span>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label">
+                Coût IA <span class="bar-val cost-ia-color">↓↓↓ Minimal</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill bf-cost reduced" style="width: 15%"></div>
+                <div class="bar-fill bf-cost-ia new-cost" style="width: 4%"></div>
+              </div>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label">Gain <span class="bar-val gain-color">Très élevé</span></div>
+              <div class="gain-split">
+                <div class="part-ct" style="width: 50%"></div>
+                <div class="part-lt" style="width: 42%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- C: débloqué plus vite -->
+          <div class="task-card unlocked">
+            <div class="task-header">
+              <div>
+                <div class="task-name">Tâche C</div>
+                <div class="task-profile">Très cher · Fort gain</div>
+              </div>
+              <span class="task-status st-done">✓ Fait</span>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label">
+                Coût IA <span class="bar-val cost-ia-color">↓↓↓ Effondré</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill bf-cost reduced" style="width: 70%"></div>
+                <div class="bar-fill bf-cost-ia new-cost" style="width: 10%"></div>
+              </div>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label">Gain <span class="bar-val gain-color">Élevé</span></div>
+              <div class="gain-split">
+                <div class="part-ct" style="width: 45%"></div>
+                <div class="part-lt" style="width: 25%"></div>
+              </div>
+            </div>
+            <div class="repeat-badge">🔁 Rentable dès 3 répétitions (vs 20 avant)</div>
+          </div>
+
+          <!-- D: ENFIN débloqué ! -->
+          <div class="task-card unlocked-new">
+            <div class="task-header">
+              <div>
+                <div class="task-name">Tâche D</div>
+                <div class="task-profile">Très cher · Faible gain CT</div>
+              </div>
+              <span class="task-status st-new">✦ Débloqué</span>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label">
+                Coût IA <span class="bar-val cost-ia-color">↓↓↓ Effondré</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill bf-cost reduced" style="width: 82%"></div>
+                <div class="bar-fill bf-cost-ia new-cost" style="width: 8%"></div>
+              </div>
+            </div>
+            <div class="sep"></div>
+            <div class="bar-group">
+              <div class="bar-label">
+                Gain court terme <span class="bar-val gain-color">Faible</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill bf-gain-ct" style="width: 12%"></div>
+              </div>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label">
+                Gain si répété
+                <span class="bar-val gain-color" style="color: #f59e0b">Révélé !</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill bf-gain-lt" style="width: 72%"></div>
+              </div>
+            </div>
+            <div
+              class="repeat-badge"
+              style="background: #f5f3ff; border-color: #c4b5fd; color: #7c3aed"
+            >
+              🚀 Coût ridicule → le gain long terme s'exprime enfin
+            </div>
+          </div>
+        </div>
+
+        <div class="insight-box">
+          <p>
+            <span class="eff">Effet 1</span> Les tâches déjà rentables deviennent
+            <strong>quasi gratuites</strong> à automatiser.<br /><br />
+            <span class="eff">Effet 2</span> Le break-even s'effondre :
+            <strong>20 répétitions → 3</strong>. Plus de tâches passent le seuil.<br /><br />
+            <span class="eff">Effet 3</span> <strong>La Tâche D est la révélation.</strong> Son gain
+            court terme est faible — personne ne l'automatisait. Mais son coût d'automation est
+            désormais si bas que le <strong>gain moyen/long terme peut enfin s'exprimer</strong>.
+            C'est la longue traîne de l'automatisation.
+          </p>
+        </div>
+      </div>
+
+      <div class="footer">Jules Mudes · 2026</div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,1074 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ROI Automation — Supply Chain</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background: #fff;
+        color: #1e293b;
+        padding: 48px 24px;
+      }
+      .container {
+        max-width: 960px;
+        margin: 0 auto;
+      }
+      h1 {
+        font-size: 22px;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 4px;
+      }
+      .suptitle {
+        text-align: center;
+        color: #64748b;
+        font-size: 13px;
+        margin-bottom: 32px;
+      }
+
+      .intro {
+        max-width: 720px;
+        margin: 0 auto 44px;
+        font-size: 14px;
+        color: #334155;
+        line-height: 1.85;
+      }
+      .intro p {
+        margin-bottom: 16px;
+      }
+      .intro p:last-child {
+        margin-bottom: 0;
+      }
+      .intro strong {
+        color: #0f172a;
+      }
+
+      .concept-box {
+        max-width: 720px;
+        margin: 0 auto 44px;
+        padding: 20px 24px;
+        background: #fffbeb;
+        border: 1.5px solid #fde68a;
+        border-radius: 12px;
+      }
+      .concept-box h3 {
+        font-size: 14px;
+        font-weight: 700;
+        color: #92400e;
+        margin-bottom: 10px;
+      }
+      .concept-box p {
+        font-size: 13px;
+        color: #78350f;
+        line-height: 1.8;
+        margin-bottom: 12px;
+      }
+      .concept-box p:last-child {
+        margin-bottom: 0;
+      }
+      .concept-box .formula {
+        display: inline-block;
+        background: #fef3c7;
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-family: "Courier New", monospace;
+        font-size: 13px;
+        font-weight: 700;
+        color: #92400e;
+        margin: 4px 0;
+      }
+
+      .levels {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 14px;
+        margin-bottom: 40px;
+      }
+      .level-card {
+        border-radius: 12px;
+        padding: 18px;
+        border: 1.5px solid;
+      }
+      .lc-manual {
+        background: #f8fafc;
+        border-color: #e2e8f0;
+      }
+      .lc-auto {
+        background: #eff6ff;
+        border-color: #bfdbfe;
+      }
+      .lc-ia {
+        background: #f5f3ff;
+        border-color: #ddd6fe;
+      }
+      .level-card .lc-num {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+      }
+      .lc-manual .lc-num {
+        color: #64748b;
+      }
+      .lc-auto .lc-num {
+        color: #3b82f6;
+      }
+      .lc-ia .lc-num {
+        color: #7c3aed;
+      }
+      .level-card h3 {
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+      .level-card p {
+        font-size: 11px;
+        color: #475569;
+        line-height: 1.6;
+      }
+      .level-card .lc-who {
+        margin-top: 10px;
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-size: 10px;
+        font-weight: 600;
+      }
+      .lc-manual .lc-who {
+        background: #f1f5f9;
+        color: #64748b;
+      }
+      .lc-auto .lc-who {
+        background: #dbeafe;
+        color: #1d4ed8;
+      }
+      .lc-ia .lc-who {
+        background: #ede9fe;
+        color: #6d28d9;
+      }
+
+      .matrix {
+        display: grid;
+        grid-template-columns: auto 1fr 1fr;
+        gap: 0;
+        margin-bottom: 40px;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .matrix-header {
+        background: #f8fafc;
+        padding: 10px 14px;
+        font-size: 11px;
+        font-weight: 700;
+        text-align: center;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid #e2e8f0;
+      }
+      .matrix-corner {
+        background: #f8fafc;
+        border-bottom: 1px solid #e2e8f0;
+        border-right: 1px solid #e2e8f0;
+      }
+      .matrix-row-label {
+        background: #f8fafc;
+        padding: 14px;
+        font-size: 11px;
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-right: 1px solid #e2e8f0;
+      }
+      .matrix-cell {
+        padding: 14px;
+        text-align: center;
+        border-top: 1px solid #e2e8f0;
+      }
+      .matrix-cell:nth-child(3n + 2) {
+        border-right: 1px solid #e2e8f0;
+      }
+      .mc-letter {
+        font-size: 18px;
+        font-weight: 800;
+        display: inline-flex;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+      }
+      .mc-a {
+        background: #22c55e;
+      }
+      .mc-d {
+        background: #8b5cf6;
+      }
+      .mc-b {
+        background: #3b82f6;
+      }
+      .mc-c {
+        background: #f59e0b;
+      }
+      .mc-line {
+        font-size: 9px;
+        margin-top: 6px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        justify-content: center;
+      }
+      .mc-tag {
+        font-size: 9px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 4px;
+      }
+      .mc-done {
+        background: #dcfce7;
+        color: #16a34a;
+      }
+      .mc-skip {
+        background: #fee2e2;
+        color: #dc2626;
+      }
+
+      /* Task section */
+      .task-section {
+        margin-bottom: 56px;
+      }
+      .task-title-bar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 4px;
+      }
+      .task-letter {
+        font-size: 20px;
+        font-weight: 800;
+        color: #fff;
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .tl-a {
+        background: #22c55e;
+      }
+      .tl-d {
+        background: #8b5cf6;
+      }
+      .task-meta h2 {
+        font-size: 16px;
+        font-weight: 700;
+      }
+      .cg-pills {
+        display: flex;
+        gap: 6px;
+        margin-top: 2px;
+      }
+      .cg-pill {
+        font-size: 9px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+      }
+      .cg-cost-low {
+        background: #dcfce7;
+        color: #16a34a;
+      }
+      .cg-cost-high {
+        background: #fee2e2;
+        color: #dc2626;
+      }
+      .cg-gain-low {
+        background: #fef9c3;
+        color: #a16207;
+      }
+
+      .explainer {
+        margin: 12px 0 20px 0;
+        padding: 16px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+      }
+      .explainer .ex-context {
+        font-size: 12px;
+        color: #334155;
+        line-height: 1.7;
+        margin-bottom: 14px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #e2e8f0;
+      }
+      .explainer .ex-context strong {
+        color: #0f172a;
+      }
+      .ex-compare {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 12px;
+      }
+      .ex-col {
+        padding: 10px 12px;
+        border-radius: 8px;
+        font-size: 11px;
+        line-height: 1.6;
+      }
+      .ex-col.exc-manual {
+        background: #f1f5f9;
+      }
+      .ex-col.exc-auto {
+        background: #eff6ff;
+      }
+      .ex-col.exc-ia {
+        background: #f5f3ff;
+      }
+      .ex-col .exc-title {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 6px;
+      }
+      .exc-manual .exc-title {
+        color: #64748b;
+      }
+      .exc-auto .exc-title {
+        color: #3b82f6;
+      }
+      .exc-ia .exc-title {
+        color: #7c3aed;
+      }
+
+      /* Gain block (shared across scenarios) */
+      .gain-block {
+        border: 1.5px solid #bbf7d0;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 16px;
+      }
+      .gain-header {
+        background: #f0fdf4;
+        padding: 10px 18px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .gain-header .gh-title {
+        font-size: 11px;
+        font-weight: 700;
+        color: #16a34a;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .gain-header .gh-note {
+        font-size: 10px;
+        color: #64748b;
+        font-style: italic;
+      }
+      .gain-body {
+        padding: 14px 18px;
+        background: #f0fdf4;
+      }
+      .metric {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        height: 26px;
+        margin-bottom: 6px;
+      }
+      .metric:last-child {
+        margin-bottom: 0;
+      }
+      .m-label {
+        width: 110px;
+        flex-shrink: 0;
+        font-size: 10px;
+        color: #64748b;
+        line-height: 1.2;
+      }
+      .m-track {
+        flex: 1;
+        height: 18px;
+        background: rgba(0, 0, 0, 0.04);
+        border-radius: 4px;
+        position: relative;
+      }
+      .bf {
+        height: 100%;
+        border-radius: 4px;
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+      .bf-gct {
+        background: #22c55e;
+      }
+      .bf-glt {
+        background: #22c55e;
+        opacity: 0.55;
+      }
+      .bf-synergy {
+        background: linear-gradient(90deg, #f59e0b, #fbbf24);
+        opacity: 0.7;
+      }
+      .synergy-tag {
+        position: absolute;
+        right: 4px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 8px;
+        font-weight: 800;
+        color: #92400e;
+        background: rgba(255, 255, 255, 0.85);
+        padding: 1px 5px;
+        border-radius: 3px;
+      }
+
+      /* Cost scenarios (3 columns) */
+      .cost-scenarios {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 0;
+      }
+      .cost-card {
+        border: 1.5px solid #e2e8f0;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .cost-card.cc-ia {
+        border-color: #c4b5fd;
+      }
+      .cc-header {
+        padding: 7px 14px;
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-align: center;
+      }
+      .cc-header.cch-manual {
+        background: #f1f5f9;
+        color: #64748b;
+      }
+      .cc-header.cch-auto {
+        background: #eff6ff;
+        color: #3b82f6;
+      }
+      .cc-header.cch-ia {
+        background: #f5f3ff;
+        color: #7c3aed;
+      }
+      .cc-body {
+        padding: 12px 14px;
+        background: #fef2f2;
+      }
+      .cost-card.cc-ia .cc-body {
+        background: #fdf4ff;
+      }
+      .cc-body .col-header {
+        font-size: 9px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+        color: #dc2626;
+      }
+      .bf-cunit {
+        background: #ef4444;
+      }
+      .bf-crepeat {
+        background: #ef4444;
+        opacity: 0.7;
+      }
+      .bf-csaved {
+        background: #fecaca;
+        border: 1.5px dashed #ef4444;
+        opacity: 0.5;
+      }
+      .bf-ghost {
+        background: transparent;
+        border: 2px dashed #ef4444;
+        opacity: 0.4;
+      }
+      .bf-cauto {
+        background: #3b82f6;
+      }
+      .bf-cia {
+        background: #8b5cf6;
+      }
+      .m-label .once {
+        display: inline-block;
+        font-size: 8px;
+        font-weight: 700;
+        color: #f59e0b;
+        background: #fffbeb;
+        border: 1px solid #fde68a;
+        padding: 0 4px;
+        border-radius: 3px;
+        margin-left: 2px;
+      }
+
+      /* Decision bar */
+      .decision-bar {
+        padding: 10px 14px;
+        border-top: 2px solid #cbd5e1;
+        text-align: center;
+      }
+      .cost-card.cc-ia .decision-bar {
+        border-top-color: #c4b5fd;
+        background: #f3e8ff;
+      }
+      .db-calc {
+        font-size: 10px;
+        color: #64748b;
+        margin-bottom: 6px;
+        font-family: "Courier New", monospace;
+        line-height: 1.5;
+      }
+      .db-calc .num-pos {
+        color: #16a34a;
+        font-weight: 700;
+      }
+      .db-calc .num-neg {
+        color: #dc2626;
+        font-weight: 700;
+      }
+      .db-calc .num-inv {
+        color: #3b82f6;
+        font-weight: 700;
+      }
+      .db-calc .num-inv-ia {
+        color: #7c3aed;
+        font-weight: 700;
+      }
+      .db-calc .result {
+        font-weight: 800;
+        font-size: 12px;
+      }
+      .db-calc .result-pos {
+        color: #16a34a;
+      }
+      .db-calc .result-neg {
+        color: #dc2626;
+      }
+      .decision-pill {
+        font-size: 12px;
+        font-weight: 800;
+        padding: 6px 16px;
+        border-radius: 8px;
+        text-transform: uppercase;
+        white-space: nowrap;
+        letter-spacing: 0.5px;
+        display: inline-block;
+      }
+      .dp-skip {
+        background: #fee2e2;
+        color: #dc2626;
+      }
+      .dp-new {
+        background: #f3e8ff;
+        color: #7c3aed;
+        border: 2px solid #c4b5fd;
+      }
+
+      .synergy-box {
+        margin: 16px 0 0 0;
+        padding: 10px 14px;
+        background: #fffbeb;
+        border: 1px solid #fde68a;
+        border-radius: 8px;
+        font-size: 11px;
+        color: #92400e;
+        line-height: 1.6;
+      }
+      .synergy-box .syn-label {
+        font-weight: 700;
+        font-size: 10px;
+        color: #b45309;
+        margin-bottom: 3px;
+      }
+      .task-insight {
+        margin-top: 16px;
+        padding: 14px 18px;
+        background: #f8fafc;
+        border-left: 4px solid #8b5cf6;
+        border-radius: 0 8px 8px 0;
+        font-size: 12px;
+        color: #475569;
+        line-height: 1.7;
+      }
+      .task-insight strong {
+        color: #1e293b;
+      }
+      .task-insight .eff {
+        display: inline-block;
+        background: #f3e8ff;
+        color: #7c3aed;
+        padding: 1px 6px;
+        border-radius: 3px;
+        font-size: 10px;
+        font-weight: 700;
+      }
+      .section-sep {
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          #e2e8f0 30%,
+          #e2e8f0 70%,
+          transparent 100%
+        );
+        margin: 48px 0;
+      }
+      .footer {
+        text-align: center;
+        margin-top: 40px;
+        font-size: 10px;
+        color: #94a3b8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>L'IA change l'équation du ROI</h1>
+      <p class="suptitle">
+        Quand automatiser une tâche "sans valeur" devient la meilleure décision possible.
+      </p>
+
+      <div class="intro">
+        <p>
+          L'idée de cet article est née d'une conversation avec un client en supply chain. Il me
+          parlait d'une tâche que tout le monde connaît mais que personne ne fait :
+          <strong>remonter les petites anomalies à ses fournisseurs</strong>. Un colis légèrement
+          abîmé, un étiquetage approximatif, un écart mineur.
+        </p>
+        <p>
+          En temps normal, on ne le fait pas. Le coût administratif est disproportionné par rapport
+          au gain unitaire. On ne remonte que les <em>gros</em> défauts qualité.
+        </p>
+        <p>
+          Mais mon client avait une intuition :
+          <strong>si on le faisait systématiquement, même pour les petits défauts</strong>, on
+          débloquerait des bénéfices bien supérieurs à la somme des gains individuels. Qualité
+          améliorée, relation fournisseur renforcée, boucle vertueuse.
+        </p>
+        <p>
+          Cet exemple illustre un angle mort :
+          <strong
+            >certaines tâches ne sont jamais automatisées, non pas parce qu'elles sont impossibles,
+            mais parce que leur ROI unitaire ne justifie aucun investissement</strong
+          >. La longue traîne.
+        </p>
+        <p>
+          J'ai voulu creuser cette idée et comprendre ce que l'IA change dans l'équation. Les
+          visualisations ci-dessous sont le résultat — alimenté par l'IA elle-même. 🤖
+        </p>
+      </div>
+
+      <div class="concept-box">
+        <h3>🔗 L'effet de levier : pourquoi la répétition change tout</h3>
+        <p>
+          Une tâche exécutée <strong>une fois</strong> produit un gain unitaire faible. Mais
+          exécutée <strong>50 fois</strong>, un <em>effet de levier</em> apparaît : historique
+          exploitable, boucle d'amélioration, relation de confiance. Le gain de la 50e exécution
+          vaut bien plus que celui de la 1re.
+        </p>
+        <p>
+          <span class="formula"
+            >Gain total = (Gain unitaire × 50) + Effet levier (+20% à +50%)</span
+          >
+        </p>
+        <p>
+          <strong>Personne n'atteint jamais la 10e répétition manuellement.</strong> Le coût par
+          exécution tue la démarche. L'IA débloque ça : en effondrant le coût, elle rend la
+          répétition viable — et l'effet levier accessible.
+        </p>
+      </div>
+
+      <div class="levels">
+        <div class="level-card lc-manual">
+          <div class="lc-num">Niveau 0</div>
+          <h3>Manuel</h3>
+          <p>Tout est fait à la main. Chaque exécution coûte le même prix.</p>
+          <div class="lc-who">👤 Opérateur à chaque fois</div>
+        </div>
+        <div class="level-card lc-auto">
+          <div class="lc-num">Niveau 1</div>
+          <h3>Automation classique</h3>
+          <p>RPA, scripts, dev custom. Investissement initial = <strong>un projet</strong>.</p>
+          <div class="lc-who">👥 Équipe projet · Budget · Mois</div>
+        </div>
+        <div class="level-card lc-ia">
+          <div class="lc-num">Niveau 2</div>
+          <h3>Automation IA</h3>
+          <p>L'IA comprend, génère, exécute. Coût de création <strong>effondré</strong>.</p>
+          <div class="lc-who">👤 Une personne · Quelques heures</div>
+        </div>
+      </div>
+
+      <div class="matrix">
+        <div class="matrix-corner matrix-header"></div>
+        <div class="matrix-header" style="border-right: 1px solid #e2e8f0">Gain faible</div>
+        <div class="matrix-header">Gain élevé</div>
+        <div class="matrix-row-label">Coût faible</div>
+        <div class="matrix-cell" style="border-right: 1px solid #e2e8f0">
+          <div class="mc-letter mc-a">A</div>
+          <div class="mc-line" style="color: #64748b; font-weight: 600">Coût ≈ Gain</div>
+          <div class="mc-line"><span class="mc-tag mc-skip">✗ Pas faite</span></div>
+        </div>
+        <div class="matrix-cell">
+          <div class="mc-letter mc-b">B</div>
+          <div class="mc-line" style="color: #16a34a; font-weight: 600">Coût &lt;&lt; Gain</div>
+          <div class="mc-line"><span class="mc-tag mc-done">✓ Faite</span></div>
+        </div>
+        <div class="matrix-row-label">Coût élevé</div>
+        <div class="matrix-cell" style="border-right: 1px solid #e2e8f0">
+          <div class="mc-letter mc-d">D</div>
+          <div class="mc-line" style="color: #dc2626; font-weight: 600">Coût &gt;&gt; Gain</div>
+          <div class="mc-line"><span class="mc-tag mc-skip">✗ Pas faite</span></div>
+        </div>
+        <div class="matrix-cell">
+          <div class="mc-letter mc-c">C</div>
+          <div class="mc-line" style="color: #16a34a; font-weight: 600">Coût ≤ Gain</div>
+          <div class="mc-line"><span class="mc-tag mc-done">✓ Faite</span></div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════ -->
+      <!-- TÂCHE A : Coût faible · Gain faible        -->
+      <!-- ═══════════════════════════════════════════ -->
+      <div class="task-section">
+        <div class="task-title-bar">
+          <div class="task-letter tl-a">A</div>
+          <div class="task-meta">
+            <h2>Coût ≈ Gain</h2>
+            <div class="cg-pills">
+              <span class="cg-pill cg-cost-low">Coût ↓</span
+              ><span class="cg-pill cg-gain-low">Gain ↓</span
+              ><span class="cg-pill" style="background: #f1f5f9; color: #64748b">Ratio ≈ 1</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="explainer">
+          <div class="ex-context">
+            <strong>📦 Mise à jour des ETAs de livraison dans le TMS</strong><br />
+            Copier l'ETA d'un email fournisseur dans le système. Gain unitaire limité. Mais sur 50
+            fournisseurs → <strong>historique prédictif</strong>.
+          </div>
+          <div class="ex-compare">
+            <div class="ex-col exc-manual">
+              <div class="exc-title">Manuel</div>
+              Copier-coller depuis l'email. Pas de trace historique.
+            </div>
+            <div class="ex-col exc-auto">
+              <div class="exc-title">Autom. classique</div>
+              Script qui parse les emails. <strong>Rigide</strong> : casse si le format change.
+            </div>
+            <div class="ex-col exc-ia">
+              <div class="exc-title">Autom. IA</div>
+              L'IA <strong>comprend</strong> l'email, extrait l'ETA, met à jour le TMS.
+              <strong>2h de config.</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 scenarios — gain vs coût sur la même barre (relatif) -->
+        <div class="cost-scenarios">
+          <!-- Manuel -->
+          <div class="cost-card">
+            <div class="cc-header cch-manual">Manuel</div>
+            <div class="cc-body">
+              <div class="col-header" style="color: #1e293b">Gain vs Coût (×50 reps)</div>
+              <div class="metric">
+                <span class="m-label" style="color: #16a34a">Gain</span>
+                <div class="m-track"><div class="bf bf-glt" style="width: 83%"></div></div>
+              </div>
+              <div class="metric">
+                <span class="m-label" style="color: #dc2626">Coût</span>
+                <div class="m-track"><div class="bf bf-crepeat" style="width: 92%"></div></div>
+              </div>
+            </div>
+            <div class="decision-bar">
+              <div class="db-calc">
+                Gain <span class="num-pos">5 000€</span> − Coût <span class="num-neg">5 500€</span
+                ><br />
+                <span class="result result-neg">= −500€</span>
+              </div>
+              <span class="decision-pill dp-skip">✗ On ne fait pas</span>
+            </div>
+          </div>
+          <!-- Autom. classique -->
+          <div class="cost-card">
+            <div class="cc-header cch-auto">Autom. classique</div>
+            <div class="cc-body">
+              <div class="col-header" style="color: #1e293b">Gain vs Coût (×50 reps)</div>
+              <div class="metric">
+                <span class="m-label" style="color: #16a34a">Gain</span>
+                <div class="m-track"><div class="bf bf-glt" style="width: 83%"></div></div>
+              </div>
+              <div class="metric">
+                <span class="m-label" style="color: #dc2626">Coût ×50</span>
+                <div class="m-track">
+                  <div class="bf bf-ghost" style="width: 92%"></div>
+                  <div class="bf bf-crepeat" style="width: 30%"></div>
+                </div>
+              </div>
+              <div class="metric">
+                <span class="m-label" style="color: #3b82f6"
+                  >Invest. <span class="once">1×</span></span
+                >
+                <div class="m-track"><div class="bf bf-cauto" style="width: 65%"></div></div>
+              </div>
+            </div>
+            <div class="decision-bar">
+              <div class="db-calc">
+                Gain <span class="num-pos">5 000€</span> − Coût
+                <span class="num-neg">2 000€</span> − Invest <span class="num-inv">15 000€</span
+                ><br />
+                <span class="result result-neg">= −12 000€</span>
+              </div>
+              <span class="decision-pill dp-skip">✗ On ne fait pas</span>
+            </div>
+          </div>
+          <!-- IA -->
+          <div class="cost-card cc-ia">
+            <div class="cc-header cch-ia">Autom. IA</div>
+            <div class="cc-body">
+              <div class="col-header" style="color: #1e293b">Gain vs Coût (×50 reps)</div>
+              <div class="metric">
+                <span class="m-label" style="color: #16a34a">Gain</span>
+                <div class="m-track"><div class="bf bf-glt" style="width: 83%"></div></div>
+              </div>
+              <div class="metric">
+                <span class="m-label" style="color: #dc2626">Coût ×50</span>
+                <div class="m-track">
+                  <div class="bf bf-ghost" style="width: 92%"></div>
+                  <div class="bf bf-crepeat" style="width: 13%"></div>
+                </div>
+              </div>
+              <div class="metric">
+                <span class="m-label" style="color: #7c3aed"
+                  >Invest. <span class="once">1×</span></span
+                >
+                <div class="m-track"><div class="bf bf-cia" style="width: 8%"></div></div>
+              </div>
+            </div>
+            <div class="decision-bar">
+              <div class="db-calc">
+                Gain <span class="num-pos">5 000€</span> − Coût <span class="num-neg">800€</span> −
+                Invest <span class="num-inv-ia">500€</span><br />
+                <span class="result result-pos">= +3 700€ ✓</span>
+              </div>
+              <span class="decision-pill dp-new">✦ On y va</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-sep"></div>
+
+      <!-- ═══════════════════════════════════════════ -->
+      <!-- TÂCHE D : Coût élevé · Gain faible (STAR)  -->
+      <!-- ═══════════════════════════════════════════ -->
+      <div class="task-section">
+        <div class="task-title-bar">
+          <div class="task-letter tl-d">D</div>
+          <div class="task-meta">
+            <h2>Coût &gt;&gt; Gain</h2>
+            <div class="cg-pills">
+              <span class="cg-pill cg-cost-high">Coût ↑</span
+              ><span class="cg-pill cg-gain-low">Gain ↓</span
+              ><span class="cg-pill" style="background: #fee2e2; color: #dc2626"
+                >Ratio &gt;&gt; 1</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="explainer">
+          <div class="ex-context">
+            <strong>📦 Remonter systématiquement les petites anomalies au fournisseur</strong><br />
+            Un colis abîmé, un étiquetage non conforme, un écart mineur. Chaque anomalie ne justifie
+            pas le coût. Mais 50 remontées sur 6 mois → la
+            <strong>relation fournisseur se transforme</strong>.
+          </div>
+          <div class="ex-compare">
+            <div class="ex-col exc-manual">
+              <div class="exc-title">Manuel</div>
+              <strong>15-30 min par anomalie</strong>. Personne ne le fait pour les petits défauts.
+            </div>
+            <div class="ex-col exc-auto">
+              <div class="exc-title">Autom. classique</div>
+              Formulaire + workflow + email.
+              <strong>Projet à budget. Ne passe jamais le comité.</strong>
+            </div>
+            <div class="ex-col exc-ia">
+              <div class="exc-title">Autom. IA</div>
+              Vocal → l'IA transcrit, structure, envoie l'email.
+              <strong>30 sec au lieu de 20 min.</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 scenarios — gain vs coût sur la même barre (relatif) -->
+        <div class="cost-scenarios">
+          <!-- Manuel — Gain 3000€, Coût 9000€ (ratio 3:1) → échelle: 9000=95% donc 3000=32% -->
+          <div class="cost-card">
+            <div class="cc-header cch-manual">Manuel</div>
+            <div class="cc-body">
+              <div class="col-header" style="color: #1e293b">Gain vs Coût (×50 reps)</div>
+              <div class="metric">
+                <span class="m-label" style="color: #16a34a">Gain</span>
+                <div class="m-track"><div class="bf bf-glt" style="width: 32%"></div></div>
+              </div>
+              <div class="metric">
+                <span class="m-label" style="color: #dc2626">Coût</span>
+                <div class="m-track"><div class="bf bf-crepeat" style="width: 95%"></div></div>
+              </div>
+            </div>
+            <div class="decision-bar">
+              <div class="db-calc">
+                Gain <span class="num-pos">3 000€</span> − Coût <span class="num-neg">9 000€</span
+                ><br />
+                <span class="result result-neg">= −6 000€</span>
+              </div>
+              <span class="decision-pill dp-skip">✗ On ne fait pas</span>
+            </div>
+          </div>
+          <!-- Autom. classique — Coût réduit 3500€, Invest 10 000€ -->
+          <div class="cost-card">
+            <div class="cc-header cch-auto">Autom. classique</div>
+            <div class="cc-body">
+              <div class="col-header" style="color: #1e293b">Gain vs Coût (×50 reps)</div>
+              <div class="metric">
+                <span class="m-label" style="color: #16a34a">Gain ×50</span>
+                <div class="m-track"><div class="bf bf-glt" style="width: 32%"></div></div>
+              </div>
+              <div class="metric">
+                <span class="m-label" style="color: #f59e0b">+ Synergie +50%</span>
+                <div class="m-track">
+                  <div class="bf bf-synergy" style="width: 16%">
+                    <span class="synergy-tag">+1 500€</span>
+                  </div>
+                </div>
+              </div>
+              <div class="metric">
+                <span class="m-label" style="color: #dc2626">Coût ×50</span>
+                <div class="m-track">
+                  <div class="bf bf-ghost" style="width: 95%"></div>
+                  <div class="bf bf-crepeat" style="width: 37%"></div>
+                </div>
+              </div>
+              <div class="metric">
+                <span class="m-label" style="color: #3b82f6"
+                  >Invest. <span class="once">1×</span></span
+                >
+                <div class="m-track"><div class="bf bf-cauto" style="width: 48%"></div></div>
+              </div>
+            </div>
+            <div class="decision-bar">
+              <div class="db-calc">
+                Gain <span class="num-pos">3 000€</span> + Synergie
+                <span class="num-pos">+1 500€</span> − Coût <span class="num-neg">3 500€</span> −
+                Invest <span class="num-inv">10 000€</span><br />
+                <span class="result result-neg">= −9 000€</span>
+              </div>
+              <span class="decision-pill dp-skip">✗ On ne fait pas</span>
+            </div>
+          </div>
+          <!-- IA — Coût réduit 800€, Invest 800€ -->
+          <div class="cost-card cc-ia">
+            <div class="cc-header cch-ia">Autom. IA</div>
+            <div class="cc-body">
+              <div class="col-header" style="color: #1e293b">Gain vs Coût (×50 reps)</div>
+              <div class="metric">
+                <span class="m-label" style="color: #16a34a">Gain ×50</span>
+                <div class="m-track"><div class="bf bf-glt" style="width: 32%"></div></div>
+              </div>
+              <div class="metric">
+                <span class="m-label" style="color: #f59e0b">+ Synergie +50%</span>
+                <div class="m-track">
+                  <div class="bf bf-synergy" style="width: 16%">
+                    <span class="synergy-tag">+1 500€</span>
+                  </div>
+                </div>
+              </div>
+              <div class="metric">
+                <span class="m-label" style="color: #dc2626">Coût ×50</span>
+                <div class="m-track">
+                  <div class="bf bf-ghost" style="width: 95%"></div>
+                  <div class="bf bf-crepeat" style="width: 8%"></div>
+                </div>
+              </div>
+              <div class="metric">
+                <span class="m-label" style="color: #7c3aed"
+                  >Invest. <span class="once">1×</span></span
+                >
+                <div class="m-track"><div class="bf bf-cia" style="width: 8%"></div></div>
+              </div>
+            </div>
+            <div class="decision-bar">
+              <div class="db-calc">
+                Gain <span class="num-pos">3 000€</span> + Synergie
+                <span class="num-pos">+1 500€</span> − Coût <span class="num-neg">800€</span> −
+                Invest <span class="num-inv-ia">800€</span><br />
+                <span class="result result-pos">= +2 900€ ✓</span>
+              </div>
+              <span class="decision-pill dp-new">✦ On y va</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="synergy-box">
+          <div class="syn-label">🔗 L'effet levier en action sur 50 répétitions</div>
+          <strong>Reps 1→10</strong> — Le fournisseur reçoit des retours structurés. Il prend
+          conscience.<br />
+          <strong>Reps 10→30</strong> — Boucle d'amélioration : les anomalies diminuent, le
+          fournisseur ajuste ses process.<br />
+          <strong>Reps 30→50</strong> — Relation de confiance. Qualité améliorée. Levier pour les
+          business reviews.<br /><br />
+          Le gain de la 50e remontée <strong>vaut incomparablement plus</strong> que celui de la
+          1re. Sans l'IA, personne n'atteint la 10e — le coût tue la démarche avant.
+        </div>
+
+        <div class="task-insight">
+          <span class="eff">L'insight clé</span><br /><br />
+          La Tâche D est celle que <strong>personne ne regarde</strong>. Son gain unitaire ne
+          justifie rien. L'automation classique empire les choses : projet trop cher pour un gain CT
+          faible.<br /><br />
+          Avec l'IA : <strong>une personne, quelques heures</strong>, flux vocal → email. Pas de
+          projet, pas de budget, pas de comité. Le coût s'effondre et l'<strong
+            >effet levier composé</strong
+          >
+          se révèle.<br /><br />
+          C'est la <strong>longue traîne de l'automatisation</strong> : des dizaines de micro-tâches
+          comme celle-ci, inaccessibles sans IA, qui collectivement transforment la performance.
+        </div>
+      </div>
+
+      <div class="footer">Jules Mudes · 2026</div>
+    </div>
+  </body>
+</html>
