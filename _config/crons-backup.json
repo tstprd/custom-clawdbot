@@ -499,12 +499,36 @@
       }
     },
     {
+      "id": "f1273251-a90d-4fe9-9bd9-903de309839f",
+      "agentId": "main",
+      "name": "Check liste bébé avec AL",
+      "enabled": false,
+      "createdAtMs": 1770929944686,
+      "updatedAtMs": 1772305200051,
+      "schedule": {
+        "kind": "at",
+        "at": "2026-02-28T19:00:00.000Z"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "RAPPEL: Demander à Jules où en est Anne-Laure sur la liste bébé (Google Tasks alejmurot). Faire le point ensemble."
+      },
+      "state": {
+        "lastRunAtMs": 1772305200024,
+        "lastStatus": "ok",
+        "lastDurationMs": 27,
+        "consecutiveErrors": 0
+      }
+    },
+    {
       "id": "f227f14e-cb52-46af-9337-d19cdc4a8c71",
       "agentId": "main",
       "name": "Morning Brief - Weekend",
       "enabled": true,
       "createdAtMs": 1770216072659,
-      "updatedAtMs": 1771750875257,
+      "updatedAtMs": 1772269259272,
       "schedule": {
         "kind": "cron",
         "expr": "0 10 * * 0,6",
@@ -517,121 +541,15 @@
         "message": "Génère le brief du matin (weekend) pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning.\n\n## EMAILS IMPORTANTS\nCheck les emails non-lus de jmudes76000@gmail.com avec: gog gmail search \"is:unread\" --account jmudes76000@gmail.com --json\nRésume les 3-5 emails les plus importants (ignore newsletters, notifs auto).\n⚠️ PRIORITÉ: Si email des Ateliers de la Mabilais → signaler en URGENT et mettre à jour le RDV claustra (17 mars → 18 ou 19 selon leur réponse).\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n- 3 mots italiens (prononciation + exemple) - UNIQUEMENT LE MATIN\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
       },
       "state": {
-        "nextRunAtMs": 1772269200000,
-        "lastRunAtMs": 1771750800028,
+        "nextRunAtMs": 1772355600000,
+        "lastRunAtMs": 1772269200024,
         "lastStatus": "ok",
-        "lastDurationMs": 75229,
+        "lastDurationMs": 59248,
         "consecutiveErrors": 0
       },
       "delivery": {
         "mode": "none",
         "channel": "telegram"
-      }
-    },
-    {
-      "id": "d180690e-c70a-48ca-9d76-24f4185f685b",
-      "agentId": "main",
-      "name": "Crypto Digest Weekend",
-      "enabled": true,
-      "createdAtMs": 1772182375213,
-      "updatedAtMs": 1772182375213,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 10 * * 6",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "now",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "C'est samedi matin. Prépare un digest crypto pour Jules basé sur un chapitre du livre 'How Crypto Actually Works' (https://github.com/lawmaster10/howcryptoworksbook). Choisis un chapitre pertinent (MEV, DeFi, Stablecoins, Market Structure, ou autre) et fais un résumé concis des points clés avec des insights pratiques. Envoie-le sur Telegram.",
-        "timeoutSeconds": 300
-      },
-      "delivery": {
-        "mode": "announce"
-      },
-      "state": {
-        "nextRunAtMs": 1772269200000
-      }
-    },
-    {
-      "id": "65b05ae0-d96c-4198-9587-839fe39a6f9a",
-      "agentId": "main",
-      "name": "Afternoon Brief - Weekend",
-      "createdAtMs": 1770659003253,
-      "updatedAtMs": 1771765223801,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 14 * * 0,6",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Génère et envoie le brief de l'après-midi (weekend) à Jules sur Telegram. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts afternoon.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN L'APRÈS-MIDI - seulement au brief du matin.\n\nTout dans UN SEUL message. Sois concis."
-      },
-      "state": {
-        "nextRunAtMs": 1772283600000,
-        "lastRunAtMs": 1771765200026,
-        "lastStatus": "ok",
-        "lastDurationMs": 23775,
-        "consecutiveErrors": 0
-      },
-      "enabled": true,
-      "delivery": {
-        "mode": "announce"
-      }
-    },
-    {
-      "id": "f1273251-a90d-4fe9-9bd9-903de309839f",
-      "agentId": "main",
-      "name": "Check liste bébé avec AL",
-      "enabled": true,
-      "createdAtMs": 1770929944686,
-      "updatedAtMs": 1770929944686,
-      "schedule": {
-        "kind": "at",
-        "at": "2026-02-28T19:00:00.000Z"
-      },
-      "sessionTarget": "main",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "systemEvent",
-        "text": "RAPPEL: Demander à Jules où en est Anne-Laure sur la liste bébé (Google Tasks alejmurot). Faire le point ensemble."
-      },
-      "state": {
-        "nextRunAtMs": 1772305200000
-      }
-    },
-    {
-      "id": "0406f105-4d98-477b-a368-7e36cda1fbcc",
-      "agentId": "main",
-      "name": "Daily Backup Commit",
-      "enabled": true,
-      "createdAtMs": 1770151010343,
-      "updatedAtMs": 1772154245457,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 2 * * *",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Backup quotidien:\n1. Exporte les crons actuels vers _config/crons-backup.json (utilise cron action=list puis écris le JSON)\n2. Git add + commit + push: cd C:\\Users\\jules\\repo\\clawdbot && git add -A && git commit -m 'backup auto' --allow-empty && git push jules main\nSi erreur, log-la mais ne fail pas."
-      },
-      "state": {
-        "nextRunAtMs": 1772326800000,
-        "lastRunAtMs": 1772154000022,
-        "lastStatus": "ok",
-        "lastDurationMs": 245435,
-        "consecutiveErrors": 0,
-        "runningAtMs": 1772240400034
-      },
-      "delivery": {
-        "mode": "announce"
       }
     },
     {
@@ -662,6 +580,65 @@
         "lastStatus": "ok",
         "lastDurationMs": 282727,
         "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "65b05ae0-d96c-4198-9587-839fe39a6f9a",
+      "agentId": "main",
+      "name": "Afternoon Brief - Weekend",
+      "createdAtMs": 1770659003253,
+      "updatedAtMs": 1772283620909,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 14 * * 0,6",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Génère et envoie le brief de l'après-midi (weekend) à Jules sur Telegram. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts afternoon.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN L'APRÈS-MIDI - seulement au brief du matin.\n\nTout dans UN SEUL message. Sois concis."
+      },
+      "state": {
+        "nextRunAtMs": 1772370000000,
+        "lastRunAtMs": 1772283600032,
+        "lastStatus": "ok",
+        "lastDurationMs": 20877,
+        "consecutiveErrors": 0
+      },
+      "enabled": true,
+      "delivery": {
+        "mode": "announce"
+      }
+    },
+    {
+      "id": "0406f105-4d98-477b-a368-7e36cda1fbcc",
+      "agentId": "main",
+      "name": "Daily Backup Commit",
+      "enabled": true,
+      "createdAtMs": 1770151010343,
+      "updatedAtMs": 1772240647424,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 2 * * *",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Backup quotidien:\n1. Exporte les crons actuels vers _config/crons-backup.json (utilise cron action=list puis écris le JSON)\n2. Git add + commit + push: cd C:\\Users\\jules\\repo\\clawdbot && git add -A && git commit -m 'backup auto' --allow-empty && git push jules main\nSi erreur, log-la mais ne fail pas."
+      },
+      "state": {
+        "nextRunAtMs": 1772413200000,
+        "lastRunAtMs": 1772240400034,
+        "lastStatus": "ok",
+        "lastDurationMs": 247390,
+        "consecutiveErrors": 0,
+        "runningAtMs": 1772326800032
+      },
+      "delivery": {
+        "mode": "announce"
       }
     },
     {
@@ -919,6 +896,36 @@
       }
     },
     {
+      "id": "d180690e-c70a-48ca-9d76-24f4185f685b",
+      "agentId": "main",
+      "name": "Crypto Digest Weekend",
+      "enabled": true,
+      "createdAtMs": 1772182375213,
+      "updatedAtMs": 1772269294335,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 10 * * 6",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "C'est samedi matin. Prépare un digest crypto pour Jules basé sur un chapitre du livre 'How Crypto Actually Works' (https://github.com/lawmaster10/howcryptoworksbook). Choisis un chapitre pertinent (MEV, DeFi, Stablecoins, Market Structure, ou autre) et fais un résumé concis des points clés avec des insights pratiques. Envoie-le sur Telegram.",
+        "timeoutSeconds": 300
+      },
+      "delivery": {
+        "mode": "announce"
+      },
+      "state": {
+        "nextRunAtMs": 1772874000000,
+        "lastRunAtMs": 1772269259272,
+        "lastStatus": "ok",
+        "lastDurationMs": 35063,
+        "consecutiveErrors": 0
+      }
+    },
+    {
       "id": "c1d7af85-48c8-4164-8212-04854151d6c8",
       "agentId": "main",
       "name": "Rappel Aqua Tonic - semaine du 9 mars",
@@ -967,5 +974,5 @@
       }
     }
   ],
-  "exportedAt": "2026-02-28T01:00:00.000Z"
+  "exportedAt": "2026-03-01T01:00:00.000Z"
 }
