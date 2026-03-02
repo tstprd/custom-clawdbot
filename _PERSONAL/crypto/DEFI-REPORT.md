@@ -100,19 +100,19 @@ Portfolio: $XX,XXX
 
 ## Dernière mise à jour
 
-**Date:** 2026-02-22
-**Portfolio total:** $58,168
-**Positions suivies:** $50,587 (87%)
-**Gains estimés:** ~$94/semaine (~$4,868/an)
+**Date:** 2026-03-01
+**Portfolio total:** $57,934
+**Positions suivies:** $50,313 (87%)
+**Gains estimés:** ~$89/semaine (~$4,610/an)
 
 | Position | Valeur  | APY    | Gain/sem |
 | -------- | ------- | ------ | -------- |
-| scrvUSD  | $20,689 | 7.05%  | $28.05   |
-| frxETH   | $10,674 | 2.98%  | $6.12    |
-| WETH     | $10,572 | 1.95%  | $3.96    |
-| uCVX     | $8,652  | 33.35% | $55.48   |
+| scrvUSD  | $20,707 | 6.67%  | $26.56   |
+| frxETH   | $10,786 | 2.79%  | $5.79    |
+| WETH     | $10,659 | 1.93%  | $3.96    |
+| uCVX     | $8,161  | 33.35% | $52.34   |
 
-**Total gains (positions > $5k):** $93.61/semaine
+**Total gains (positions > $5k):** $88.65/semaine
 
 ### Historique APY
 
@@ -121,3 +121,4 @@ Portfolio: $XX,XXX
 | 2026-02-15 | 8.95%   | 3.33%  | 3.57% | 33.35% |
 | 2026-02-19 | 5.82%   | 2.97%  | 1.99% | 33.35% |
 | 2026-02-22 | 7.05%   | 2.98%  | 1.95% | 33.35% |
+| 2026-03-01 | 6.67%   | 2.79%  | 1.93% | 33.35% |
