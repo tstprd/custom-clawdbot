@@ -1,19 +1,29 @@
 {
-  "exportedAt": "2026-03-02T02:00:00.000Z",
   "jobs": [
     {
       "id": "5929038d-632b-46d3-a002-c78b5799e093",
       "agentId": "main",
       "name": "LinkedIn Post #2 Reminder Email",
       "enabled": false,
+      "createdAtMs": 1770134941181,
+      "updatedAtMs": 1770134941185,
       "schedule": {
         "kind": "at",
         "at": "2025-02-17T08:00:00.000Z"
       },
       "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "agentTurn",
         "message": "Envoie un email à jules.mudes@capgemini.com avec sujet 'Rappel LinkedIn Post #2 - Les 7 niveaux d'automatisation'. Corps du mail : 'Salut Jules, c'est le moment de préparer ton Post #2 LinkedIn sur les 7 niveaux d'automatisation (du pas fait car trop cher jusqu'à l'agent autonome). Le visuel est prêt dans linkedin-schema-post2.html. Retrouve le brief complet dans Obsidian : Projects/LinkedIn-GenAI-Strategy.md'. Utilise gog gmail send."
+      },
+      "state": {
+        "lastRunAtMs": 1770134941185,
+        "lastStatus": "ok",
+        "lastDurationMs": 16908
+      },
+      "delivery": {
+        "mode": "announce"
       }
     },
     {
@@ -21,14 +31,26 @@
       "agentId": "main",
       "name": "LinkedIn Post #2 - Email Reminder",
       "enabled": false,
+      "createdAtMs": 1770135709277,
+      "updatedAtMs": 1771315223757,
       "schedule": {
         "kind": "at",
         "at": "2026-02-17T08:00:00.000Z"
       },
       "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "agentTurn",
         "message": "Envoie un email à jules.mudes@capgemini.com avec sujet 'Rappel LinkedIn Post #2 - Les 7 niveaux d'automatisation'. Corps : 'Salut Jules, c'est le moment de préparer ton Post #2 LinkedIn sur les 7 niveaux d'automatisation. Le visuel est prêt : _PERSONAL/linkedin-genai/linkedin-schema-post2.html. Brief complet : Obsidian > Projects/LinkedIn-GenAI-Strategy.md'. Utilise gog gmail send --account jmudes76000@gmail.com"
+      },
+      "state": {
+        "lastRunAtMs": 1771315200018,
+        "lastStatus": "ok",
+        "lastDurationMs": 23739,
+        "consecutiveErrors": 0
+      },
+      "delivery": {
+        "mode": "announce"
       }
     },
     {
@@ -36,15 +58,26 @@
       "agentId": "main",
       "name": "Dwight Daily Wisdom",
       "enabled": false,
+      "createdAtMs": 1770233727822,
+      "updatedAtMs": 1770659571794,
       "schedule": {
         "kind": "cron",
         "expr": "0 13 * * *",
         "tz": "Europe/Paris"
       },
       "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "agentTurn",
         "message": "Envoie à Jules sur Telegram:\n1. Un meme Dwight Schrute (imgflip, URL directe)\n2. 3 mots italiens avec prononciation et exemple\n\nAvant d'envoyer, check ce qui a déjà été envoyé:\n  pnpm tsx skills/local-db/scripts/wisdom-log.ts list\n\nAprès envoi, log chaque élément:\n  pnpm tsx skills/local-db/scripts/wisdom-log.ts add meme \"<meme_id>\"\n  pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nChoisis des mots/memes différents de ceux déjà loggés."
+      },
+      "state": {
+        "lastRunAtMs": 1770638400005,
+        "lastStatus": "ok",
+        "lastDurationMs": 101503
+      },
+      "delivery": {
+        "mode": "announce"
       }
     },
     {
@@ -52,14 +85,22 @@
       "agentId": "main",
       "name": "Rappel resto avec AL",
       "enabled": false,
+      "createdAtMs": 1770309355747,
+      "updatedAtMs": 1770309355756,
       "schedule": {
         "kind": "at",
         "at": "2025-02-09T06:40:00.000Z"
       },
       "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "systemEvent",
         "text": "⏰ Rappel pour Jules : Planifier un resto avec Anne-Laure cette semaine. Il avait demandé ce rappel jeudi dernier."
+      },
+      "state": {
+        "lastRunAtMs": 1770309355756,
+        "lastStatus": "ok",
+        "lastDurationMs": 1
       }
     },
     {
@@ -67,14 +108,22 @@
       "agentId": "main",
       "name": "Rappel resto avec AL",
       "enabled": false,
+      "createdAtMs": 1770309374726,
+      "updatedAtMs": 1770709200005,
       "schedule": {
         "kind": "at",
         "at": "2026-02-10T07:40:00.000Z"
       },
       "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "systemEvent",
         "text": "🍽️ Rappel pour Jules : Planifier un resto avec Anne-Laure cette semaine ! (demandé jeudi 5 fév)"
+      },
+      "state": {
+        "lastRunAtMs": 1770709266348,
+        "lastStatus": "ok",
+        "lastDurationMs": 1
       }
     },
     {
@@ -82,14 +131,22 @@
       "agentId": "main",
       "name": "Rappel achat bébé - Lundi",
       "enabled": false,
+      "createdAtMs": 1770585550586,
+      "updatedAtMs": 1770585550603,
       "schedule": {
         "kind": "at",
         "at": "2025-02-09T18:36:40.000Z"
       },
       "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "systemEvent",
         "text": "🍼 Rappel : Session achat bébé prévue cette semaine. C'est le moment de s'y mettre ?"
+      },
+      "state": {
+        "lastRunAtMs": 1770585550603,
+        "lastStatus": "ok",
+        "lastDurationMs": 0
       }
     },
     {
@@ -97,14 +154,22 @@
       "agentId": "main",
       "name": "Rappel achat bébé - Mardi",
       "enabled": false,
+      "createdAtMs": 1770585550623,
+      "updatedAtMs": 1770585550636,
       "schedule": {
         "kind": "at",
         "at": "2025-02-10T18:36:40.000Z"
       },
       "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "systemEvent",
         "text": "🍼 Rappel : Session achat bébé. Tu as pu avancer ?"
+      },
+      "state": {
+        "lastRunAtMs": 1770585550636,
+        "lastStatus": "ok",
+        "lastDurationMs": 0
       }
     },
     {
@@ -112,14 +177,22 @@
       "agentId": "main",
       "name": "Rappel achat bébé - Mercredi",
       "enabled": false,
+      "createdAtMs": 1770585550655,
+      "updatedAtMs": 1770585550659,
       "schedule": {
         "kind": "at",
         "at": "2025-02-11T18:36:40.000Z"
       },
       "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "systemEvent",
         "text": "🍼 Rappel : Session achat bébé — mi-semaine, où en es-tu ?"
+      },
+      "state": {
+        "lastRunAtMs": 1770585550660,
+        "lastStatus": "ok",
+        "lastDurationMs": 0
       }
     },
     {
@@ -127,14 +200,22 @@
       "agentId": "main",
       "name": "Rappel achat bébé - Jeudi",
       "enabled": false,
+      "createdAtMs": 1770585550690,
+      "updatedAtMs": 1770585550704,
       "schedule": {
         "kind": "at",
         "at": "2025-02-12T18:36:40.000Z"
       },
       "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "systemEvent",
         "text": "🍼 Rappel : Achat bébé — plus que demain pour boucler !"
+      },
+      "state": {
+        "lastRunAtMs": 1770585550704,
+        "lastStatus": "ok",
+        "lastDurationMs": 0
       }
     },
     {
@@ -142,14 +223,22 @@
       "agentId": "main",
       "name": "Rappel achat bébé - Vendredi",
       "enabled": false,
+      "createdAtMs": 1770585550723,
+      "updatedAtMs": 1770585550733,
       "schedule": {
         "kind": "at",
         "at": "2025-02-13T18:36:40.000Z"
       },
       "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "systemEvent",
         "text": "🍼 Dernier rappel : Session achat bébé — c'est vendredi, dernière chance cette semaine !"
+      },
+      "state": {
+        "lastRunAtMs": 1770585550733,
+        "lastStatus": "ok",
+        "lastDurationMs": 0
       }
     },
     {
@@ -157,14 +246,22 @@
       "agentId": "main",
       "name": "Rappel achat bébé - Lundi",
       "enabled": false,
+      "createdAtMs": 1770585585053,
+      "updatedAtMs": 1770659400011,
       "schedule": {
         "kind": "at",
         "at": "2026-02-09T17:50:00.000Z"
       },
       "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "systemEvent",
         "text": "🍼 Rappel : Session achat bébé prévue cette semaine. C'est le moment de s'y mettre ?"
+      },
+      "state": {
+        "lastRunAtMs": 1770659400011,
+        "lastStatus": "ok",
+        "lastDurationMs": 18
       }
     },
     {
@@ -172,14 +269,22 @@
       "agentId": "main",
       "name": "Rappel achat bébé - Mardi",
       "enabled": false,
+      "createdAtMs": 1770585585085,
+      "updatedAtMs": 1770745800003,
       "schedule": {
         "kind": "at",
         "at": "2026-02-10T17:50:00.000Z"
       },
       "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "systemEvent",
         "text": "🍼 Rappel : Session achat bébé. Tu as pu avancer ?"
+      },
+      "state": {
+        "lastRunAtMs": 1770745800003,
+        "lastStatus": "ok",
+        "lastDurationMs": 25
       }
     },
     {
@@ -187,14 +292,22 @@
       "agentId": "main",
       "name": "Rappel achat bébé - Mercredi",
       "enabled": false,
+      "createdAtMs": 1770585585115,
+      "updatedAtMs": 1770832200007,
       "schedule": {
         "kind": "at",
         "at": "2026-02-11T17:50:00.000Z"
       },
       "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "systemEvent",
         "text": "🍼 Rappel : Session achat bébé — mi-semaine, où en es-tu ?"
+      },
+      "state": {
+        "lastRunAtMs": 1770832200007,
+        "lastStatus": "ok",
+        "lastDurationMs": 17
       }
     },
     {
@@ -202,14 +315,22 @@
       "agentId": "main",
       "name": "Rappel achat bébé - Jeudi",
       "enabled": false,
+      "createdAtMs": 1770585585151,
+      "updatedAtMs": 1770918890849,
       "schedule": {
         "kind": "at",
         "at": "2026-02-12T17:50:00.000Z"
       },
       "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "systemEvent",
         "text": "🍼 Rappel : Achat bébé — plus que demain pour boucler !"
+      },
+      "state": {
+        "lastRunAtMs": 1770918890849,
+        "lastStatus": "ok",
+        "lastDurationMs": 1
       }
     },
     {
@@ -217,14 +338,23 @@
       "agentId": "main",
       "name": "Rappel achat bébé - Vendredi",
       "enabled": false,
+      "createdAtMs": 1770585585182,
+      "updatedAtMs": 1771005000039,
       "schedule": {
         "kind": "at",
         "at": "2026-02-13T17:50:00.000Z"
       },
       "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "systemEvent",
         "text": "🍼 Dernier rappel : Session achat bébé — c'est vendredi, dernière chance cette semaine !"
+      },
+      "state": {
+        "lastRunAtMs": 1771005000026,
+        "lastStatus": "ok",
+        "lastDurationMs": 13,
+        "consecutiveErrors": 0
       }
     },
     {
@@ -232,74 +362,117 @@
       "agentId": "main",
       "name": "Rappel télécharger Pluribus",
       "enabled": false,
+      "createdAtMs": 1770586278857,
+      "updatedAtMs": 1770659400011,
       "schedule": {
         "kind": "at",
         "at": "2026-02-09T17:50:00.000Z"
       },
       "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "systemEvent",
         "text": "🎲 Rappel : Télécharger Pluribus"
+      },
+      "state": {
+        "lastRunAtMs": 1770659400029,
+        "lastStatus": "ok",
+        "lastDurationMs": 1
       }
     },
     {
       "id": "64bea8dd-e4d8-4ad4-afdf-71d19f6142d4",
       "agentId": "main",
       "name": "Rappel Crèche St Martin - Mail + AL",
-      "enabled": false,
+      "createdAtMs": 1770627725182,
+      "updatedAtMs": 1770973717065,
       "schedule": {
         "kind": "at",
         "at": "2025-02-19T09:00:00.000Z"
       },
       "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "systemEvent",
         "text": "🍼 Rappel Crèche'n'do : Portes ouvertes dans 2 semaines (5 mars 18h30). Envoyer mail de confirmation à contact@crechendo-creches.com pour la crèche Rennes St Martin. Proposer à Anne-Laure d'y aller ensemble !"
-      }
+      },
+      "state": {
+        "lastRunAtMs": 1770973717063,
+        "lastStatus": "ok",
+        "lastDurationMs": 2,
+        "consecutiveErrors": 0
+      },
+      "enabled": false
     },
     {
       "id": "8d4e7a2e-3a35-4b13-9ce0-4daddf56beab",
       "agentId": "main",
       "name": "Parler crèche avec AL ce soir",
-      "enabled": false,
+      "createdAtMs": 1770627725215,
+      "updatedAtMs": 1770973717066,
       "schedule": {
         "kind": "at",
         "at": "2026-02-09T17:30:00.000Z"
       },
       "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "systemEvent",
         "text": "🍼 Ce soir : Parler à Anne-Laure des portes ouvertes Crèche'n'do (5 mars, Rennes St Martin). Voir si elle peut venir ensemble."
-      }
+      },
+      "state": {
+        "lastRunAtMs": 1770973717065,
+        "lastStatus": "ok",
+        "lastDurationMs": 1,
+        "consecutiveErrors": 0
+      },
+      "enabled": false
     },
     {
       "id": "d579a462-b663-4ef6-8ec3-1eb57c1a58d8",
       "agentId": "main",
       "name": "Analyser résolutions AG copro",
-      "enabled": false,
+      "createdAtMs": 1770654222732,
+      "updatedAtMs": 1770973717066,
       "schedule": {
         "kind": "at",
         "at": "2026-02-09T17:30:00.000Z"
       },
       "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "systemEvent",
         "text": "🏠 Ce soir : Analyser les résolutions de l'AG copro (17 mars). Points clés :\n- Bornes VE : voter POUR si intérêt voiture électrique (coût 448-2229€ si raccordement)\n- Vides ordures : Olifant = moins cher (1408€)\n- Fermeture portes 18h\n- Vérifier si vous utilisez le gaz cuisine\n\nPDF sauvegardé : _PERSONAL/syndic/convoc-ag-2026.pdf"
-      }
+      },
+      "state": {
+        "lastRunAtMs": 1770973717066,
+        "lastStatus": "ok",
+        "lastDurationMs": 0,
+        "consecutiveErrors": 0
+      },
+      "enabled": false
     },
     {
       "id": "8f2484bf-bb4f-4903-983f-77126c5a8e8c",
       "agentId": "main",
       "name": "Rappel nouvelle maman - Midi",
       "enabled": false,
+      "createdAtMs": 1770759519486,
+      "updatedAtMs": 1770858000013,
       "schedule": {
         "kind": "at",
         "at": "2026-02-12T01:00:00.000Z"
       },
       "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "systemEvent",
         "text": "📖 Rappel : Lire la nouvelle de ta mère. Prends des notes au fur et à mesure de la lecture !"
+      },
+      "state": {
+        "lastRunAtMs": 1770858037188,
+        "lastStatus": "ok",
+        "lastDurationMs": 1
       }
     },
     {
@@ -307,14 +480,22 @@
       "agentId": "main",
       "name": "Rappel nouvelle maman - 14h",
       "enabled": false,
+      "createdAtMs": 1770759519537,
+      "updatedAtMs": 1770865200012,
       "schedule": {
         "kind": "at",
         "at": "2026-02-12T03:00:00.000Z"
       },
       "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "systemEvent",
         "text": "📖 Rappel (2ème chance) : Lire la nouvelle de ta mère + prendre des notes au fil de la lecture."
+      },
+      "state": {
+        "lastRunAtMs": 1770865200013,
+        "lastStatus": "ok",
+        "lastDurationMs": 14
       }
     },
     {
@@ -322,14 +503,23 @@
       "agentId": "main",
       "name": "Check liste bébé avec AL",
       "enabled": false,
+      "createdAtMs": 1770929944686,
+      "updatedAtMs": 1772305200051,
       "schedule": {
         "kind": "at",
         "at": "2026-02-28T19:00:00.000Z"
       },
       "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "systemEvent",
         "text": "RAPPEL: Demander à Jules où en est Anne-Laure sur la liste bébé (Google Tasks alejmurot). Faire le point ensemble."
+      },
+      "state": {
+        "lastRunAtMs": 1772305200024,
+        "lastStatus": "ok",
+        "lastDurationMs": 27,
+        "consecutiveErrors": 0
       }
     },
     {
@@ -337,31 +527,29 @@
       "agentId": "main",
       "name": "Morning Brief - Weekday",
       "enabled": true,
+      "createdAtMs": 1770216068237,
+      "updatedAtMs": 1772437288009,
       "schedule": {
         "kind": "cron",
         "expr": "40 8 * * 1-5",
         "tz": "Europe/Paris"
       },
       "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "agentTurn",
-        "message": "Génère le brief du matin pour Jules..."
-      }
-    },
-    {
-      "id": "0b48b9a2-299e-400a-ac2b-1ffc2a692efd",
-      "agentId": "main",
-      "name": "Planification présence hebdo",
-      "enabled": true,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 9 * * 1",
-        "tz": "Europe/Paris"
+        "message": "Génère le brief du matin pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning.\n\n## EMAILS IMPORTANTS\nCheck les emails non-lus de jmudes76000@gmail.com avec: gog gmail search \"is:unread\" --account jmudes76000@gmail.com --json\nRésume les 3-5 emails les plus importants (ignore newsletters, notifs auto).\n⚠️ PRIORITÉ: Si email des Ateliers de la Mabilais → signaler en URGENT et mettre à jour le RDV claustra (17 mars → 18 ou 19 selon leur réponse).\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n- 3 mots italiens (prononciation + exemple) - UNIQUEMENT LE MATIN\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
       },
-      "sessionTarget": "main",
-      "payload": {
-        "kind": "systemEvent",
-        "text": "📅 PLANIFICATION PRÉSENCE HEBDO..."
+      "state": {
+        "nextRunAtMs": 1772523600000,
+        "lastRunAtMs": 1772437200027,
+        "lastStatus": "ok",
+        "lastDurationMs": 87982,
+        "consecutiveErrors": 0
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram"
       }
     },
     {
@@ -369,15 +557,29 @@
       "agentId": "main",
       "name": "Noon Brief - Weekday",
       "enabled": true,
+      "createdAtMs": 1770737934433,
+      "updatedAtMs": 1772449249989,
       "schedule": {
         "kind": "cron",
         "expr": "0 12 * * 1-5",
         "tz": "Europe/Paris"
       },
       "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "agentTurn",
-        "message": "Génère le brief du midi pour Jules..."
+        "message": "Génère le brief du midi pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts noon.\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN AU MIDI - seulement au brief du matin.\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
+      },
+      "state": {
+        "nextRunAtMs": 1772535600000,
+        "lastRunAtMs": 1772449200027,
+        "lastStatus": "ok",
+        "lastDurationMs": 49962,
+        "consecutiveErrors": 0
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram"
       }
     },
     {
@@ -385,15 +587,29 @@
       "agentId": "main",
       "name": "Evening Brief - Weekday",
       "enabled": true,
+      "createdAtMs": 1770216077273,
+      "updatedAtMs": 1772472667852,
       "schedule": {
         "kind": "cron",
         "expr": "30 18 * * 1-5",
         "tz": "Europe/Paris"
       },
       "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "agentTurn",
-        "message": "Génère le brief du soir pour Jules..."
+        "message": "Génère le brief du soir pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts evening.\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN LE SOIR - seulement au brief du matin.\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
+      },
+      "state": {
+        "nextRunAtMs": 1772559000000,
+        "lastRunAtMs": 1772472600021,
+        "lastStatus": "ok",
+        "lastDurationMs": 67831,
+        "consecutiveErrors": 0
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram"
       }
     },
     {
@@ -401,31 +617,25 @@
       "agentId": "main",
       "name": "Quiz La Table des Savoirs",
       "enabled": true,
+      "createdAtMs": 1772371807181,
+      "updatedAtMs": 1772472672127,
       "schedule": {
         "kind": "cron",
         "expr": "30 18 2-31 3 *",
         "tz": "Europe/Paris"
       },
       "sessionTarget": "main",
+      "wakeMode": "now",
       "payload": {
         "kind": "systemEvent",
         "text": "🧠 Rappel : C'est l'heure du quiz du jour sur La Table des Savoirs ! https://latabledessavoirs.fr/"
-      }
-    },
-    {
-      "id": "0406f105-4d98-477b-a368-7e36cda1fbcc",
-      "agentId": "main",
-      "name": "Daily Backup Commit",
-      "enabled": true,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 2 * * *",
-        "tz": "Europe/Paris"
       },
-      "sessionTarget": "isolated",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Backup quotidien..."
+      "state": {
+        "nextRunAtMs": 1772559000000,
+        "lastRunAtMs": 1772472667852,
+        "lastStatus": "ok",
+        "lastDurationMs": 4275,
+        "consecutiveErrors": 0
       }
     },
     {
@@ -433,15 +643,55 @@
       "agentId": "main",
       "name": "Rappel Sauna Aqua Tonic",
       "enabled": true,
+      "createdAtMs": 1770233758659,
+      "updatedAtMs": 1771956000040,
       "schedule": {
         "kind": "cron",
         "expr": "0 19 * * 2",
         "tz": "Europe/Paris"
       },
       "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "systemEvent",
         "text": "🧖 Rappel : Réserver Aqua Tonic pour demain midi ? (35€ la séance)"
+      },
+      "state": {
+        "nextRunAtMs": 1772560800000,
+        "lastRunAtMs": 1771956000026,
+        "lastStatus": "ok",
+        "lastDurationMs": 14,
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "0406f105-4d98-477b-a368-7e36cda1fbcc",
+      "agentId": "main",
+      "name": "Daily Backup Commit",
+      "enabled": true,
+      "createdAtMs": 1770151010343,
+      "updatedAtMs": 1772413340544,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 2 * * *",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Backup quotidien:\n1. Exporte les crons actuels vers _config/crons-backup.json (utilise cron action=list puis écris le JSON)\n2. Git add + commit + push: cd C:\\Users\\jules\\repo\\clawdbot && git add -A && git commit -m 'backup auto' --allow-empty && git push jules main\nSi erreur, log-la mais ne fail pas."
+      },
+      "state": {
+        "nextRunAtMs": 1772586000000,
+        "lastRunAtMs": 1772413200017,
+        "lastStatus": "ok",
+        "lastDurationMs": 140527,
+        "consecutiveErrors": 0,
+        "runningAtMs": 1772499600033
+      },
+      "delivery": {
+        "mode": "announce"
       }
     },
     {
@@ -449,15 +699,29 @@
       "agentId": "main",
       "name": "Sorties Cinéma",
       "enabled": true,
+      "createdAtMs": 1770233747679,
+      "updatedAtMs": 1772012359130,
       "schedule": {
         "kind": "cron",
         "expr": "0 10 * * 3",
         "tz": "Europe/Paris"
       },
       "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "agentTurn",
-        "message": "Vérifie les sorties cinéma de la semaine sur Allociné..."
+        "message": "Vérifie les sorties cinéma de la semaine sur Allociné (browser). Filtre selon les goûts de Jules:\n✅ SF épique, Tarantino, Thrillers, Films d'auteur, Critique 4+/5\n❌ Pas de comédies françaises\n\nSi un film intéressant sort, envoie une recommandation à Jules avec le tool `message` (action=send, channel=telegram, target=8133218645) avec le titre, réalisateur, et note presse. Si l'envoi échoue, RETRY 2 fois. Sinon, ne rien envoyer."
+      },
+      "state": {
+        "nextRunAtMs": 1772614800000,
+        "lastRunAtMs": 1772012316419,
+        "lastStatus": "ok",
+        "lastDurationMs": 42711,
+        "consecutiveErrors": 0
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram"
       }
     },
     {
@@ -465,15 +729,29 @@
       "agentId": "main",
       "name": "Sorties Rennes Weekend",
       "enabled": true,
+      "createdAtMs": 1770233753919,
+      "updatedAtMs": 1772017262764,
       "schedule": {
         "kind": "cron",
         "expr": "0 12 * * 3",
         "tz": "Europe/Paris"
       },
       "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "agentTurn",
-        "message": "Vérifie les événements du weekend à Rennes..."
+        "message": "Vérifie les événements du weekend à Rennes sur jds.fr/rennes (browser). Filtre selon les goûts de Jules:\n✅ Jeux de société, Gastronomie, Science, Plantes/botanique, Danse moderne, Débats, Humour intelligent\n\nSi un événement intéressant, envoie à Jules avec le tool `message` (action=send, channel=telegram, target=8133218645) avec titre, date, lieu. Si l'envoi échoue, RETRY 2 fois. Sinon, ne rien envoyer."
+      },
+      "state": {
+        "nextRunAtMs": 1772622000000,
+        "lastRunAtMs": 1772017200028,
+        "lastStatus": "ok",
+        "lastDurationMs": 62736,
+        "consecutiveErrors": 0
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram"
       }
     },
     {
@@ -481,15 +759,25 @@
       "agentId": "main",
       "name": "Volley Check",
       "enabled": true,
+      "createdAtMs": 1770234883323,
+      "updatedAtMs": 1772128800047,
       "schedule": {
         "kind": "cron",
         "expr": "0 19 * * 4",
         "tz": "Europe/Paris"
       },
       "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "systemEvent",
-        "text": "RAPPEL VOLLEY: Demander à Jules s'il est allé au volley cette semaine..."
+        "text": "RAPPEL VOLLEY: Demander à Jules s'il est allé au volley cette semaine. Si oui, logger la session avec: pnpm tsx skills/local-db/scripts/db-sport.ts add <date> volley --source=manual"
+      },
+      "state": {
+        "nextRunAtMs": 1772733600000,
+        "lastRunAtMs": 1772128800030,
+        "lastStatus": "ok",
+        "lastDurationMs": 17,
+        "consecutiveErrors": 0
       }
     },
     {
@@ -497,15 +785,25 @@
       "agentId": "main",
       "name": "Sport tracking hebdo",
       "enabled": true,
+      "createdAtMs": 1770929894636,
+      "updatedAtMs": 1772128800048,
       "schedule": {
         "kind": "cron",
         "expr": "0 19 * * 4",
         "tz": "Europe/Paris"
       },
       "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "systemEvent",
-        "text": "RAPPEL SPORT: Demander à Jules quelles séances de volley et squash il a faites..."
+        "text": "RAPPEL SPORT: Demander à Jules quelles séances de volley (lundi/mercredi) et squash il a faites cette semaine. Logger avec: pnpm tsx skills/local-db/scripts/db-sport.ts add <date> <volley|squash> --source=manual"
+      },
+      "state": {
+        "nextRunAtMs": 1772733600000,
+        "lastRunAtMs": 1772128800047,
+        "lastStatus": "ok",
+        "lastDurationMs": 1,
+        "consecutiveErrors": 0
       }
     },
     {
@@ -513,15 +811,29 @@
       "agentId": "main",
       "name": "Morning Brief - Weekend",
       "enabled": true,
+      "createdAtMs": 1770216072659,
+      "updatedAtMs": 1772355671951,
       "schedule": {
         "kind": "cron",
         "expr": "0 10 * * 0,6",
         "tz": "Europe/Paris"
       },
       "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "agentTurn",
-        "message": "Génère le brief du matin (weekend) pour Jules..."
+        "message": "Génère le brief du matin (weekend) pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning.\n\n## EMAILS IMPORTANTS\nCheck les emails non-lus de jmudes76000@gmail.com avec: gog gmail search \"is:unread\" --account jmudes76000@gmail.com --json\nRésume les 3-5 emails les plus importants (ignore newsletters, notifs auto).\n⚠️ PRIORITÉ: Si email des Ateliers de la Mabilais → signaler en URGENT et mettre à jour le RDV claustra (17 mars → 18 ou 19 selon leur réponse).\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n- 3 mots italiens (prononciation + exemple) - UNIQUEMENT LE MATIN\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
+      },
+      "state": {
+        "nextRunAtMs": 1772874000000,
+        "lastRunAtMs": 1772355600019,
+        "lastStatus": "ok",
+        "lastDurationMs": 71932,
+        "consecutiveErrors": 0
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram"
       }
     },
     {
@@ -529,31 +841,58 @@
       "agentId": "main",
       "name": "Crypto Digest Weekend",
       "enabled": true,
+      "createdAtMs": 1772182375213,
+      "updatedAtMs": 1772269294335,
       "schedule": {
         "kind": "cron",
         "expr": "0 10 * * 6",
         "tz": "Europe/Paris"
       },
       "sessionTarget": "isolated",
+      "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "Prépare un digest crypto pour Jules basé sur 'How Crypto Actually Works'..."
+        "message": "C'est samedi matin. Prépare un digest crypto pour Jules basé sur un chapitre du livre 'How Crypto Actually Works' (https://github.com/lawmaster10/howcryptoworksbook). Choisis un chapitre pertinent (MEV, DeFi, Stablecoins, Market Structure, ou autre) et fais un résumé concis des points clés avec des insights pratiques. Envoie-le sur Telegram.",
+        "timeoutSeconds": 300
+      },
+      "delivery": {
+        "mode": "announce"
+      },
+      "state": {
+        "nextRunAtMs": 1772874000000,
+        "lastRunAtMs": 1772269259272,
+        "lastStatus": "ok",
+        "lastDurationMs": 35063,
+        "consecutiveErrors": 0
       }
     },
     {
       "id": "65b05ae0-d96c-4198-9587-839fe39a6f9a",
       "agentId": "main",
       "name": "Afternoon Brief - Weekend",
-      "enabled": true,
+      "createdAtMs": 1770659003253,
+      "updatedAtMs": 1772370030073,
       "schedule": {
         "kind": "cron",
         "expr": "0 14 * * 0,6",
         "tz": "Europe/Paris"
       },
       "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "agentTurn",
-        "message": "Génère et envoie le brief de l'après-midi (weekend) à Jules..."
+        "message": "Génère et envoie le brief de l'après-midi (weekend) à Jules sur Telegram. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts afternoon.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN L'APRÈS-MIDI - seulement au brief du matin.\n\nTout dans UN SEUL message. Sois concis."
+      },
+      "state": {
+        "nextRunAtMs": 1772888400000,
+        "lastRunAtMs": 1772370000017,
+        "lastStatus": "ok",
+        "lastDurationMs": 30056,
+        "consecutiveErrors": 0
+      },
+      "enabled": true,
+      "delivery": {
+        "mode": "announce"
       }
     },
     {
@@ -561,15 +900,29 @@
       "agentId": "main",
       "name": "DeFi Report Hebdo",
       "enabled": true,
+      "createdAtMs": 1771154725942,
+      "updatedAtMs": 1772356699363,
       "schedule": {
         "kind": "cron",
         "expr": "15 10 * * 0",
         "tz": "Europe/Paris"
       },
       "sessionTarget": "isolated",
+      "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "Génère le report DeFi hebdo pour Jules..."
+        "message": "Génère le report DeFi hebdo pour Jules.\n\n## CONFIG\nWallet: 0x8cddeb3f2d0b56a2e2dd36bfe27f55b1630b647f\nSeuil: IGNORER positions < $5,000 (APY = 0)\nRéférence: _PERSONAL/crypto/DEFI-REPORT.md\n\n## SOURCES (browser snapshot)\n- Portfolio: https://debank.com/profile/0x8cddeb3f2d0b56a2e2dd36bfe27f55b1630b647f\n- Curve LlamaLend: https://www.curve.finance/llamalend/ethereum/markets\n- Llama Airforce: https://llama.airforce/pounders\n- Curve Savings: https://www.curve.finance/scrvusd\n- AAVE: https://app.aave.com/markets/\n\n## POSITIONS À SUIVRE (> $5k)\n1. scrvUSD (Curve Savings)\n2. frxETH (Fraxlend) - utiliser sfrxETH APR\n3. WETH (Aave V3)\n4. uCVX (Llama Airforce Pounders → Convex Pirex)\n\n## ÉTAPES\n1. Browser snapshot DeBank → valeurs positions\n2. Browser snapshot sources APY → taux actuels\n3. Calculer gains/semaine = (Valeur × APY) / 52\n4. Si position < $5k → ne pas inclure dans calcul yield\n5. Comparer APY avec semaine précédente (lire DEFI-REPORT.md)\n\n## FORMAT RAPPORT\n📊 DeFi Report — [date]\n\nPortfolio: $XX,XXX\n\n| Position | Valeur | APY | Gain/sem |\n|----------|--------|-----|----------|\n| scrvUSD  | $XX,XXX | X.XX% | $XX.XX |\n| frxETH   | $XX,XXX | X.XX% | $XX.XX |\n| WETH     | $XX,XXX | X.XX% | $XX.XX |\n| uCVX     | $XX,XXX | X.XX% | $XX.XX |\n\n💰 Total: ~$XXX/semaine (~$X,XXX/an)\n\n⚠️ Alertes si:\n- APY change > 5pts\n- Position passe sous $5k\n\n## FIN\nMet à jour _PERSONAL/crypto/DEFI-REPORT.md avec nouvelles valeurs\nEnvoie sur Telegram (target=8133218645)",
+        "timeoutSeconds": 600
+      },
+      "delivery": {
+        "mode": "announce"
+      },
+      "state": {
+        "nextRunAtMs": 1772961300000,
+        "lastRunAtMs": 1772356500020,
+        "lastStatus": "ok",
+        "lastDurationMs": 199343,
+        "consecutiveErrors": 0
       }
     },
     {
@@ -578,31 +931,74 @@
       "name": "Rappel Aqua Tonic - semaine du 9 mars",
       "enabled": true,
       "deleteAfterRun": true,
+      "createdAtMs": 1771355556566,
+      "updatedAtMs": 1771355556566,
       "schedule": {
         "kind": "at",
         "at": "2026-03-09T07:40:00.000Z"
       },
       "sessionTarget": "main",
+      "wakeMode": "now",
       "payload": {
         "kind": "systemEvent",
-        "text": "🧖 Rappel Aqua Tonic : Tu voulais réserver une séance cette semaine..."
+        "text": "🧖 Rappel Aqua Tonic : Tu voulais réserver une séance cette semaine (sauna reporté de 3 semaines). Midi dispo ?"
+      },
+      "state": {
+        "nextRunAtMs": 1773042000000
       }
+    },
+    {
+      "id": "0b48b9a2-299e-400a-ac2b-1ffc2a692efd",
+      "agentId": "main",
+      "name": "Planification présence hebdo",
+      "createdAtMs": 1770937813180,
+      "updatedAtMs": 1772438400045,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 * * 1",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "📅 PLANIFICATION PRÉSENCE HEBDO\n\nDemande à Jules les présences pour cette semaine (et la suivante si besoin).\nFormat: qui est présent/absent quel jour?\n\nCommandes:\n- Voir semaine: pnpm tsx skills/local-db/scripts/db-presence.ts week [YYYY-Www]\n- Set jour: pnpm tsx skills/local-db/scripts/db-presence.ts set <jules|anne-laure> <YYYY-MM-DD> <home|away>\n- Set semaine: pnpm tsx skills/local-db/scripts/db-presence.ts week-set <person> <YYYY-Www> <HHHHHHH>\n- Sync vers HA: pnpm tsx skills/local-db/scripts/db-presence.ts sync\n\nAprès avoir reçu les infos, sync vers Home Assistant."
+      },
+      "state": {
+        "nextRunAtMs": 1773043200000,
+        "lastRunAtMs": 1772438400030,
+        "lastStatus": "ok",
+        "lastDurationMs": 15,
+        "consecutiveErrors": 0
+      },
+      "enabled": true
     },
     {
       "id": "788923b3-45a0-4d4a-93f5-c28fece865a3",
       "agentId": "main",
       "name": "LinkedIn GenAI Post Reminder",
       "enabled": true,
+      "createdAtMs": 1770131734110,
+      "updatedAtMs": 1771837200041,
       "schedule": {
         "kind": "every",
         "everyMs": 1209600000,
         "anchorMs": 1739178000000
       },
       "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "systemEvent",
-        "text": "🔔 RAPPEL LinkedIn GenAI : C'est le moment de poster !"
+        "text": "🔔 RAPPEL LinkedIn GenAI : C'est le moment de poster ! Ouvre [[Projects/LinkedIn-GenAI-Strategy]] dans Obsidian et propose à Jules un draft du prochain post de la file."
+      },
+      "state": {
+        "nextRunAtMs": 1773046800000,
+        "lastRunAtMs": 1771837200026,
+        "lastStatus": "ok",
+        "lastDurationMs": 15,
+        "consecutiveErrors": 0
       }
     }
-  ]
+  ],
+  "exportedAt": "2026-03-03T01:00:00.000Z"
 }
