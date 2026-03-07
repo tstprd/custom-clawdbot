@@ -1,0 +1,63 @@
+{
+  "date": "2026-03-05",
+  "source": "Polymarket API",
+  "markets": [
+    {
+      "id": "REGIME_FALL",
+      "question": "Will the Iranian regime fall before 2027?",
+      "probability": 0.505,
+      "volume": 7950529,
+      "liquidity": 331409,
+      "endDate": "2026-12-31"
+    },
+    {
+      "id": "HORMUZ_MARCH",
+      "question": "Will Iran close the Strait of Hormuz by March 31, 2026?",
+      "resolution_criteria": "If Iran HALTS or SEVERELY RESTRICTS international maritime traffic through the Strait of Hormuz",
+      "resolution_source": "official governmental information + consensus of credible reporting",
+      "resolution_ambiguity": "HIGH - 'severely restricts' is subjective, no quantitative threshold",
+      "uma_status": "disputed",
+      "probability": 0.685,
+      "volume": 14505833,
+      "liquidity": 328956,
+      "endDate": "2026-03-31",
+      "note": "Market may be pricing resolution dispute outcome, not actual closure"
+    },
+    {
+      "id": "HORMUZ_JUNE",
+      "question": "Will Iran close the Strait of Hormuz by June 30, 2026?",
+      "probability": 0.735,
+      "volume": 1118702,
+      "liquidity": 20206,
+      "endDate": "2026-06-30"
+    },
+    {
+      "id": "HORMUZ_2027",
+      "question": "Will Iran close the Strait of Hormuz before 2027?",
+      "probability": 0.7575,
+      "volume": 1215888,
+      "liquidity": 644289,
+      "endDate": "2026-12-31"
+    },
+    {
+      "id": "NUCLEAR_DEAL",
+      "question": "US-Iran nuclear deal before 2027?",
+      "probability": 0.525,
+      "volume": 339093,
+      "liquidity": 34437,
+      "endDate": "2026-12-31"
+    }
+  ],
+  "blind_estimates": {
+    "REGIME_FALL": 0.08,
+    "HORMUZ_MARCH": 0.04,
+    "HORMUZ_JUNE": 0.07,
+    "HORMUZ_2027": 0.12,
+    "NUCLEAR_DEAL": 0.18
+  },
+  "model_analysis": {
+    "massive_gap": true,
+    "implied_event": "Imminent military strike on Iran expected by markets",
+    "key_insight": "Markets price 68.5% chance of Hormuz closure in 26 days - suggests major escalation imminent"
+  }
+}

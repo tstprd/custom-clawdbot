@@ -1,0 +1,84 @@
+{
+  "date": "2026-03-05T23:06:00Z",
+  "sources": ["polymarket", "manifold"],
+  "markets": {
+    "regime_fall": {
+      "question": "Iranian regime falls in 2026",
+      "polymarket": { "prob": 0.505, "volume": 7950000, "resolution": "Core structures dissolved" },
+      "manifold": { "prob": 0.439, "volume": 1972304, "bettors": 1479 }
+    },
+    "hormuz_march": {
+      "question": "Hormuz closed by March 31",
+      "polymarket": { "prob": 0.675, "volume": 14600000, "status": "disputed" },
+      "manifold": null
+    },
+    "hormuz_2027": {
+      "question": "Hormuz closed before 2027",
+      "polymarket": { "prob": 0.744, "volume": 1220000 },
+      "manifold": null
+    },
+    "nuclear_deal": {
+      "question": "US-Iran nuclear deal before 2027",
+      "polymarket": { "prob": 0.525, "volume": 339000 },
+      "manifold": null
+    },
+    "us_boots_iran": {
+      "question": "US boots on ground in Iran 2026",
+      "polymarket": null,
+      "manifold": { "prob": 0.53, "volume": 4147, "bettors": 65 }
+    },
+    "new_supreme_leader": {
+      "question": "New Supreme Leader by April 1",
+      "polymarket": null,
+      "manifold": { "prob": 0.77, "volume": 4314, "bettors": 38 }
+    },
+    "iran_shoot_us_plane": {
+      "question": "Iran shoots down US plane by end March",
+      "polymarket": null,
+      "manifold": { "prob": 0.628, "volume": 38938, "bettors": 287 }
+    },
+    "ceasefire_march": {
+      "question": "US-Iran ceasefire by March 31",
+      "polymarket": null,
+      "manifold": { "prob": 0.183, "volume": 16530, "bettors": 106 }
+    },
+    "usa_change_regime": {
+      "question": "USA changes Iran regime",
+      "polymarket": null,
+      "manifold": { "prob": 0.472, "volume": 2795, "bettors": 26 }
+    },
+    "reza_pahlavi_leads": {
+      "question": "Reza Pahlavi leads Iran 2026",
+      "polymarket": null,
+      "manifold": { "prob": 0.167, "volume": 7539, "bettors": 41 }
+    },
+    "iran_world_cup": {
+      "question": "Iran participates in 2026 World Cup",
+      "polymarket": null,
+      "manifold": { "prob": 0.32, "volume": 10846, "bettors": 64 }
+    },
+    "uranium_weapons_grade": {
+      "question": "Iran enriches to weapons-grade 2026",
+      "polymarket": null,
+      "manifold": { "prob": 0.07, "volume": 3716, "bettors": 18 }
+    }
+  },
+  "divergences": [
+    {
+      "market": "regime_fall",
+      "polymarket": 0.505,
+      "manifold": 0.439,
+      "delta": 0.066,
+      "note": "Polymarket more bullish on regime change"
+    }
+  ],
+  "implied_narrative": {
+    "scenario": "US/Israel strikes imminent, Khamenei possibly dead/incapacitated",
+    "evidence": [
+      "New Supreme Leader 77% by April - suggests succession underway",
+      "Iran shoots US plane 63% - active conflict expected",
+      "Ceasefire only 18% - no negotiation expected",
+      "Regime fall ~50% - major instability"
+    ]
+  }
+}

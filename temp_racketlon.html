@@ -1,0 +1,1680 @@
+﻿<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="theme-color" content="#1a1a2e" />
+    <title>Racketlon Calc</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: #1a1a2e;
+        color: #fff;
+        min-height: 100vh;
+        padding: 12px;
+      }
+      .container {
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      /* Colors */
+      .color-a {
+        color: #4ecdc4;
+      }
+      .color-b {
+        color: #ff6b9d;
+      }
+
+      /* Header with players */
+      .header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+        padding: 0 8px;
+      }
+      .player-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 1.4rem;
+        font-weight: 700;
+      }
+      .player-label .symbol {
+        font-size: 1.8rem;
+        line-height: 1;
+      }
+      .player-label.player-a {
+        color: #4ecdc4;
+      }
+      .player-label.player-b {
+        color: #ff6b9d;
+      }
+      .player-label.winner {
+        text-shadow: 0 0 10px currentColor;
+      }
+      .player-label .trophy {
+        display: none;
+        font-size: 1.4rem;
+        margin-left: 4px;
+      }
+      .player-label.winner .trophy {
+        display: inline;
+      }
+
+      /* Winner column highlight */
+      .score-input.winner-glow {
+        box-shadow: 0 0 12px currentColor;
+        border-width: 3px;
+      }
+      .score-input.input-a.winner-glow {
+        box-shadow: 0 0 15px #4ecdc4;
+        background: rgba(78, 205, 196, 0.15);
+      }
+      .score-input.input-b.winner-glow {
+        box-shadow: 0 0 15px #ff6b9d;
+        background: rgba(255, 107, 157, 0.15);
+      }
+
+      /* Dim tennis row when not needed */
+      .sport-row.not-needed {
+        opacity: 0.3;
+      }
+      .sport-row.not-needed .score-input {
+        pointer-events: none;
+      }
+      .vs-label {
+        color: #444;
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      /* Scores grid */
+      .scores-grid {
+        background: #16213e;
+        border-radius: 16px;
+        overflow: hidden;
+        margin-bottom: 16px;
+      }
+
+      .sport-row {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 12px;
+        border-bottom: 1px solid #0f3460;
+        overflow: hidden;
+        gap: 8px;
+      }
+      .sport-row:last-child {
+        border-bottom: none;
+      }
+
+      .sport-icon {
+        font-size: 1.6rem;
+        color: #fff;
+        opacity: 0.9;
+      }
+
+      .btn-x {
+        width: 28px;
+        height: 28px;
+        border: none;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        color: #666;
+        font-size: 1.1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .btn-x:active {
+        background: #ff4757;
+        color: #fff;
+      }
+
+      .score-center {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        z-index: 1;
+      }
+
+      .score-input {
+        width: 52px;
+        height: 52px;
+        padding: 0;
+        border: 3px solid #0f3460;
+        border-radius: 12px;
+        background: #1a1a2e;
+        color: #fff;
+        font-size: 1.5rem;
+        font-weight: 700;
+        text-align: center;
+        -moz-appearance: textfield;
+      }
+      .score-input::-webkit-outer-spin-button,
+      .score-input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+      }
+      .score-input:focus {
+        outline: none;
+      }
+      .score-input.input-a {
+        border-color: #4ecdc4;
+      }
+      .score-input.input-b {
+        border-color: #ff6b9d;
+      }
+      .score-input.error {
+        border-color: #ff4757 !important;
+        background: rgba(255, 71, 87, 0.2);
+      }
+
+      .btn-21 {
+        width: 36px;
+        height: 36px;
+        border: none;
+        border-radius: 8px;
+        background: #e94560;
+        color: #fff;
+        font-size: 0.85rem;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      .btn-21:active {
+        transform: scale(0.95);
+      }
+
+      .score-sep {
+        font-size: 1.5rem;
+        color: #333;
+        font-weight: 300;
+        margin: 0 4px;
+      }
+
+      /* Total row */
+      .total-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px 12px;
+        background: #0f3460;
+        gap: 16px;
+      }
+      .total-score {
+        font-size: 2.2rem;
+        font-weight: 800;
+        min-width: 60px;
+        text-align: center;
+      }
+      .total-score.score-a {
+        color: #4ecdc4;
+      }
+      .total-score.score-b {
+        color: #ff6b9d;
+      }
+      .total-score.winner {
+        text-shadow: 0 0 15px currentColor;
+      }
+      .total-score.loser {
+        opacity: 0.4;
+      }
+      .total-sep {
+        font-size: 1.5rem;
+        color: #333;
+      }
+
+      .delta-row {
+        text-align: center;
+        padding: 12px;
+        font-size: 1rem;
+        font-weight: 600;
+        background: #0a1628;
+        border-radius: 0 0 16px 16px;
+        margin-top: -16px;
+        margin-bottom: 16px;
+      }
+      .delta-row.hidden {
+        display: none;
+      }
+
+      /* Dashboard */
+      .dashboard {
+        background: #16213e;
+        border-radius: 16px;
+        padding: 16px;
+        margin-bottom: 16px;
+      }
+      .dashboard.hidden {
+        display: none;
+      }
+      .dashboard h3 {
+        font-size: 0.7rem;
+        color: #555;
+        margin-bottom: 14px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-align: center;
+      }
+
+      .dashboard-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .dash-card {
+        background: #0f3460;
+        border-radius: 12px;
+        padding: 16px 12px;
+        text-align: center;
+      }
+      .dash-card.card-a {
+        border: 2px solid #4ecdc4;
+      }
+      .dash-card.card-b {
+        border: 2px solid #ff6b9d;
+      }
+      .dash-card.card-full {
+        grid-column: 1 / -1;
+        border: 2px solid #ffc107;
+      }
+      .dash-card.card-winner {
+        border: 2px solid #00d26a;
+        background: rgba(0, 210, 106, 0.15);
+      }
+
+      .dash-card .player-tag {
+        font-size: 0.85rem;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+      .dash-card .player-tag .symbol {
+        font-size: 1.2rem;
+      }
+      .dash-card.card-a .player-tag {
+        color: #4ecdc4;
+      }
+      .dash-card.card-b .player-tag {
+        color: #ff6b9d;
+      }
+      .dash-card.card-full .player-tag {
+        color: #ffc107;
+      }
+      .dash-card.card-winner .player-tag {
+        color: #00d26a;
+      }
+
+      .dash-card .objective {
+        font-size: 1.6rem;
+        font-weight: 800;
+      }
+      .dash-card.card-a .objective {
+        color: #4ecdc4;
+      }
+      .dash-card.card-b .objective {
+        color: #ff6b9d;
+      }
+      .dash-card.card-full .objective {
+        color: #ffc107;
+      }
+      .dash-card.card-winner .objective {
+        color: #00d26a;
+      }
+
+      .dash-card .objective-label {
+        font-size: 0.75rem;
+        color: #666;
+        margin-top: 4px;
+      }
+
+      .errors-box {
+        background: rgba(255, 71, 87, 0.15);
+        border: 2px solid #ff4757;
+        border-radius: 12px;
+        padding: 12px;
+        margin-bottom: 16px;
+      }
+      .errors-box.info-style {
+        background: rgba(255, 193, 7, 0.1);
+        border-color: #ffc107;
+      }
+      .errors-box.info-style ul {
+        color: #ffc107;
+      }
+      .errors-box.hidden {
+        display: none !important;
+      }
+      .errors-box ul {
+        list-style: none;
+        font-size: 0.85rem;
+        color: #ff6b6b;
+      }
+
+      .btn-clear {
+        width: 100%;
+        padding: 14px;
+        border: 1px solid #333;
+        border-radius: 12px;
+        background: transparent;
+        color: #555;
+        font-size: 0.9rem;
+        cursor: pointer;
+      }
+      .btn-clear:active {
+        border-color: #e94560;
+        color: #e94560;
+      }
+
+      /* Scores widget - vertical with brackets */
+      .scores-widget {
+        background: #16213e;
+        border-radius: 16px;
+        padding: 16px;
+        margin-bottom: 16px;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+      .scores-widget.hidden {
+        display: none;
+      }
+      .scores-widget h3 {
+        font-size: 0.7rem;
+        color: #555;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-align: center;
+        margin-bottom: 12px;
+      }
+      .scores-list {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .score-line {
+        display: flex;
+        align-items: center;
+        padding: 4px 8px;
+        border-radius: 4px;
+      }
+      .score-line.outcome-a {
+        border-left: 4px solid #4ecdc4;
+        background: rgba(78, 205, 196, 0.08);
+      }
+      .score-line.outcome-b {
+        border-right: 4px solid #ff6b9d;
+        background: rgba(255, 107, 157, 0.08);
+      }
+      .score-line.outcome-gummi {
+        border-left: 4px solid #ffc107;
+        border-right: 4px solid #ffc107;
+        background: rgba(255, 193, 7, 0.1);
+      }
+      .score-line .score-text {
+        flex: 1;
+        text-align: center;
+        font-size: 0.9rem;
+        font-family: monospace;
+      }
+      .score-line.outcome-a .score-text {
+        color: #4ecdc4;
+      }
+      .score-line.outcome-b .score-text {
+        color: #ff6b9d;
+      }
+      .score-line.outcome-gummi .score-text {
+        color: #ffc107;
+      }
+      .score-line .outcome-label {
+        font-size: 0.7rem;
+        width: 50px;
+      }
+      .score-line.outcome-a .outcome-label {
+        color: #4ecdc4;
+        text-align: left;
+      }
+      .score-line.outcome-b .outcome-label {
+        color: #ff6b9d;
+        text-align: right;
+      }
+      .score-line.outcome-gummi .outcome-label {
+        color: #ffc107;
+        text-align: center;
+      }
+
+      footer {
+        text-align: center;
+        padding: 20px 0;
+        color: #444;
+        font-size: 0.7rem;
+      }
+      footer a {
+        color: #666;
+        text-decoration: none;
+      }
+
+      /* Win Zone Visualization - HTML/CSS */
+      .win-zone-widget {
+        background: #16213e;
+        border-radius: 16px;
+        padding: 16px;
+        margin-bottom: 16px;
+      }
+      .win-zone-widget.hidden {
+        display: none;
+      }
+      .win-zone-widget h3 {
+        font-size: 0.7rem;
+        color: #555;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 16px;
+        text-align: center;
+      }
+      .race-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        padding: 10px;
+      }
+      .race-wrapper {
+        position: relative;
+        width: 100%;
+      }
+      .race-tracks {
+        display: flex;
+        justify-content: center;
+        gap: 60px;
+      }
+      .race-track {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 90px;
+      }
+      .track-label {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+      .track-label.label-a {
+        color: #4ecdc4;
+      }
+      .track-label.label-b {
+        color: #ff6b9d;
+      }
+      .track-total {
+        font-size: 0.75rem;
+        color: #888;
+        margin-bottom: 10px;
+      }
+      .track-bar {
+        width: 70px;
+        display: flex;
+        flex-direction: column;
+        border-radius: 8px 8px 0 0;
+        overflow: hidden;
+        border: 2px solid #0f3460;
+        border-bottom: none;
+      }
+      .track-bar.bar-a {
+        border-color: #4ecdc4;
+      }
+      .track-bar.bar-b {
+        border-color: #ff6b9d;
+      }
+      .bar-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+        gap: 4px;
+        color: #fff;
+        font-size: 0.75rem;
+        font-weight: 600;
+        min-height: 20px;
+        position: relative;
+      }
+      .bar-section .mdi {
+        font-size: 0.9rem;
+        opacity: 0.9;
+      }
+      .bar-section .section-score {
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+      .section-pp {
+        background: #e94560;
+      }
+      .section-bad {
+        background: #7b2cbf;
+      }
+      .section-sq {
+        background: #2d6a4f;
+      }
+      .section-tennis {
+        background: linear-gradient(180deg, #1a1a2e 0%, #0f3460 100%);
+      }
+      .section-placeholder {
+        background: transparent;
+        border: 2px dashed #444;
+        opacity: 0.5;
+      }
+      .section-partial {
+        border: 2px dashed;
+        background: repeating-linear-gradient(
+          -45deg,
+          transparent,
+          transparent 4px,
+          rgba(255, 255, 255, 0.05) 4px,
+          rgba(255, 255, 255, 0.05) 8px
+        );
+        opacity: 0.7;
+      }
+      .section-partial.section-pp {
+        border-color: #e94560;
+      }
+      .section-partial.section-bad {
+        border-color: #7b2cbf;
+      }
+      .section-partial.section-sq {
+        border-color: #2d6a4f;
+      }
+      .section-partial.section-tennis {
+        border-color: #0f3460;
+      }
+      .section-partial .section-score {
+        font-style: italic;
+        opacity: 0.8;
+      }
+      .section-tennis.tennis-a {
+        border-left: 3px solid #4ecdc4;
+        border-right: 3px solid #4ecdc4;
+      }
+      .section-tennis.tennis-b {
+        border-left: 3px solid #ff6b9d;
+        border-right: 3px solid #ff6b9d;
+      }
+      .tennis-arrow {
+        width: 0;
+        height: 0;
+        border-left: 37px solid transparent;
+        border-right: 37px solid transparent;
+        margin-top: 0;
+      }
+      .tennis-arrow.arrow-a {
+        border-top: 18px solid #4ecdc4;
+      }
+      .tennis-arrow.arrow-b {
+        border-top: 18px solid #ff6b9d;
+      }
+      .trophy-icon {
+        font-size: 1.5rem;
+        margin-top: 12px;
+      }
+      .trophy-icon.trophy-a {
+        color: #4ecdc4;
+      }
+      .trophy-icon.trophy-b {
+        color: #ff6b9d;
+      }
+      .tennis-label {
+        font-size: 0.75rem;
+        color: #888;
+        margin-top: 8px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .tennis-label-text {
+        font-size: 0.7rem;
+        color: #aaa;
+        margin-top: 10px;
+        text-align: center;
+        max-width: 100px;
+        line-height: 1.3;
+      }
+      .gummi-line-container {
+        position: absolute;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+      }
+      .gummi-line-h {
+        position: absolute;
+        left: 10%;
+        right: 10%;
+        height: 3px;
+        background: #ffc107;
+      }
+      .gummi-text {
+        position: relative;
+        background: #16213e;
+        padding: 4px 12px;
+        color: #ffc107;
+        font-weight: 700;
+        font-size: 0.85rem;
+        border-radius: 8px;
+        border: 2px solid #ffc107;
+        z-index: 11;
+      }
+      .race-status {
+        text-align: center;
+        margin-top: 16px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Title -->
+      <h1
+        style="
+          text-align: center;
+          font-size: 1.3rem;
+          font-weight: 600;
+          color: #fff;
+          margin-bottom: 16px;
+          letter-spacing: 1px;
+        "
+      >
+        Racketlon Score Calculator
+      </h1>
+
+      <!-- Header with A vs B -->
+      <div class="header-row">
+        <div class="player-label player-a" id="labelA">
+          <span class="trophy mdi mdi-trophy"></span>
+          <span class="symbol">â²</span>
+          <span>A</span>
+        </div>
+        <div class="vs-label">VS</div>
+        <div class="player-label player-b" id="labelB">
+          <span>B</span>
+          <span class="symbol">â </span>
+          <span class="trophy mdi mdi-trophy"></span>
+        </div>
+      </div>
+
+      <div class="scores-grid">
+        <div class="sport-row" data-sport="Ping-pong">
+          <span class="sport-icon mdi mdi-table-tennis"></span>
+          <div class="score-center">
+            <button class="btn-x" onclick="clearCell('tt-a')">Ã</button>
+            <input
+              type="number"
+              class="score-input input-a"
+              id="tt-a"
+              min="0"
+              max="21"
+              inputmode="numeric"
+              value="18"
+            />
+            <button class="btn-21" onclick="set21('tt-a')">21</button>
+            <span class="score-sep">â</span>
+            <button class="btn-21" onclick="set21('tt-b')">21</button>
+            <input
+              type="number"
+              class="score-input input-b"
+              id="tt-b"
+              min="0"
+              max="21"
+              inputmode="numeric"
+              value="21"
+            />
+            <button class="btn-x" onclick="clearCell('tt-b')">Ã</button>
+          </div>
+          <span class="sport-icon mdi mdi-table-tennis"></span>
+        </div>
+
+        <div class="sport-row" data-sport="Badminton">
+          <span class="sport-icon mdi mdi-badminton"></span>
+          <div class="score-center">
+            <button class="btn-x" onclick="clearCell('bad-a')">Ã</button>
+            <input
+              type="number"
+              class="score-input input-a"
+              id="bad-a"
+              min="0"
+              max="21"
+              inputmode="numeric"
+              value="21"
+            />
+            <button class="btn-21" onclick="set21('bad-a')">21</button>
+            <span class="score-sep">â</span>
+            <button class="btn-21" onclick="set21('bad-b')">21</button>
+            <input
+              type="number"
+              class="score-input input-b"
+              id="bad-b"
+              min="0"
+              max="21"
+              inputmode="numeric"
+              value="15"
+            />
+            <button class="btn-x" onclick="clearCell('bad-b')">Ã</button>
+          </div>
+          <span class="sport-icon mdi mdi-badminton"></span>
+        </div>
+
+        <div class="sport-row" data-sport="Squash">
+          <span class="sport-icon mdi mdi-racquetball"></span>
+          <div class="score-center">
+            <button class="btn-x" onclick="clearCell('sq-a')">Ã</button>
+            <input
+              type="number"
+              class="score-input input-a"
+              id="sq-a"
+              min="0"
+              max="21"
+              inputmode="numeric"
+              value="15"
+            />
+            <button class="btn-21" onclick="set21('sq-a')">21</button>
+            <span class="score-sep">â</span>
+            <button class="btn-21" onclick="set21('sq-b')">21</button>
+            <input
+              type="number"
+              class="score-input input-b"
+              id="sq-b"
+              min="0"
+              max="21"
+              inputmode="numeric"
+              value="21"
+            />
+            <button class="btn-x" onclick="clearCell('sq-b')">Ã</button>
+          </div>
+          <span class="sport-icon mdi mdi-racquetball"></span>
+        </div>
+
+        <div class="sport-row" data-sport="Tennis">
+          <span class="sport-icon mdi mdi-tennis"></span>
+          <div class="score-center">
+            <button class="btn-x" onclick="clearCell('ten-a')">Ã</button>
+            <input
+              type="number"
+              class="score-input input-a"
+              id="ten-a"
+              min="0"
+              max="21"
+              inputmode="numeric"
+            />
+            <button class="btn-21" onclick="set21('ten-a')">21</button>
+            <span class="score-sep">â</span>
+            <button class="btn-21" onclick="set21('ten-b')">21</button>
+            <input
+              type="number"
+              class="score-input input-b"
+              id="ten-b"
+              min="0"
+              max="21"
+              inputmode="numeric"
+            />
+            <button class="btn-x" onclick="clearCell('ten-b')">Ã</button>
+          </div>
+          <span class="sport-icon mdi mdi-tennis"></span>
+        </div>
+
+        <div class="total-row">
+          <span class="total-score score-a" id="totalA">0</span>
+          <span class="total-sep">â</span>
+          <span class="total-score score-b" id="totalB">0</span>
+        </div>
+      </div>
+
+      <div class="delta-row hidden" id="deltaRow">
+        <span id="deltaText"></span>
+      </div>
+
+      <!-- Dashboard -->
+      <div class="dashboard hidden" id="dashboard">
+        <h3 id="dashTitle">Objectifs Tennis</h3>
+        <div class="dashboard-grid" id="dashGrid"></div>
+      </div>
+
+      <div id="errorsBox" class="errors-box hidden">
+        <ul id="errorsList"></ul>
+      </div>
+
+      <!-- Win Zone Visualization - HTML/CSS -->
+      <div class="win-zone-widget" id="winZoneWidget">
+        <h3>Recap Score</h3>
+        <div class="race-container" id="raceContainer">
+          <!-- Generated by JS -->
+        </div>
+      </div>
+
+      <!-- Scores possibles widget - DISABLED -->
+      <div class="scores-widget hidden" id="scoresWidget" style="display: none !important">
+        <h3>Scores Tennis possibles</h3>
+        <div class="scores-list" id="scoresList"></div>
+      </div>
+
+      <button class="btn-clear" onclick="clearAll()">Effacer tout</button>
+
+      <footer>
+        <p>Racketlon Calc v2.5 â¢ <a href="https://www.racketlon.net">RÃ¨gles FIR</a></p>
+      </footer>
+    </div>
+
+    <script>
+      const SPORTS = [
+        { id: "tt", name: "Ping-pong" },
+        { id: "bad", name: "Badminton" },
+        { id: "sq", name: "Squash" },
+        { id: "ten", name: "Tennis" },
+      ];
+
+      function set21(id) {
+        document.getElementById(id).value = 21;
+        update();
+      }
+      function clearCell(id) {
+        document.getElementById(id).value = "";
+        update();
+      }
+      function clearAll() {
+        document.querySelectorAll(".score-input").forEach((i) => (i.value = ""));
+        update();
+      }
+
+      function getScore(prefix) {
+        const a = document.getElementById(prefix + "-a").value;
+        const b = document.getElementById(prefix + "-b").value;
+        return {
+          a,
+          b,
+          aNum: parseInt(a) || 0,
+          bNum: parseInt(b) || 0,
+          filled: a !== "" && b !== "",
+        };
+      }
+
+      function update() {
+        document.querySelectorAll(".score-input").forEach((el) => el.classList.remove("error"));
+        document.getElementById("labelA").classList.remove("winner");
+        document.getElementById("labelB").classList.remove("winner");
+
+        const errors = [];
+        let totalA = 0,
+          totalB = 0,
+          sportsPlayed = 0;
+
+        // Check sports are filled in order (no gaps)
+        let lastFilledIdx = -1;
+        SPORTS.forEach((sport, idx) => {
+          const s = getScore(sport.id);
+          if (s.filled || s.a !== "" || s.b !== "") {
+            if (idx > lastFilledIdx + 1) {
+              // There's a gap â find which sport was skipped
+              for (let i = lastFilledIdx + 1; i < idx; i++) {
+                errors.push(`${SPORTS[i].name}: renseignez ce sport avant ${sport.name}`);
+              }
+            }
+            lastFilledIdx = idx;
+          }
+        });
+
+        // First pass: calculate provisional totals and check if match is decided
+        let provTotalA = 0,
+          provTotalB = 0;
+        let maxAdditionalA = 0,
+          maxAdditionalB = 0;
+        SPORTS.forEach((sport) => {
+          const s = getScore(sport.id);
+          if (s.filled) {
+            provTotalA += s.aNum;
+            provTotalB += s.bNum;
+            // Remaining points possible in this set
+            maxAdditionalA += Math.max(0, 21 - s.aNum);
+            maxAdditionalB += Math.max(0, 21 - s.bNum);
+          } else {
+            // Unplayed set: full 21 possible
+            maxAdditionalA += 21;
+            maxAdditionalB += 21;
+          }
+        });
+        const provDelta = provTotalA - provTotalB;
+        // Match decided if even with all remaining points, trailing player can't catch up
+        const matchDecided =
+          (provDelta > 0 && provDelta > maxAdditionalB) ||
+          (provDelta < 0 && Math.abs(provDelta) > maxAdditionalA);
+
+        SPORTS.forEach((sport, idx) => {
+          const s = getScore(sport.id);
+          const isTennis = idx === 3; // Tennis is last sport
+
+          if (s.filled) {
+            let valid = false;
+            let errorMsg = "";
+
+            if (matchDecided) {
+              // Match already won: sport can be stopped at any score
+              valid = true;
+            } else {
+              // Need a winner with 2 pts difference, min 21 to win
+              const diff = Math.abs(s.aNum - s.bNum);
+              const winner = Math.max(s.aNum, s.bNum);
+              const loser = Math.min(s.aNum, s.bNum);
+
+              if (winner >= 21 && diff >= 2) {
+                valid = true;
+              } else if (winner === 21 && loser === 20) {
+                errorMsg = `${sport.name}: 21-20 invalide (2 pts d'Ã©cart requis)`;
+              } else if (winner < 21) {
+                // Show contextual message with what's needed
+                if (isTennis && provDelta !== 0) {
+                  const leader = provDelta > 0 ? "A" : "B";
+                  const absDelta = Math.abs(provDelta);
+                  // Points B can still score in tennis to catch up
+                  const ptsNeeded = Math.max(0, 21 - Math.min(s.aNum, s.bNum));
+                  errorMsg = `ð¾ Set en cours Â· ${leader} mÃ¨ne de ${absDelta} pts Â· Continuez jusqu'Ã  21 ou victoire dÃ©cisive`;
+                } else if (isTennis) {
+                  errorMsg = `ð¾ ÃgalitÃ© ! Continuez le tennis jusqu'Ã  21`;
+                } else {
+                  errorMsg = `${sport.name}: set en cours (${winner} pts, il faut 21)`;
+                }
+              } else if (diff < 2) {
+                errorMsg = `${sport.name}: 2 pts d'Ã©cart requis (${s.aNum}-${s.bNum})`;
+              }
+            }
+
+            if (valid) {
+              totalA += s.aNum;
+              totalB += s.bNum;
+              sportsPlayed++;
+            } else if (errorMsg) {
+              errors.push(errorMsg);
+              document.getElementById(sport.id + "-a").classList.add("error");
+              document.getElementById(sport.id + "-b").classList.add("error");
+            }
+          } else if (s.a !== "" || s.b !== "") {
+            errors.push(`${sport.name}: incomplet`);
+            if (s.a !== "") document.getElementById(sport.id + "-a").classList.add("error");
+            if (s.b !== "") document.getElementById(sport.id + "-b").classList.add("error");
+          }
+        });
+
+        // Errors / Info
+        const errorsBox = document.getElementById("errorsBox");
+        if (errors.length > 0) {
+          document.getElementById("errorsList").innerHTML = errors
+            .map((e) => `<li>${e}</li>`)
+            .join("");
+          errorsBox.classList.remove("hidden");
+          // Use info style if all messages are "in progress" (not real errors)
+          const allInProgress = errors.every(
+            (e) => e.includes("en cours") || e.includes("ð¾") || e.includes("Continuez"),
+          );
+          errorsBox.classList.toggle("info-style", allInProgress);
+        } else {
+          errorsBox.classList.add("hidden");
+          errorsBox.classList.remove("info-style");
+        }
+
+        // Totals
+        const totalAEl = document.getElementById("totalA");
+        const totalBEl = document.getElementById("totalB");
+        totalAEl.textContent = totalA;
+        totalBEl.textContent = totalB;
+
+        const delta = totalA - totalB;
+        const sportsRemaining = 4 - sportsPlayed;
+        const maxRemaining = sportsRemaining * 21;
+
+        // Delta display
+        const deltaRow = document.getElementById("deltaRow");
+        const deltaEl = document.getElementById("deltaText");
+        if (sportsPlayed === 0) {
+          deltaRow.classList.add("hidden");
+        } else {
+          deltaRow.classList.remove("hidden");
+          if (delta > 0) {
+            deltaEl.innerHTML = `<span class="color-a">â² A</span> mÃ¨ne de <strong>${delta}</strong> pts`;
+          } else if (delta < 0) {
+            deltaEl.innerHTML = `<span class="color-b">â  B</span> mÃ¨ne de <strong>${Math.abs(delta)}</strong> pts`;
+          } else {
+            deltaEl.innerHTML = `ÃgalitÃ©`;
+          }
+        }
+
+        // Dashboard
+        const dashboard = document.getElementById("dashboard");
+        const dashTitle = document.getElementById("dashTitle");
+        const dashGrid = document.getElementById("dashGrid");
+
+        let matchWinner = null;
+
+        if (sportsPlayed > 0 && errors.length === 0) {
+          dashboard.classList.remove("hidden");
+
+          const nextSportIdx = SPORTS.findIndex((s) => !getScore(s.id).filled);
+          const nextSport = nextSportIdx >= 0 ? SPORTS[nextSportIdx] : null;
+
+          if (sportsPlayed === 4) {
+            if (delta === 0) {
+              dashTitle.textContent = "GUMMIARM";
+              dashGrid.innerHTML = `
+                <div class="dash-card card-full">
+                  <div class="player-tag">Point dÃ©cisif</div>
+                  <div class="objective">1 point</div>
+                  <div class="objective-label">Le prochain point gagne</div>
+                </div>
+              `;
+            } else {
+              matchWinner = delta > 0 ? "A" : "B";
+              const sym = delta > 0 ? "â²" : "â ";
+              const winColor = delta > 0 ? "#4ecdc4" : "#ff6b9d";
+              dashTitle.textContent = "MATCH TERMINÃ";
+              dashGrid.innerHTML = `
+                <div class="dash-card" style="grid-column:1/-1; border:2px solid ${winColor}; background:${winColor}22;">
+                  <div class="player-tag" style="color:${winColor}"><span class="mdi mdi-trophy" style="margin-right:6px;"></span> Vainqueur</div>
+                  <div class="objective" style="color:${winColor}">${sym} ${matchWinner}</div>
+                  <div class="objective-label">${Math.max(totalA, totalB)} - ${Math.min(totalA, totalB)}</div>
+                </div>
+              `;
+            }
+          } else if (Math.abs(delta) > maxRemaining) {
+            matchWinner = delta > 0 ? "A" : "B";
+            const sym = delta > 0 ? "â²" : "â ";
+            const winColor = delta > 0 ? "#4ecdc4" : "#ff6b9d";
+            dashTitle.textContent = "MATCH DÃCIDÃ";
+            dashGrid.innerHTML = `
+              <div class="dash-card" style="grid-column:1/-1; border:2px solid ${winColor}; background:${winColor}22;">
+                <div class="player-tag" style="color:${winColor}"><span class="mdi mdi-trophy" style="margin-right:6px;"></span> Vainqueur</div>
+                <div class="objective" style="color:${winColor}">${sym} ${matchWinner}</div>
+                <div class="objective-label">+${Math.abs(delta)} pts, max ${maxRemaining} restants</div>
+              </div>
+            `;
+          } else {
+            dashTitle.textContent = `Objectifs ${nextSport.name}`;
+            const absDelta = Math.abs(delta);
+
+            if (sportsRemaining === 1) {
+              if (delta === 0) {
+                dashGrid.innerHTML = `
+                  <div class="dash-card card-a">
+                    <div class="player-tag"><span class="symbol">â²</span> A gagne si</div>
+                    <div class="objective"><span style="color:#4ecdc4">21</span> â <span style="color:#ff6b9d">&lt;21</span></div>
+                    <div class="objective-label">Gagner le set</div>
+                  </div>
+                  <div class="dash-card card-b">
+                    <div class="player-tag"><span class="symbol">â </span> B gagne si</div>
+                    <div class="objective"><span style="color:#4ecdc4">&lt;21</span> â <span style="color:#ff6b9d">21</span></div>
+                    <div class="objective-label">Gagner le set</div>
+                  </div>
+                  <div class="dash-card card-full">
+                    <div class="player-tag">Gummiarm si score</div>
+                    <div class="objective"><span style="color:#4ecdc4">21</span> â <span style="color:#ff6b9d">21</span></div>
+                  </div>
+                `;
+              } else {
+                const leader = delta > 0 ? "A" : "B";
+                const trailer = delta > 0 ? "B" : "A";
+                const leaderSym = delta > 0 ? "â²" : "â ";
+                const trailerSym = delta > 0 ? "â " : "â²";
+                const leaderMaxLoss = 20 - absDelta;
+                const gummiLeader = 21 - absDelta;
+
+                let leaderObj, trailerObj, gummiCard;
+
+                if (absDelta > 21) {
+                  leaderObj = `<div class="dash-card card-${leader.toLowerCase()} card-winner">
+                    <div class="player-tag"><span class="symbol">${leaderSym}</span> ${leader}</div>
+                    <div class="objective">GagnÃ©</div>
+                  </div>`;
+                  trailerObj = `<div class="dash-card card-${trailer.toLowerCase()}">
+                    <div class="player-tag"><span class="symbol">${trailerSym}</span> ${trailer}</div>
+                    <div class="objective">â</div>
+                  </div>`;
+                  gummiCard = "";
+                } else if (absDelta === 21) {
+                  if (leader === "A") {
+                    leaderObj = `<div class="dash-card card-a">
+                      <div class="player-tag"><span class="symbol">â²</span> A gagne si</div>
+                      <div class="objective"><span style="color:#4ecdc4">â¥1</span> â <span style="color:#ff6b9d">X</span></div>
+                      <div class="objective-label">Marquer 1 point suffit</div>
+                    </div>`;
+                    trailerObj = `<div class="dash-card card-b">
+                      <div class="player-tag"><span class="symbol">â </span> B seule chance</div>
+                      <div class="objective"><span style="color:#4ecdc4">0</span> â <span style="color:#ff6b9d">21</span></div>
+                      <div class="objective-label">Gummiarm uniquement</div>
+                    </div>`;
+                  } else {
+                    leaderObj = `<div class="dash-card card-b">
+                      <div class="player-tag"><span class="symbol">â </span> B gagne si</div>
+                      <div class="objective"><span style="color:#4ecdc4">X</span> â <span style="color:#ff6b9d">â¥1</span></div>
+                      <div class="objective-label">Marquer 1 point suffit</div>
+                    </div>`;
+                    trailerObj = `<div class="dash-card card-a">
+                      <div class="player-tag"><span class="symbol">â²</span> A seule chance</div>
+                      <div class="objective"><span style="color:#4ecdc4">21</span> â <span style="color:#ff6b9d">0</span></div>
+                      <div class="objective-label">Gummiarm uniquement</div>
+                    </div>`;
+                  }
+                  gummiCard = `<div class="dash-card card-full">
+                    <div class="player-tag">Gummiarm si score</div>
+                    <div class="objective"><span style="color:#4ecdc4">${leader === "A" ? "0" : "21"}</span> â <span style="color:#ff6b9d">${leader === "A" ? "21" : "0"}</span></div>
+                  </div>`;
+                } else {
+                  // leaderMaxLoss = max que le leader peut encaisser si trailer fait 21
+                  // trailerMinWin = min que le trailer doit marquer pour gagner (si leader fait 21)
+                  const trailerMinWin = leaderMaxLoss + 2; // = 22 - absDelta
+
+                  if (leader === "A") {
+                    // A mÃ¨ne: A gagne dÃ¨s qu'il atteint trailerMinWin points
+                    leaderObj = `<div class="dash-card card-a">
+                      <div class="player-tag"><span class="symbol">â²</span> A gagne si</div>
+                      <div class="objective"><span style="color:#4ecdc4">â¥${trailerMinWin}</span> â <span style="color:#ff6b9d">X</span></div>
+                      <div class="objective-label">A gagne dÃ¨s ${trailerMinWin} pts</div>
+                    </div>`;
+                    // B (trailer) doit faire 21 et Aâ¤leaderMaxLoss
+                    trailerObj = `<div class="dash-card card-b">
+                      <div class="player-tag"><span class="symbol">â </span> B gagne si</div>
+                      <div class="objective"><span style="color:#4ecdc4">â¤${leaderMaxLoss}</span> â <span style="color:#ff6b9d">21</span></div>
+                      <div class="objective-label">A marque max ${leaderMaxLoss}</div>
+                    </div>`;
+                  } else {
+                    // B mÃ¨ne: A (trailer) doit faire 21 et Bâ¤leaderMaxLoss
+                    trailerObj = `<div class="dash-card card-a">
+                      <div class="player-tag"><span class="symbol">â²</span> A gagne si</div>
+                      <div class="objective"><span style="color:#4ecdc4">21</span> â <span style="color:#ff6b9d">â¤${leaderMaxLoss}</span></div>
+                      <div class="objective-label">B marque max ${leaderMaxLoss}</div>
+                    </div>`;
+                    // B (leader) gagne si B gagne le set OU B fait assez de points
+                    leaderObj = `<div class="dash-card card-b">
+                      <div class="player-tag"><span class="symbol">â </span> B gagne si</div>
+                      <div class="objective"><span style="color:#4ecdc4">X</span> â <span style="color:#ff6b9d">â¥${trailerMinWin}</span></div>
+                      <div class="objective-label">B gagne dÃ¨s ${trailerMinWin} pts</div>
+                    </div>`;
+                  }
+                  // Gummiarm: le score qui Ã©galise les totaux
+                  // Si B mÃ¨ne de 18: A doit faire 21, B fait 3 â "21 â 3"
+                  // Si A mÃ¨ne de 18: A fait 3, B doit faire 21 â "3 â 21"
+                  const gummiA = leader === "A" ? gummiLeader : 21;
+                  const gummiB = leader === "A" ? 21 : gummiLeader;
+                  gummiCard = `<div class="dash-card card-full">
+                    <div class="player-tag">Gummiarm si score</div>
+                    <div class="objective"><span style="color:#4ecdc4">${gummiA}</span> â <span style="color:#ff6b9d">${gummiB}</span></div>
+                  </div>`;
+                }
+
+                // Always show A card first (left), then B card (right)
+                const cardA = leader === "A" ? leaderObj : trailerObj;
+                const cardB = leader === "A" ? trailerObj : leaderObj;
+                dashGrid.innerHTML = cardA + cardB + gummiCard;
+              }
+            } else if (sportsRemaining === 2) {
+              // Case C: 2 sports played, squash next â can someone win WITHOUT tennis?
+              // To win without tennis: need |delta_after_squash| > 21
+              // A needs: delta + squashGain > 21 â squashGain > 21 - delta â min gain = 22 - delta
+              // B needs: -delta + squashGain > 21 â squashGain > 21 + delta â min gain = 22 + delta
+              const aGainNeeded = 22 - delta; // min squash point advantage A needs
+              const bGainNeeded = 22 + delta; // min squash point advantage B needs
+              const aCanWin = aGainNeeded <= 21; // achievable in one set?
+              const bCanWin = bGainNeeded <= 21;
+
+              if (aCanWin || bCanWin) {
+                dashTitle.textContent = `Victoire directe au ${nextSport.name} ?`;
+                const cardA = aCanWin
+                  ? `<div class="dash-card card-a">
+                    <div class="player-tag"><span class="symbol">â²</span> A gagne sans tennis si</div>
+                    <div class="objective"><span style="color:#4ecdc4">21</span> â <span style="color:#ff6b9d">â¤${21 - aGainNeeded}</span></div>
+                    <div class="objective-label">+${aGainNeeded} pts d'Ã©cart minimum</div>
+                  </div>`
+                  : "<div></div>";
+                const cardB = bCanWin
+                  ? `<div class="dash-card card-b">
+                    <div class="player-tag"><span class="symbol">â </span> B gagne sans tennis si</div>
+                    <div class="objective"><span style="color:#4ecdc4">â¤${21 - bGainNeeded}</span> â <span style="color:#ff6b9d">21</span></div>
+                    <div class="objective-label">+${bGainNeeded} pts d'Ã©cart minimum</div>
+                  </div>`
+                  : "<div></div>";
+                // A toujours Ã  gauche, B toujours Ã  droite
+                dashGrid.innerHTML = cardA + cardB;
+              } else {
+                // Neither can win at squash â no dashboard
+                dashboard.classList.add("hidden");
+              }
+            } else {
+              // Case B: 1 sport played (3 remaining) â no dashboard, not useful
+              dashboard.classList.add("hidden");
+            }
+          }
+        } else {
+          dashboard.classList.add("hidden");
+        }
+
+        // Winner highlight
+        totalAEl.classList.remove("winner", "loser");
+        totalBEl.classList.remove("winner", "loser");
+        document
+          .querySelectorAll(".score-input")
+          .forEach((el) => el.classList.remove("winner-glow"));
+        document.querySelectorAll(".sport-row").forEach((el) => el.classList.remove("not-needed"));
+
+        if (matchWinner === "A") {
+          totalAEl.classList.add("winner");
+          totalBEl.classList.add("loser");
+          document.getElementById("labelA").classList.add("winner");
+          // Glow all A inputs
+          document.querySelectorAll(".input-a").forEach((el) => el.classList.add("winner-glow"));
+        } else if (matchWinner === "B") {
+          totalBEl.classList.add("winner");
+          totalAEl.classList.add("loser");
+          document.getElementById("labelB").classList.add("winner");
+          // Glow all B inputs
+          document.querySelectorAll(".input-b").forEach((el) => el.classList.add("winner-glow"));
+        }
+
+        // Dim tennis row if match decided before tennis
+        if (matchWinner && sportsPlayed < 4) {
+          const tenRow = document.querySelector('[data-sport="Tennis"]');
+          if (tenRow) tenRow.classList.add("not-needed");
+        }
+
+        // Scores widget - show all possible tennis outcomes
+        const scoresWidget = document.getElementById("scoresWidget");
+        const scoresList = document.getElementById("scoresList");
+
+        if (sportsPlayed >= 1 && sportsPlayed < 4 && errors.length === 0 && !matchWinner) {
+          scoresWidget.classList.remove("hidden");
+
+          // Calculate all valid tennis scores
+          const allScores = [];
+
+          // A wins the set (A=21)
+          for (let bScore = 0; bScore <= 20; bScore++) {
+            const finalA = totalA + 21;
+            const finalB = totalB + bScore;
+            let outcome = "a";
+            if (finalA === finalB) outcome = "gummi";
+            else if (finalB > finalA) outcome = "b";
+            allScores.push({ a: 21, b: bScore, outcome, finalA, finalB });
+          }
+
+          // B wins the set (B=21)
+          for (let aScore = 0; aScore <= 20; aScore++) {
+            const finalA = totalA + aScore;
+            const finalB = totalB + 21;
+            let outcome = "b";
+            if (finalA === finalB) outcome = "gummi";
+            else if (finalA > finalB) outcome = "a";
+            allScores.push({ a: aScore, b: 21, outcome, finalA, finalB });
+          }
+
+          // Sort: A wins first (best for A), then gummi, then B wins (best for B)
+          allScores.sort((x, y) => {
+            const order = { a: 0, gummi: 1, b: 2 };
+            if (order[x.outcome] !== order[y.outcome]) {
+              return order[x.outcome] - order[y.outcome];
+            }
+            // Within same outcome, sort by advantage
+            if (x.outcome === "a") return y.a - y.b - (x.a - x.b); // best for A first
+            if (x.outcome === "b") return x.b - x.a - (y.b - y.a); // best for B last
+            return 0;
+          });
+
+          // Group by outcome
+          const groups = { a: [], gummi: [], b: [] };
+          for (const s of allScores) {
+            groups[s.outcome].push(s);
+          }
+
+          // Build condensed list (max 3 per category, with ellipsis)
+          let html = "";
+          const MAX_PER_GROUP = 3;
+
+          function renderLine(s) {
+            const outcomeClass = `outcome-${s.outcome}`;
+            const labelLeft = s.outcome === "a" ? "â² A gagne" : "";
+            const labelRight = s.outcome === "b" ? "B gagne â " : "";
+            const labelMid = s.outcome === "gummi" ? "â¡" : "";
+            return `<div class="score-line ${outcomeClass}">
+              <span class="outcome-label">${labelLeft}</span>
+              <span class="score-text">${labelMid}${s.a} â ${s.b}</span>
+              <span class="outcome-label">${labelRight}</span>
+            </div>`;
+          }
+
+          function renderEllipsis(outcome) {
+            return `<div class="score-line outcome-${outcome}" style="padding:0 8px;">
+              <span class="outcome-label"></span>
+              <span class="score-text" style="font-size:1.2rem; letter-spacing:2px;">â®</span>
+              <span class="outcome-label"></span>
+            </div>`;
+          }
+
+          // A wins
+          if (groups.a.length > 0) {
+            if (groups.a.length <= MAX_PER_GROUP) {
+              groups.a.forEach((s) => (html += renderLine(s)));
+            } else {
+              // Show first, ellipsis, last 2
+              html += renderLine(groups.a[0]);
+              html += renderEllipsis("a");
+              html += renderLine(groups.a[groups.a.length - 2]);
+              html += renderLine(groups.a[groups.a.length - 1]);
+            }
+          }
+
+          // Gummiarm (usually just 1)
+          groups.gummi.forEach((s) => (html += renderLine(s)));
+
+          // B wins
+          if (groups.b.length > 0) {
+            if (groups.b.length <= MAX_PER_GROUP) {
+              groups.b.forEach((s) => (html += renderLine(s)));
+            } else {
+              // Show first 2, ellipsis, last
+              html += renderLine(groups.b[0]);
+              html += renderLine(groups.b[1]);
+              html += renderEllipsis("b");
+              html += renderLine(groups.b[groups.b.length - 1]);
+            }
+          }
+
+          scoresList.innerHTML = html;
+        } else {
+          scoresWidget.classList.add("hidden");
+        }
+
+        // Update win zone visualization
+        updateWinZone(delta, sportsPlayed, matchWinner);
+      }
+
+      document.querySelectorAll(".score-input").forEach((input) => {
+        input.addEventListener("input", () => {
+          // Allow higher scores for deuce situations (except tennis which can be any)
+          if (input.value > 30) input.value = 30; // reasonable max
+          if (input.value < 0) input.value = 0;
+          update();
+        });
+        input.addEventListener("focus", () => input.select());
+      });
+
+      // URL parameter support for testing
+      // Format: ?scores=ppA-ppB,badA-badB,sqA-sqB,tenA-tenB
+      // Example: ?scores=18-21,21-15,15-21,0-0
+      function loadFromURL() {
+        const params = new URLSearchParams(window.location.search);
+        const scoresParam = params.get("scores");
+        console.log("URL scores param:", scoresParam);
+        if (scoresParam) {
+          const parts = scoresParam.split(",");
+          console.log("Parts:", parts);
+          const fields = [
+            ["tt-a", "tt-b"],
+            ["bad-a", "bad-b"],
+            ["sq-a", "sq-b"],
+            ["ten-a", "ten-b"],
+          ];
+          parts.forEach((part, idx) => {
+            if (idx < fields.length && part) {
+              const [a, b] = part.split("-");
+              console.log(`Setting ${fields[idx][0]}=${a}, ${fields[idx][1]}=${b}`);
+              if (a !== undefined && a !== "") document.getElementById(fields[idx][0]).value = a;
+              if (b !== undefined && b !== "") document.getElementById(fields[idx][1]).value = b;
+            }
+          });
+        }
+      }
+
+      loadFromURL();
+      update();
+
+      // Win Zone Visualization - HTML/CSS Version
+      function drawWinZone(delta) {
+        const container = document.getElementById("raceContainer");
+
+        // Get current scores from inputs
+        const ppA = document.getElementById("tt-a").value;
+        const ppB = document.getElementById("tt-b").value;
+        const badA = document.getElementById("bad-a").value;
+        const badB = document.getElementById("bad-b").value;
+        const sqA = document.getElementById("sq-a").value;
+        const sqB = document.getElementById("sq-b").value;
+
+        const scores = {
+          pp: {
+            a: parseInt(ppA) || 0,
+            b: parseInt(ppB) || 0,
+            played: ppA !== "" && ppB !== "",
+            partial: (ppA !== "") !== (ppB !== ""),
+          },
+          bad: {
+            a: parseInt(badA) || 0,
+            b: parseInt(badB) || 0,
+            played: badA !== "" && badB !== "",
+            partial: (badA !== "") !== (badB !== ""),
+          },
+          sq: {
+            a: parseInt(sqA) || 0,
+            b: parseInt(sqB) || 0,
+            played: sqA !== "" && sqB !== "",
+            partial: (sqA !== "") !== (sqB !== ""),
+          },
+        };
+
+        const totalA = scores.pp.a + scores.bad.a + scores.sq.a;
+        const totalB = scores.pp.b + scores.bad.b + scores.sq.b;
+
+        // Tennis needed for victory
+        const aGummi = Math.max(0, Math.min(21, 21 - delta));
+        const bGummi = Math.max(0, Math.min(21, 21 + delta));
+        const aWin = Math.max(1, Math.min(21, 22 - delta));
+        const bWin = Math.max(1, Math.min(21, 22 + delta));
+
+        // Max score B can have for A to win (when A scores 21)
+        const bMaxForAWin = 20 - delta;
+
+        // Pixels per point
+        const pxPerPt = 4;
+
+        // Check if all 3 sports are played (for showing tennis conditions)
+        const allSportsPlayed = scores.pp.played && scores.bad.played && scores.sq.played;
+
+        // Build section HTML (icon + score on same line)
+        function buildSection(score, cssClass, icon, isPlayed, isPartial) {
+          const defaultHeight = 30; // Default height for placeholder
+          if (!isPlayed && !isPartial) {
+            // Show placeholder for unplayed sport
+            return `<div class="bar-section section-placeholder" style="height:${defaultHeight}px">
+              <span class="mdi ${icon}"></span>
+              <span class="section-score">?</span>
+            </div>`;
+          }
+          if (isPartial) {
+            // Sport in progress (only one score entered) - dashed outline
+            const height = score > 0 ? Math.max(score * pxPerPt, defaultHeight) : defaultHeight;
+            const displayScore = score > 0 ? score : "...";
+            return `<div class="bar-section section-partial ${cssClass}" style="height:${height}px">
+              <span class="mdi ${icon}"></span>
+              <span class="section-score">${displayScore}</span>
+            </div>`;
+          }
+          if (score <= 0) {
+            // Played but 0 score
+            return `<div class="bar-section ${cssClass}" style="height:${defaultHeight}px">
+              <span class="mdi ${icon}"></span>
+              <span class="section-score">0</span>
+            </div>`;
+          }
+          const height = Math.max(score * pxPerPt, defaultHeight);
+          return `<div class="bar-section ${cssClass}" style="height:${height}px">
+            <span class="mdi ${icon}"></span>
+            <span class="section-score">${score}</span>
+          </div>`;
+        }
+
+        // Build tennis arrow section
+        function buildTennis(pts, player, showScore) {
+          if (pts > 21) return "";
+          const height = showScore ? pts * pxPerPt : 60; // Default height when waiting
+          const scoreText = showScore ? pts : "?";
+          return `<div class="bar-section section-tennis tennis-${player}" style="height:${height}px">
+            <span class="mdi mdi-tennis"></span>
+            <span class="section-score">${scoreText}</span>
+          </div>`;
+        }
+
+        // Status text
+        let statusText = "ÃgalitÃ©";
+        if (delta > 0) statusText = `A mÃ¨ne de ${delta} pts`;
+        else if (delta < 0) statusText = `B mÃ¨ne de ${Math.abs(delta)} pts`;
+
+        // Check if already won â only when maxAdditional accounts for remaining sets
+        const vizMaxAdditionalB = Object.values(scores).reduce(
+          (sum, s) => sum + (s.played ? Math.max(0, 21 - s.b) : 21),
+          0,
+        );
+        const vizMaxAdditionalA = Object.values(scores).reduce(
+          (sum, s) => sum + (s.played ? Math.max(0, 21 - s.a) : 21),
+          0,
+        );
+        // Add tennis (4th sport, not in scores object)
+        const tenA = parseInt(document.getElementById("ten-a").value) || 0;
+        const tenB = parseInt(document.getElementById("ten-b").value) || 0;
+        const tenFilled =
+          document.getElementById("ten-a").value !== "" &&
+          document.getElementById("ten-b").value !== "";
+        const totalVizMaxB = vizMaxAdditionalB + (tenFilled ? Math.max(0, 21 - tenB) : 21);
+        const totalVizMaxA = vizMaxAdditionalA + (tenFilled ? Math.max(0, 21 - tenA) : 21);
+
+        if (delta > 0 && delta > totalVizMaxB) {
+          container.innerHTML = `<div style="text-align:center;padding:40px;color:#4ecdc4;font-size:1.5rem;font-weight:bold;">â² A a gagnÃ© ! (+${delta})</div>`;
+          return;
+        } else if (delta < 0 && Math.abs(delta) > totalVizMaxA) {
+          container.innerHTML = `<div style="text-align:center;padding:40px;color:#ff6b9d;font-size:1.5rem;font-weight:bold;">â  B a gagnÃ© ! (+${Math.abs(delta)})</div>`;
+          return;
+        }
+
+        // Win condition texts - ONLY show when all 3 sports are played
+        const aMaxForBWin = 20 + delta; // Max A can have for B to win (when B scores 21)
+
+        let aWinText, bWinText;
+        if (!allSportsPlayed) {
+          // Sports not all played - don't show tennis win conditions
+          aWinText = "En attente...";
+          bWinText = "En attente...";
+        } else if (delta >= 0) {
+          // A leads or tie: A gagne dÃ¨s X pts, B needs 21 and A max Y
+          aWinText = `A gagne dÃ¨s ${aWin} pts`;
+          bWinText =
+            bMaxForAWin >= 0
+              ? `B gagne si 21 pts et A max ${bMaxForAWin}`
+              : `B gagne dÃ¨s ${bWin} pts`;
+        } else {
+          // B leads: B gagne dÃ¨s X pts, A needs 21 and B max Y
+          aWinText =
+            aMaxForBWin >= 0
+              ? `A gagne si 21 pts et B max ${aMaxForBWin}`
+              : `A gagne dÃ¨s ${aWin} pts`;
+          bWinText = `B gagne dÃ¨s ${bWin} pts`;
+        }
+
+        // Calculate bar heights for positioning
+        function sectionHeight(score, isPlayed, isPartial) {
+          if (isPlayed || isPartial) return Math.max((score || 0) * pxPerPt, 30);
+          return 30;
+        }
+        const barAHeight =
+          sectionHeight(scores.pp.a, scores.pp.played, scores.pp.partial) +
+          sectionHeight(scores.bad.a, scores.bad.played, scores.bad.partial) +
+          sectionHeight(scores.sq.a, scores.sq.played, scores.sq.partial);
+        const barBHeight =
+          sectionHeight(scores.pp.b, scores.pp.played, scores.pp.partial) +
+          sectionHeight(scores.bad.b, scores.bad.played, scores.bad.partial) +
+          sectionHeight(scores.sq.b, scores.sq.played, scores.sq.partial);
+
+        // Gummi line position: from top of tennis section + gummi score height
+        // Tennis starts after the 3 sports sections
+        const tennisStartA = barAHeight;
+        const tennisStartB = barBHeight;
+        const gummiPosA = tennisStartA + aGummi * pxPerPt;
+        const gummiPosB = tennisStartB + bGummi * pxPerPt;
+        // Use average position for horizontal line
+        const gummiLineTop = 60 + Math.max(gummiPosA, gummiPosB);
+
+        const gummiHtml = allSportsPlayed
+          ? `
+            <div class="gummi-line-container" style="top:${gummiLineTop}px;">
+              <div class="gummi-line-h"></div>
+              <div class="gummi-text">â¡ ${aGummi} - ${bGummi} â¡</div>
+            </div>`
+          : "";
+
+        container.innerHTML = `
+          <div class="race-wrapper">
+            <div class="race-tracks">
+              <div class="race-track">
+                <div class="track-label label-a">â² A</div>
+                <div class="track-total">(${totalA} pts)</div>
+                <div class="track-bar bar-a">
+                  ${buildSection(scores.pp.a, "section-pp", "mdi-table-tennis", scores.pp.played, scores.pp.partial)}
+                  ${buildSection(scores.bad.a, "section-bad", "mdi-badminton", scores.bad.played, scores.bad.partial)}
+                  ${buildSection(scores.sq.a, "section-sq", "mdi-racquetball", scores.sq.played, scores.sq.partial)}
+                  ${buildTennis(aWin, "a", allSportsPlayed)}
+                </div>
+                <div class="tennis-arrow arrow-a"></div>
+                <div class="trophy-icon trophy-a"><span class="mdi mdi-trophy"></span></div>
+                <div class="tennis-label-text">${aWinText}</div>
+              </div>
+              
+              <div class="race-track">
+                <div class="track-label label-b">â  B</div>
+                <div class="track-total">(${totalB} pts)</div>
+                <div class="track-bar bar-b">
+                  ${buildSection(scores.pp.b, "section-pp", "mdi-table-tennis", scores.pp.played, scores.pp.partial)}
+                  ${buildSection(scores.bad.b, "section-bad", "mdi-badminton", scores.bad.played, scores.bad.partial)}
+                  ${buildSection(scores.sq.b, "section-sq", "mdi-racquetball", scores.sq.played, scores.sq.partial)}
+                  ${buildTennis(bWin, "b", allSportsPlayed)}
+                </div>
+                <div class="tennis-arrow arrow-b"></div>
+                <div class="trophy-icon trophy-b"><span class="mdi mdi-trophy"></span></div>
+                <div class="tennis-label-text">${bWinText}</div>
+              </div>
+            </div>
+            ${gummiHtml}
+          </div>
+          
+          <div class="race-status" style="width:100%;flex-basis:100%;">${statusText}</div>
+        `;
+      }
+
+      // Update the win zone when scores change
+      function updateWinZone(delta, sportsPlayed, matchWinner) {
+        const widget = document.getElementById("winZoneWidget");
+
+        // Always show the recap score widget
+        widget.classList.remove("hidden");
+        drawWinZone(delta);
+      }
+    </script>
+  </body>
+</html>

@@ -20,7 +20,8 @@ clawdbot/
 │   ├── wishlist/                → Wishlist Anne-Laure
 │   ├── syndic/                  → Docs syndic
 │   ├── maison-bot/              → MaisonBot / Home Assistant
-│   └── roadmap-esn/             → Roadmap ESN IA
+│   ├── roadmap-esn/             → Roadmap ESN IA
+│   └── table-des-savoirs/       → Quiz Émilien - classements Serial76
 ├── temp/                        → Fichiers jetables (debug, scripts one-shot)
 └── *.md (racine)                → Config workspace Jules (SOUL, USER, etc.)
 ```
@@ -453,6 +454,35 @@ Things like:
 ## Why Separate?
 
 Skills are shared. Your setup is yours. Keeping them apart means you can update skills without losing your notes, and share skills without leaking your infrastructure.
+
+---
+
+## 🏆 La Table des Savoirs (Quiz Émilien)
+
+**Site :** https://latabledessavoirs.fr/classements
+**Pseudo Jules :** Serial76
+**Données :** `_PERSONAL/table-des-savoirs/`
+
+### Cron quotidien
+
+- **Horaire** : 12h30 (Windows Task Scheduler)
+- **Script** : `C:\Users\jules\scripts\table_savoirs_scraper\run.bat`
+- **Output** : CSV + Parquet dans `data/`
+
+### Commandes rapides
+
+```powershell
+# Stats actuelles de Serial76
+Select-String -Path "_PERSONAL\table-des-savoirs\*.csv" -Pattern "Serial76"
+
+# Ou via browser pour stats live
+browser action=open targetUrl="https://latabledessavoirs.fr/classements"
+```
+
+### Trigger keywords
+
+Quand Jules dit : "quiz", "table des savoirs", "classement", "Serial76", "Émilien"
+→ Aller voir `_PERSONAL/table-des-savoirs/` et/ou le site live.
 
 ---
 
