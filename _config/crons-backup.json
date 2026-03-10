@@ -6,7 +6,7 @@
       "name": "Daily Backup Commit",
       "enabled": true,
       "createdAtMs": 1770151010343,
-      "updatedAtMs": 1772931754877,
+      "updatedAtMs": 1773018160171,
       "schedule": {
         "kind": "cron",
         "expr": "0 2 * * *",
@@ -19,10 +19,10 @@
         "message": "Backup quotidien:\n1. Exporte les crons actuels vers _config/crons-backup.json (utilise cron action=list puis écris le JSON)\n2. Git add + commit + push: cd C:\\Users\\jules\\repo\\clawdbot && git add -A && git commit -m 'backup auto' --allow-empty && git push jules main\nSi erreur, log-la mais ne fail pas."
       },
       "state": {
-        "nextRunAtMs": 1773018000000,
-        "lastRunAtMs": 1772931600019,
+        "nextRunAtMs": 1773104400000,
+        "lastRunAtMs": 1773018000028,
         "lastStatus": "ok",
-        "lastDurationMs": 154858,
+        "lastDurationMs": 160143,
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDelivered": true,
@@ -38,7 +38,7 @@
       "name": "Morning Brief - Weekday",
       "enabled": true,
       "createdAtMs": 1770216068237,
-      "updatedAtMs": 1772782888089,
+      "updatedAtMs": 1773042100237,
       "schedule": {
         "kind": "cron",
         "expr": "40 8 * * 1-5",
@@ -51,10 +51,10 @@
         "message": "Génère le brief du matin pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning.\n\n## EMAILS IMPORTANTS\nCheck les emails non-lus de jmudes76000@gmail.com avec: gog gmail search \"is:unread\" --account jmudes76000@gmail.com --json\nRésume les 3-5 emails les plus importants (ignore newsletters, notifs auto).\n⚠️ PRIORITÉ: Si email des Ateliers de la Mabilais → signaler en URGENT et mettre à jour le RDV claustra (17 mars → 18 ou 19 selon leur réponse).\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n- 3 mots italiens (prononciation + exemple) - UNIQUEMENT LE MATIN\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
       },
       "state": {
-        "nextRunAtMs": 1773042000000,
-        "lastRunAtMs": 1772782800019,
+        "nextRunAtMs": 1773128400000,
+        "lastRunAtMs": 1773042000031,
         "lastStatus": "ok",
-        "lastDurationMs": 88070,
+        "lastDurationMs": 100206,
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDelivered": false,
@@ -66,86 +66,12 @@
       }
     },
     {
-      "id": "c1d7af85-48c8-4164-8212-04854151d6c8",
-      "agentId": "main",
-      "name": "Rappel Aqua Tonic - semaine du 9 mars",
-      "enabled": true,
-      "deleteAfterRun": true,
-      "createdAtMs": 1771355556566,
-      "updatedAtMs": 1771355556566,
-      "schedule": {
-        "kind": "at",
-        "at": "2026-03-09T07:40:00.000Z"
-      },
-      "sessionTarget": "main",
-      "wakeMode": "now",
-      "payload": {
-        "kind": "systemEvent",
-        "text": "🧖 Rappel Aqua Tonic : Tu voulais réserver une séance cette semaine (sauna reporté de 3 semaines). Midi dispo ?"
-      },
-      "state": {
-        "nextRunAtMs": 1773042000000
-      }
-    },
-    {
-      "id": "0b48b9a2-299e-400a-ac2b-1ffc2a692efd",
-      "agentId": "main",
-      "name": "Planification présence hebdo",
-      "createdAtMs": 1770937813180,
-      "updatedAtMs": 1772438400045,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 9 * * 1",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "main",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "systemEvent",
-        "text": "📅 PLANIFICATION PRÉSENCE HEBDO\n\nDemande à Jules les présences pour cette semaine (et la suivante si besoin).\nFormat: qui est présent/absent quel jour?\n\nCommandes:\n- Voir semaine: pnpm tsx skills/local-db/scripts/db-presence.ts week [YYYY-Www]\n- Set jour: pnpm tsx skills/local-db/scripts/db-presence.ts set <jules|anne-laure> <YYYY-MM-DD> <home|away>\n- Set semaine: pnpm tsx skills/local-db/scripts/db-presence.ts week-set <person> <YYYY-Www> <HHHHHHH>\n- Sync vers HA: pnpm tsx skills/local-db/scripts/db-presence.ts sync\n\nAprès avoir reçu les infos, sync vers Home Assistant."
-      },
-      "state": {
-        "nextRunAtMs": 1773043200000,
-        "lastRunAtMs": 1772438400030,
-        "lastStatus": "ok",
-        "lastDurationMs": 15,
-        "consecutiveErrors": 0
-      },
-      "enabled": true
-    },
-    {
-      "id": "788923b3-45a0-4d4a-93f5-c28fece865a3",
-      "agentId": "main",
-      "name": "LinkedIn GenAI Post Reminder",
-      "enabled": true,
-      "createdAtMs": 1770131734110,
-      "updatedAtMs": 1771837200041,
-      "schedule": {
-        "kind": "every",
-        "everyMs": 1209600000,
-        "anchorMs": 1739178000000
-      },
-      "sessionTarget": "main",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "systemEvent",
-        "text": "🔔 RAPPEL LinkedIn GenAI : C'est le moment de poster ! Ouvre [[Projects/LinkedIn-GenAI-Strategy]] dans Obsidian et propose à Jules un draft du prochain post de la file."
-      },
-      "state": {
-        "nextRunAtMs": 1773046800000,
-        "lastRunAtMs": 1771837200026,
-        "lastStatus": "ok",
-        "lastDurationMs": 15,
-        "consecutiveErrors": 0
-      }
-    },
-    {
       "id": "77875bb0-92a9-4661-a8f8-f3a9a4c90ae6",
       "agentId": "main",
       "name": "Noon Brief - Weekday",
       "enabled": true,
       "createdAtMs": 1770737934433,
-      "updatedAtMs": 1772794848538,
+      "updatedAtMs": 1773054051734,
       "schedule": {
         "kind": "cron",
         "expr": "0 12 * * 1-5",
@@ -158,10 +84,10 @@
         "message": "Génère le brief du midi pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts noon.\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN AU MIDI - seulement au brief du matin.\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
       },
       "state": {
-        "nextRunAtMs": 1773054000000,
-        "lastRunAtMs": 1772794800047,
+        "nextRunAtMs": 1773140400000,
+        "lastRunAtMs": 1773054000016,
         "lastStatus": "ok",
-        "lastDurationMs": 48491,
+        "lastDurationMs": 51718,
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDelivered": false,
@@ -178,7 +104,7 @@
       "name": "Table des Savoirs - Scraping quotidien",
       "enabled": true,
       "createdAtMs": 1772800148136,
-      "updatedAtMs": 1772969724949,
+      "updatedAtMs": 1773056111073,
       "schedule": {
         "kind": "cron",
         "expr": "30 12 * * *",
@@ -195,11 +121,11 @@
         "mode": "none"
       },
       "state": {
-        "nextRunAtMs": 1773055800000,
-        "lastRunAtMs": 1772969400018,
+        "nextRunAtMs": 1773142200000,
+        "lastRunAtMs": 1773055800024,
         "lastRunStatus": "ok",
         "lastStatus": "ok",
-        "lastDurationMs": 324931,
+        "lastDurationMs": 311049,
         "lastDelivered": false,
         "lastDeliveryStatus": "not-delivered",
         "consecutiveErrors": 0
@@ -211,7 +137,7 @@
       "name": "Evening Brief - Weekday",
       "enabled": true,
       "createdAtMs": 1770216077273,
-      "updatedAtMs": 1772818269548,
+      "updatedAtMs": 1773077452896,
       "schedule": {
         "kind": "cron",
         "expr": "30 18 * * 1-5",
@@ -224,10 +150,10 @@
         "message": "Génère le brief du soir pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts evening.\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN LE SOIR - seulement au brief du matin.\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
       },
       "state": {
-        "nextRunAtMs": 1773077400000,
-        "lastRunAtMs": 1772818200033,
+        "nextRunAtMs": 1773163800000,
+        "lastRunAtMs": 1773077400016,
         "lastStatus": "ok",
-        "lastDurationMs": 69515,
+        "lastDurationMs": 52880,
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDelivered": false,
@@ -244,7 +170,7 @@
       "name": "Quiz La Table des Savoirs",
       "enabled": true,
       "createdAtMs": 1772371807181,
-      "updatedAtMs": 1772991058744,
+      "updatedAtMs": 1773077460140,
       "schedule": {
         "kind": "cron",
         "expr": "30 18 2-31 3 *",
@@ -257,10 +183,10 @@
         "text": "🧠 Rappel : C'est l'heure du quiz du jour sur La Table des Savoirs ! https://latabledessavoirs.fr/"
       },
       "state": {
-        "nextRunAtMs": 1773077400000,
-        "lastRunAtMs": 1772991000020,
+        "nextRunAtMs": 1773163800000,
+        "lastRunAtMs": 1773077452896,
         "lastStatus": "ok",
-        "lastDurationMs": 58724,
+        "lastDurationMs": 7244,
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDeliveryStatus": "not-requested"
@@ -546,12 +472,67 @@
         "lastDelivered": true,
         "lastDeliveryStatus": "delivered"
       }
+    },
+    {
+      "id": "0b48b9a2-299e-400a-ac2b-1ffc2a692efd",
+      "agentId": "main",
+      "name": "Planification présence hebdo",
+      "createdAtMs": 1770937813180,
+      "updatedAtMs": 1773043200020,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 * * 1",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "📅 PLANIFICATION PRÉSENCE HEBDO\n\nDemande à Jules les présences pour cette semaine (et la suivante si besoin).\nFormat: qui est présent/absent quel jour?\n\nCommandes:\n- Voir semaine: pnpm tsx skills/local-db/scripts/db-presence.ts week [YYYY-Www]\n- Set jour: pnpm tsx skills/local-db/scripts/db-presence.ts set <jules|anne-laure> <YYYY-MM-DD> <home|away>\n- Set semaine: pnpm tsx skills/local-db/scripts/db-presence.ts week-set <person> <YYYY-Www> <HHHHHHH>\n- Sync vers HA: pnpm tsx skills/local-db/scripts/db-presence.ts sync\n\nAprès avoir reçu les infos, sync vers Home Assistant."
+      },
+      "state": {
+        "nextRunAtMs": 1773648000000,
+        "lastRunAtMs": 1773043200019,
+        "lastStatus": "ok",
+        "lastDurationMs": 1,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "lastDeliveryStatus": "not-requested"
+      },
+      "enabled": true
+    },
+    {
+      "id": "788923b3-45a0-4d4a-93f5-c28fece865a3",
+      "agentId": "main",
+      "name": "LinkedIn GenAI Post Reminder",
+      "enabled": true,
+      "createdAtMs": 1770131734110,
+      "updatedAtMs": 1773046800028,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 1209600000,
+        "anchorMs": 1739178000000
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "🔔 RAPPEL LinkedIn GenAI : C'est le moment de poster ! Ouvre [[Projects/LinkedIn-GenAI-Strategy]] dans Obsidian et propose à Jules un draft du prochain post de la file."
+      },
+      "state": {
+        "nextRunAtMs": 1774256400027,
+        "lastRunAtMs": 1773046800027,
+        "lastStatus": "ok",
+        "lastDurationMs": 1,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "lastDeliveryStatus": "not-requested"
+      }
     }
   ],
-  "total": 18,
+  "total": 17,
   "offset": 0,
-  "limit": 18,
+  "limit": 17,
   "hasMore": false,
-  "nextOffset": null,
-  "exportedAt": "2026-03-09T02:00:00+01:00"
+  "nextOffset": null
 }
