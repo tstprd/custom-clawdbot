@@ -1,10 +1,22 @@
-Found 9 entities:
-  light.hue_lightstrip_plus_1 = off (Hue lightstrip plus 1)
-  light.cuisine = unavailable (Cuisine)
-  light.hue_filament_bulb_2 = unavailable (Hue filament bulb 2)
-  light.signe_gradient_table_1 = on (Gradient Jules)
-  light.hue_filament_bulb_1 = off (Hue filament bulb 1)
-  light.lampe_gradient = off (Lampe gradient)
-  light.salon = off (Salon)
-  light.lampe_bureau = on (Lampe Bureau)
-  light.esp32_s2mini_1_led_gpio2 = unavailable (esp32-s2mini-1 LED GPIO2)
+🌡️ Heating Check Report
+═══════════════════════
+
+📍 Heating Status:
+  ⏸️ Thermostat VT - Salon: idle
+  ⏸️ Thermostat VT - Bureau Jules: idle
+  ⏸️ Thermostat VT - Bureau AL: idle
+  ⏸️ Thermostat VT - Salle de bain: idle
+  ⏸️ Thermostat VT - Salle de douche: idle
+  ⏸️ Thermostat VT - chambre: idle
+
+🌡️ Temperatures:
+  Extérieur: 13.5°C
+  Intérieur (moy): 19.2°C
+  Différence: 5.7°C
+  Seuil: 3°C
+
+═══════════════════════
+🎯 Chauffage actif: NON
+🎯 Écart temp significatif: OUI (>3°C)
+
+✅ ALERT NEEDED - Presence check is relevant
