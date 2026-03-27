@@ -1,22 +1,16 @@
-🌡️ Heating Check Report
-═══════════════════════
+Home Assistant CLI
 
-📍 Heating Status:
-  ⏸️ Thermostat VT - Salon: idle
-  ⏸️ Thermostat VT - Bureau Jules: idle
-  ⏸️ Thermostat VT - Bureau AL: idle
-  ⏸️ Thermostat VT - Salle de bain: idle
-  ⏸️ Thermostat VT - Salle de douche: idle
-  ⏸️ Thermostat VT - chambre: idle
+Commands:
+  states                          Get all entity states
+  entity <entity_id>              Get specific entity state
+  search --domain X --pattern Y   Search entities
+  service <domain> <service>      Call a service
+  on <entity_id>                  Turn on entity
+  off <entity_id>                 Turn off entity
+  color <entity_id> <color>       Set light color
+  brightness <entity_id> <0-100>  Set light brightness
+  areas                           List all areas
+  area-entities <area>            Get entities in area
 
-🌡️ Temperatures:
-  Extérieur: 13.5°C
-  Intérieur (moy): 19.2°C
-  Différence: 5.7°C
-  Seuil: 3°C
+Colors: red, green, blue, white, yellow, orange, purple, pink, cyan, warm, cool
 
-═══════════════════════
-🎯 Chauffage actif: NON
-🎯 Écart temp significatif: OUI (>3°C)
-
-✅ ALERT NEEDED - Presence check is relevant
