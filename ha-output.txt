@@ -1,16 +1,1 @@
-Home Assistant CLI
-
-Commands:
-  states                          Get all entity states
-  entity <entity_id>              Get specific entity state
-  search --domain X --pattern Y   Search entities
-  service <domain> <service>      Call a service
-  on <entity_id>                  Turn on entity
-  off <entity_id>                 Turn off entity
-  color <entity_id> <color>       Set light color
-  brightness <entity_id> <0-100>  Set light brightness
-  areas                           List all areas
-  area-entities <area>            Get entities in area
-
-Colors: red, green, blue, white, yellow, orange, purple, pink, cyan, warm, cool
-
+✓ Turned on input_boolean.snooze_alerte_presence_jules
