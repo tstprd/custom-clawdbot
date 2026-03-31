@@ -1,17 +1,19 @@
 # HEARTBEAT.md
 
-**Aujourd'hui : Jeudi 26 février 2026**
+**Aujourd'hui : Lundi 30 mars 2026**
 
 _Contexte urgent pour le prochain reset. Pas de données techniques ici._
 
 ## 🔴 Urgent
 
-_(rien)_
+- **⚠️ DeFi Health Rate** : Curve LlamaLend (Fraxtal) = **1.03** ← surveiller!
+  - Collateral: 60,820 sfrxUSD ($72,284)
+  - Borrowed: 68,270 crvUSD ($68,160)
+  - Seuil critique: < 1.05
 
 ## ⚠️ À traiter
 
-- **Token Gmail** : `alejmurot@gmail.com` expiré → `gog auth login --account alejmurot@gmail.com`
-- **Tâches Grocy** : 2 tâches en retard (VMC, Vitres)
+- **Tâches Grocy** : corvées en retard (vérifier Grocy)
 
 ## ✅ Récemment complété
 

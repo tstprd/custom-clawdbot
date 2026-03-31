@@ -1,8 +1,8 @@
 # DeFi Report Hebdo
 
-## Dernière mise à jour: 2026-03-29
+## Dernière mise à jour: 2026-03-30
 
-### Portfolio Total: $57,189
+### Portfolio Total: $58,159 (+1.70%)
 
 | Position                | Valeur  | APY      | Gain/sem |
 | ----------------------- | ------- | -------- | -------- |

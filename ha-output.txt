@@ -1,1 +1,5 @@
-✓ Turned on input_boolean.snooze_alerte_presence_jules
+Found 4 entities:
+  update.lovelace_grocy_chores_card_update = off (Lovelace Grocy Chores Card update)
+  binary_sensor.grocy_overdue_chores = on (Grocy overdue chores)
+  sensor.grocy_chores = 6 (Grocy chores)
+  todo.grocy_chores = 6 (Grocy chores)
