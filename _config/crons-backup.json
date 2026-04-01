@@ -6,7 +6,7 @@
       "name": "Daily Backup Commit",
       "enabled": true,
       "createdAtMs": 1770151010343,
-      "updatedAtMs": 1774828962136,
+      "updatedAtMs": 1774915355760,
       "schedule": {
         "kind": "cron",
         "expr": "0 2 * * *",
@@ -19,10 +19,10 @@
         "message": "Backup quotidien:\n1. Exporte les crons actuels vers _config/crons-backup.json (utilise cron action=list puis écris le JSON)\n2. Git add + commit + push: cd C:\\Users\\jules\\repo\\clawdbot && git add -A && git commit -m 'backup auto' --allow-empty && git push jules main\nSi erreur, log-la mais ne fail pas."
       },
       "state": {
-        "nextRunAtMs": 1774915200000,
-        "lastRunAtMs": 1774828800033,
+        "nextRunAtMs": 1775001600000,
+        "lastRunAtMs": 1774915200022,
         "lastStatus": "ok",
-        "lastDurationMs": 162103,
+        "lastDurationMs": 155738,
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDelivered": true,
@@ -38,7 +38,7 @@
       "name": "Morning Brief - Weekday",
       "enabled": true,
       "createdAtMs": 1770216068237,
-      "updatedAtMs": 1774852904317,
+      "updatedAtMs": 1774939298460,
       "schedule": {
         "kind": "cron",
         "expr": "40 8 * * 1-5",
@@ -51,10 +51,10 @@
         "message": "Génère le brief du matin pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning.\n\n## EMAILS IMPORTANTS\nCheck les emails non-lus de jmudes76000@gmail.com avec: gog gmail search \"is:unread\" --account jmudes76000@gmail.com --json\nRésume les 3-5 emails les plus importants (ignore newsletters, notifs auto).\n⚠️ PRIORITÉ: Si email des Ateliers de la Mabilais → signaler en URGENT et mettre à jour le RDV claustra (17 mars → 18 ou 19 selon leur réponse).\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n- 3 mots italiens (prononciation + exemple) - UNIQUEMENT LE MATIN\n\nAvant d'envoyer, check les mots déjà envoyés: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nAprès envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
       },
       "state": {
-        "nextRunAtMs": 1774939200000,
-        "lastRunAtMs": 1774852800032,
+        "nextRunAtMs": 1775025600000,
+        "lastRunAtMs": 1774939200020,
         "lastStatus": "ok",
-        "lastDurationMs": 104285,
+        "lastDurationMs": 98440,
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDelivered": false,
@@ -63,161 +63,6 @@
       "delivery": {
         "mode": "none",
         "channel": "telegram"
-      }
-    },
-    {
-      "id": "77875bb0-92a9-4661-a8f8-f3a9a4c90ae6",
-      "agentId": "main",
-      "name": "Noon Brief - Weekday",
-      "enabled": true,
-      "createdAtMs": 1770737934433,
-      "updatedAtMs": 1774864845312,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 12 * * 1-5",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Génère le brief du midi pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts noon.\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN AU MIDI - seulement au brief du matin.\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
-      },
-      "state": {
-        "nextRunAtMs": 1774951200000,
-        "lastRunAtMs": 1774864800030,
-        "lastStatus": "ok",
-        "lastDurationMs": 45282,
-        "consecutiveErrors": 0,
-        "lastRunStatus": "ok",
-        "lastDelivered": false,
-        "lastDeliveryStatus": "not-delivered"
-      },
-      "delivery": {
-        "mode": "none",
-        "channel": "telegram"
-      }
-    },
-    {
-      "id": "47ab3947-4d8e-4012-92f5-9837829556ba",
-      "agentId": "main",
-      "name": "Table des Savoirs - Scraping quotidien",
-      "enabled": true,
-      "createdAtMs": 1772800148136,
-      "updatedAtMs": 1774866904151,
-      "schedule": {
-        "kind": "cron",
-        "expr": "30 12 * * *",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "now",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Lance le scraper Table des Savoirs et envoie une confirmation à Jules.\n\n## ÉTAPES\n1. Lance le scraper:\n   cd C:\\Users\\jules\\scripts\\table_savoirs_scraper\n   .\\venv\\Scripts\\python.exe scraper.py\n\n2. Crée un backup horodaté:\n   $timestamp = Get-Date -Format 'yyyyMMdd_HHmmss'\n   Copy-Item data\\2026-*.csv data\\backup_$(Get-Date -Format 'yyyy-MM-dd')_$timestamp.csv\n\n3. Lis le CSV du jour et extrais:\n   - Position de Serial76 (Abordable + Expert)\n   - Position de thepetitbreton (Abordable + Expert)\n   - Écart entre les deux\n\n4. Envoie un message Telegram (target=8133218645) avec:\n   📊 Table des Savoirs — [date] [heure]\n   \n   Serial76: #X Abordable (Y pts) | #X Expert (Y pts)\n   thepetitbreton: #X Abordable (Y pts) | #X Expert (Y pts)\n   Écart: ±X pts Abordable, ±X pts Expert\n   \n   ✅ Backup: backup_YYYY-MM-DD_HHMMSS.csv",
-        "timeoutSeconds": 900
-      },
-      "delivery": {
-        "mode": "none"
-      },
-      "state": {
-        "nextRunAtMs": 1774953000000,
-        "lastRunAtMs": 1774866600025,
-        "lastRunStatus": "ok",
-        "lastStatus": "ok",
-        "lastDurationMs": 304126,
-        "lastDeliveryStatus": "not-delivered",
-        "consecutiveErrors": 0,
-        "lastDelivered": false
-      }
-    },
-    {
-      "id": "10f77259-8577-4df2-989c-4fd5baf4ca12",
-      "agentId": "main",
-      "name": "Evening Brief - Weekday",
-      "enabled": true,
-      "createdAtMs": 1770216077273,
-      "updatedAtMs": 1774888259747,
-      "schedule": {
-        "kind": "cron",
-        "expr": "30 18 * * 1-5",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Génère le brief du soir pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts evening.\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN LE SOIR - seulement au brief du matin.\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
-      },
-      "state": {
-        "nextRunAtMs": 1774974600000,
-        "lastRunAtMs": 1774888200025,
-        "lastStatus": "ok",
-        "lastDurationMs": 59722,
-        "consecutiveErrors": 0,
-        "lastRunStatus": "ok",
-        "lastDelivered": false,
-        "lastDeliveryStatus": "not-delivered"
-      },
-      "delivery": {
-        "mode": "none",
-        "channel": "telegram"
-      }
-    },
-    {
-      "id": "d5a5d4a9-6a9b-488d-b3ad-87808a469be3",
-      "agentId": "main",
-      "name": "Quiz La Table des Savoirs",
-      "enabled": true,
-      "createdAtMs": 1772371807181,
-      "updatedAtMs": 1774888267528,
-      "schedule": {
-        "kind": "cron",
-        "expr": "30 18 2-31 3 *",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "main",
-      "wakeMode": "now",
-      "payload": {
-        "kind": "systemEvent",
-        "text": "🧠 Rappel : C'est l'heure du quiz du jour sur La Table des Savoirs ! https://latabledessavoirs.fr/"
-      },
-      "state": {
-        "nextRunAtMs": 1774974600000,
-        "lastRunAtMs": 1774888259747,
-        "lastStatus": "ok",
-        "lastDurationMs": 7781,
-        "consecutiveErrors": 0,
-        "lastRunStatus": "ok",
-        "lastDeliveryStatus": "not-requested"
-      }
-    },
-    {
-      "id": "6d99fa25-48cc-44e4-824b-c3eaf5e63611",
-      "agentId": "main",
-      "name": "Rappel Sauna Aqua Tonic",
-      "enabled": true,
-      "createdAtMs": 1770233758659,
-      "updatedAtMs": 1774375200019,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 19 * * 2",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "main",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "systemEvent",
-        "text": "🧖 Rappel : Réserver Aqua Tonic pour demain midi ? (35€ la séance)"
-      },
-      "state": {
-        "nextRunAtMs": 1774976400000,
-        "lastRunAtMs": 1774375200019,
-        "lastStatus": "ok",
-        "lastDurationMs": 0,
-        "consecutiveErrors": 0,
-        "lastRunStatus": "ok",
-        "lastDeliveryStatus": "not-requested"
       }
     },
     {
@@ -254,6 +99,39 @@
       }
     },
     {
+      "id": "77875bb0-92a9-4661-a8f8-f3a9a4c90ae6",
+      "agentId": "main",
+      "name": "Noon Brief - Weekday",
+      "enabled": true,
+      "createdAtMs": 1770737934433,
+      "updatedAtMs": 1774951248562,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 12 * * 1-5",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Génère le brief du midi pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts noon.\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN AU MIDI - seulement au brief du matin.\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
+      },
+      "state": {
+        "nextRunAtMs": 1775037600000,
+        "lastRunAtMs": 1774951200022,
+        "lastStatus": "ok",
+        "lastDurationMs": 48540,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "lastDelivered": false,
+        "lastDeliveryStatus": "not-delivered"
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram"
+      }
+    },
+    {
       "id": "cdf015db-b110-4393-8e35-98ae2b83bd8f",
       "agentId": "main",
       "name": "Sorties Rennes Weekend",
@@ -276,6 +154,72 @@
         "lastRunAtMs": 1774475688435,
         "lastStatus": "ok",
         "lastDurationMs": 55248,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "lastDelivered": false,
+        "lastDeliveryStatus": "not-delivered"
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram"
+      }
+    },
+    {
+      "id": "47ab3947-4d8e-4012-92f5-9837829556ba",
+      "agentId": "main",
+      "name": "Table des Savoirs - Scraping quotidien",
+      "enabled": true,
+      "createdAtMs": 1772800148136,
+      "updatedAtMs": 1774953151040,
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 12 * * *",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Lance le scraper Table des Savoirs et envoie une confirmation à Jules.\n\n## ÉTAPES\n1. Lance le scraper:\n   cd C:\\Users\\jules\\scripts\\table_savoirs_scraper\n   .\\venv\\Scripts\\python.exe scraper.py\n\n2. Crée un backup horodaté:\n   $timestamp = Get-Date -Format 'yyyyMMdd_HHmmss'\n   Copy-Item data\\2026-*.csv data\\backup_$(Get-Date -Format 'yyyy-MM-dd')_$timestamp.csv\n\n3. Lis le CSV du jour et extrais:\n   - Position de Serial76 (Abordable + Expert)\n   - Position de thepetitbreton (Abordable + Expert)\n   - Écart entre les deux\n\n4. Envoie un message Telegram (target=8133218645) avec:\n   📊 Table des Savoirs — [date] [heure]\n   \n   Serial76: #X Abordable (Y pts) | #X Expert (Y pts)\n   thepetitbreton: #X Abordable (Y pts) | #X Expert (Y pts)\n   Écart: ±X pts Abordable, ±X pts Expert\n   \n   ✅ Backup: backup_YYYY-MM-DD_HHMMSS.csv",
+        "timeoutSeconds": 900
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1775039400000,
+        "lastRunAtMs": 1774953000031,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 151009,
+        "lastDeliveryStatus": "not-delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": false
+      }
+    },
+    {
+      "id": "10f77259-8577-4df2-989c-4fd5baf4ca12",
+      "agentId": "main",
+      "name": "Evening Brief - Weekday",
+      "enabled": true,
+      "createdAtMs": 1770216077273,
+      "updatedAtMs": 1774974654762,
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 18 * * 1-5",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Génère le brief du soir pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts evening.\n\nAjoute une section MARCHÉS:\n- Capgemini (CAP.PA) : prix en € + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus à la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\n⚠️ PAS D'ITALIEN LE SOIR - seulement au brief du matin.\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi échoue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
+      },
+      "state": {
+        "nextRunAtMs": 1775061000000,
+        "lastRunAtMs": 1774974600038,
+        "lastStatus": "ok",
+        "lastDurationMs": 54724,
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDelivered": false,
@@ -412,6 +356,7 @@
       "id": "65b05ae0-d96c-4198-9587-839fe39a6f9a",
       "agentId": "main",
       "name": "Afternoon Brief - Weekend",
+      "enabled": true,
       "createdAtMs": 1770659003253,
       "updatedAtMs": 1774785621766,
       "schedule": {
@@ -435,7 +380,6 @@
         "lastDelivered": true,
         "lastDeliveryStatus": "delivered"
       },
-      "enabled": true,
       "delivery": {
         "mode": "announce"
       }
@@ -477,6 +421,7 @@
       "id": "0b48b9a2-299e-400a-ac2b-1ffc2a692efd",
       "agentId": "main",
       "name": "Planification présence hebdo",
+      "enabled": true,
       "createdAtMs": 1770937813180,
       "updatedAtMs": 1774854000016,
       "schedule": {
@@ -498,8 +443,7 @@
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDeliveryStatus": "not-requested"
-      },
-      "enabled": true
+      }
     },
     {
       "id": "788923b3-45a0-4d4a-93f5-c28fece865a3",
@@ -528,6 +472,62 @@
         "lastRunStatus": "ok",
         "lastDeliveryStatus": "not-requested"
       }
+    },
+    {
+      "id": "6d99fa25-48cc-44e4-824b-c3eaf5e63611",
+      "agentId": "main",
+      "name": "Rappel Sauna Aqua Tonic",
+      "enabled": true,
+      "createdAtMs": 1770233758659,
+      "updatedAtMs": 1774976400030,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 19 * * 2",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "🧖 Rappel : Réserver Aqua Tonic pour demain midi ? (35€ la séance)"
+      },
+      "state": {
+        "nextRunAtMs": 1775581200000,
+        "lastRunAtMs": 1774976400029,
+        "lastStatus": "ok",
+        "lastDurationMs": 1,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "lastDeliveryStatus": "not-requested"
+      }
+    },
+    {
+      "id": "d5a5d4a9-6a9b-488d-b3ad-87808a469be3",
+      "agentId": "main",
+      "name": "Quiz La Table des Savoirs",
+      "enabled": true,
+      "createdAtMs": 1772371807181,
+      "updatedAtMs": 1774974665249,
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 18 2-31 3 *",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "🧠 Rappel : C'est l'heure du quiz du jour sur La Table des Savoirs ! https://latabledessavoirs.fr/"
+      },
+      "state": {
+        "nextRunAtMs": 1804008600000,
+        "lastRunAtMs": 1774974654762,
+        "lastStatus": "ok",
+        "lastDurationMs": 10487,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "lastDeliveryStatus": "not-requested"
+      }
     }
   ],
   "total": 17,
@@ -535,5 +535,5 @@
   "limit": 17,
   "hasMore": false,
   "nextOffset": null,
-  "exportedAt": "2026-03-31T02:00:00+02:00"
+  "exportedAt": "2026-04-01T02:00:00+02:00"
 }
