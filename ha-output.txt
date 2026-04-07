@@ -1,5 +1,19 @@
-Found 4 entities:
-  update.lovelace_grocy_chores_card_update = off (Lovelace Grocy Chores Card update)
-  binary_sensor.grocy_overdue_chores = on (Grocy overdue chores)
-  sensor.grocy_chores = 6 (Grocy chores)
-  todo.grocy_chores = 6 (Grocy chores)
+{
+  "entity_id": "automation.rappel_chauffage_jour_ferie",
+  "state": "on",
+  "attributes": {
+    "id": "rappel_chauffage_jour_ferie_20251115",
+    "last_triggered": "2026-04-06T05:30:00.168158+00:00",
+    "mode": "single",
+    "current": 0,
+    "friendly_name": "Rappel Chauffage - Jour Ferie"
+  },
+  "last_changed": "2026-04-02T12:57:54.051710+00:00",
+  "last_reported": "2026-04-06T05:30:01.659201+00:00",
+  "last_updated": "2026-04-06T05:30:01.659201+00:00",
+  "context": {
+    "id": "01KNGM9V36SFJHKKDW4Q65SV6Y",
+    "parent_id": null,
+    "user_id": null
+  }
+}
