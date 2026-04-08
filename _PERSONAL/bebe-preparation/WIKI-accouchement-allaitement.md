@@ -94,10 +94,11 @@ Objectif: le faire redescendre avant la mise au sein.
 
 ## Ressources / documents à relire
 
-- LA PLACE DU PERE.odt
-- prepa gestion des contractions.odt
-- La douleur.odt
-- positions pour faciliter le travail.pdf
+- old_LA PLACE DU PERE.odt
+- old_prepa gestion des contractions.odt
+- old_La douleur.odt
+- old_positions pour faciliter le travail.pdf
+- old_NOTES-SEANCE-16-MARS.md
 
 ## Questions à traiter
 
