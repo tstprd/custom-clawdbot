@@ -54,6 +54,11 @@ Objectif: le faire redescendre avant la mise au sein.
 - Vérifier si la mutuelle prend en charge la chambre double:
   - soit chez Alan
   - soit via la mutuelle de Jules (si rattachement possible)
+- Comparatif mutuelle (source dossier mutuelle):
+  - Forfait maternité: avantage Jules (20% PMSS)
+  - Honoraires accouchement (OPTAM / NON OPTAM): avantage ALAN
+  - Chambre particulière maternité: ALAN (100€/jour) vs Jules (~96€/jour)
+  - Verdict global maternité du comparatif: ALAN plus généreuse
 
 ## Parcours médical
 
@@ -63,10 +68,36 @@ Objectif: le faire redescendre avant la mise au sein.
   - à 1 mois
   - puis tous les mois après 6 mois
 
+## Travail / contractions (séance prépa naissance)
+
+### Techniques de gestion des contractions
+
+- Balle de tennis (massage bas du dos)
+- Souffle / respiration contrôlée
+- Pression avec les pouces / bas de la main (bas du dos)
+- Ballon: faire des « 8 » avant la maternité
+- Penser à autre chose entre les contractions
+
+### À prévoir pour le jour J
+
+- Sucette
+- Boisson sucrée
+- Compote
+
 ## Urgences
 
 - Sage-femme — Clinique La Sagesse
 - Téléphone: 02 99 85 75 22
+- Sage-femme (prépa naissance): Elisabeth PIGEONNEAU
+  - Téléphone: 06 99 51 26 98
+  - Adresse: 3, allée Angélique DU COUDRAY, 35000 RENNES
+
+## Ressources / documents à relire
+
+- LA PLACE DU PERE.odt
+- prepa gestion des contractions.odt
+- La douleur.odt
+- positions pour faciliter le travail.pdf
 
 ## Questions à traiter
 
