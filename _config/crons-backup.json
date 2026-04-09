@@ -6,7 +6,7 @@
       "name": "Daily Backup Commit",
       "enabled": true,
       "createdAtMs": 1770151010343,
-      "updatedAtMs": 1775520042274,
+      "updatedAtMs": 1775606539762,
       "schedule": {
         "kind": "cron",
         "expr": "0 2 * * *",
@@ -19,15 +19,15 @@
         "message": "Backup quotidien:\n1. Exporte les crons actuels vers _config/crons-backup.json (utilise cron action=list puis ├®cris le JSON)\n2. Git add + commit + push: cd C:\\Users\\jules\\repo\\clawdbot && git add -A && git commit -m 'backup auto' --allow-empty && git push jules main\nSi erreur, log-la mais ne fail pas."
       },
       "state": {
-        "nextRunAtMs": 1775606400000,
-        "lastRunAtMs": 1775520000033,
+        "nextRunAtMs": 1775692800000,
+        "lastRunAtMs": 1775606400058,
         "lastStatus": "ok",
-        "lastDurationMs": 42241,
+        "lastDurationMs": 139704,
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDeliveryStatus": "delivered",
         "lastDelivered": true,
-        "runningAtMs": 1775606400058
+        "runningAtMs": 1775692800039
       },
       "delivery": {
         "mode": "announce"
@@ -39,7 +39,7 @@
       "name": "Morning Brief - Weekday",
       "enabled": true,
       "createdAtMs": 1770216068237,
-      "updatedAtMs": 1775544517401,
+      "updatedAtMs": 1775630572478,
       "schedule": {
         "kind": "cron",
         "expr": "40 8 * * 1-5",
@@ -52,43 +52,10 @@
         "message": "G├®n├¿re le brief du matin pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning.\n\n## EMAILS IMPORTANTS\nCheck les emails non-lus de jmudes76000@gmail.com avec: gog gmail search \"is:unread\" --account jmudes76000@gmail.com --json\nR├®sume les 3-5 emails les plus importants (ignore newsletters, notifs auto).\nÔÜá´©Å PRIORIT├ë: Si email des Ateliers de la Mabilais ÔåÆ signaler en URGENT et mettre ├á jour le RDV claustra (17 mars ÔåÆ 18 ou 19 selon leur r├®ponse).\n\nAjoute une section MARCH├ëS:\n- Capgemini (CAP.PA) : prix en Ôé¼ + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus ├á la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n- 3 mots italiens (prononciation + exemple) - UNIQUEMENT LE MATIN\n\nAvant d'envoyer, check les mots d├®j├á envoy├®s: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nApr├¿s envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi ├®choue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
       },
       "state": {
-        "nextRunAtMs": 1775630400000,
-        "lastRunAtMs": 1775544000037,
+        "nextRunAtMs": 1775716800000,
+        "lastRunAtMs": 1775630400025,
         "lastStatus": "ok",
-        "lastDurationMs": 517364,
-        "consecutiveErrors": 0,
-        "lastRunStatus": "ok",
-        "lastDelivered": false,
-        "lastDeliveryStatus": "not-delivered"
-      },
-      "delivery": {
-        "mode": "none",
-        "channel": "telegram"
-      }
-    },
-    {
-      "id": "3ac76763-3603-415b-b716-1a08a8bd5aea",
-      "agentId": "main",
-      "name": "Sorties Cin├®ma",
-      "enabled": true,
-      "createdAtMs": 1770233747679,
-      "updatedAtMs": 1775135565491,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 10 * * 3",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "V├®rifie les sorties cin├®ma de la semaine sur Allocin├® (browser). Filtre selon les go├╗ts de Jules:\nÔ£à SF ├®pique, Tarantino, Thrillers, Films d'auteur, Critique 4+/5\nÔØî Pas de com├®dies fran├ºaises\n\nSi un film int├®ressant sort, envoie une recommandation ├á Jules avec le tool `message` (action=send, channel=telegram, target=8133218645) avec le titre, r├®alisateur, et note presse. Si l'envoi ├®choue, RETRY 2 fois. Sinon, ne rien envoyer."
-      },
-      "state": {
-        "nextRunAtMs": 1775635200000,
-        "lastRunAtMs": 1775135522208,
-        "lastStatus": "ok",
-        "lastDurationMs": 43283,
+        "lastDurationMs": 172453,
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDelivered": false,
@@ -105,7 +72,7 @@
       "name": "Noon Brief - Weekday",
       "enabled": true,
       "createdAtMs": 1770737934433,
-      "updatedAtMs": 1775556062235,
+      "updatedAtMs": 1775642498476,
       "schedule": {
         "kind": "cron",
         "expr": "0 12 * * 1-5",
@@ -118,43 +85,10 @@
         "message": "G├®n├¿re le brief du midi pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts noon.\n\nAjoute une section MARCH├ëS:\n- Capgemini (CAP.PA) : prix en Ôé¼ + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus ├á la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\nÔÜá´©Å PAS D'ITALIEN AU MIDI - seulement au brief du matin.\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi ├®choue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
       },
       "state": {
-        "nextRunAtMs": 1775642400000,
-        "lastRunAtMs": 1775556000062,
+        "nextRunAtMs": 1775728800000,
+        "lastRunAtMs": 1775642440884,
         "lastStatus": "ok",
-        "lastDurationMs": 62173,
-        "consecutiveErrors": 0,
-        "lastRunStatus": "ok",
-        "lastDelivered": false,
-        "lastDeliveryStatus": "not-delivered"
-      },
-      "delivery": {
-        "mode": "none",
-        "channel": "telegram"
-      }
-    },
-    {
-      "id": "cdf015db-b110-4393-8e35-98ae2b83bd8f",
-      "agentId": "main",
-      "name": "Sorties Rennes Weekend",
-      "enabled": true,
-      "createdAtMs": 1770233753919,
-      "updatedAtMs": 1775135617825,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 12 * * 3",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "V├®rifie les ├®v├®nements du weekend ├á Rennes sur jds.fr/rennes (browser). Filtre selon les go├╗ts de Jules:\nÔ£à Jeux de soci├®t├®, Gastronomie, Science, Plantes/botanique, Danse moderne, D├®bats, Humour intelligent\n\nSi un ├®v├®nement int├®ressant, envoie ├á Jules avec le tool `message` (action=send, channel=telegram, target=8133218645) avec titre, date, lieu. Si l'envoi ├®choue, RETRY 2 fois. Sinon, ne rien envoyer."
-      },
-      "state": {
-        "nextRunAtMs": 1775642400000,
-        "lastRunAtMs": 1775135565491,
-        "lastStatus": "ok",
-        "lastDurationMs": 52334,
+        "lastDurationMs": 57592,
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDelivered": false,
@@ -171,7 +105,7 @@
       "name": "Table des Savoirs - Scraping quotidien",
       "enabled": true,
       "createdAtMs": 1772800148136,
-      "updatedAtMs": 1775558700094,
+      "updatedAtMs": 1775644874294,
       "schedule": {
         "kind": "cron",
         "expr": "30 12 * * *",
@@ -188,14 +122,14 @@
         "mode": "none"
       },
       "state": {
-        "nextRunAtMs": 1775644200000,
-        "lastRunAtMs": 1775557800043,
-        "lastRunStatus": "error",
-        "lastStatus": "error",
-        "lastDurationMs": 900051,
-        "lastDeliveryStatus": "not-requested",
-        "consecutiveErrors": 2,
-        "lastError": "cron: job execution timed out"
+        "nextRunAtMs": 1775730600000,
+        "lastRunAtMs": 1775644200027,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 674267,
+        "lastDeliveryStatus": "not-delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": false
       }
     },
     {
@@ -204,7 +138,7 @@
       "name": "Evening Brief - Weekday",
       "enabled": true,
       "createdAtMs": 1770216077273,
-      "updatedAtMs": 1775579479301,
+      "updatedAtMs": 1775665857143,
       "schedule": {
         "kind": "cron",
         "expr": "30 18 * * 1-5",
@@ -217,10 +151,10 @@
         "message": "G├®n├¿re le brief du soir pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts evening.\n\nAjoute une section MARCH├ëS:\n- Capgemini (CAP.PA) : prix en Ôé¼ + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus ├á la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\nÔÜá´©Å PAS D'ITALIEN LE SOIR - seulement au brief du matin.\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi ├®choue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
       },
       "state": {
-        "nextRunAtMs": 1775665800000,
-        "lastRunAtMs": 1775579400050,
+        "nextRunAtMs": 1775752200000,
+        "lastRunAtMs": 1775665800026,
         "lastStatus": "ok",
-        "lastDurationMs": 79251,
+        "lastDurationMs": 57117,
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDelivered": false,
@@ -475,6 +409,72 @@
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDeliveryStatus": "not-requested"
+      }
+    },
+    {
+      "id": "3ac76763-3603-415b-b716-1a08a8bd5aea",
+      "agentId": "main",
+      "name": "Sorties Cin├®ma",
+      "enabled": true,
+      "createdAtMs": 1770233747679,
+      "updatedAtMs": 1775635228737,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 10 * * 3",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "V├®rifie les sorties cin├®ma de la semaine sur Allocin├® (browser). Filtre selon les go├╗ts de Jules:\nÔ£à SF ├®pique, Tarantino, Thrillers, Films d'auteur, Critique 4+/5\nÔØî Pas de com├®dies fran├ºaises\n\nSi un film int├®ressant sort, envoie une recommandation ├á Jules avec le tool `message` (action=send, channel=telegram, target=8133218645) avec le titre, r├®alisateur, et note presse. Si l'envoi ├®choue, RETRY 2 fois. Sinon, ne rien envoyer."
+      },
+      "state": {
+        "nextRunAtMs": 1776240000000,
+        "lastRunAtMs": 1775635200029,
+        "lastStatus": "ok",
+        "lastDurationMs": 28708,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "lastDelivered": false,
+        "lastDeliveryStatus": "not-delivered"
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram"
+      }
+    },
+    {
+      "id": "cdf015db-b110-4393-8e35-98ae2b83bd8f",
+      "agentId": "main",
+      "name": "Sorties Rennes Weekend",
+      "enabled": true,
+      "createdAtMs": 1770233753919,
+      "updatedAtMs": 1775642440884,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 12 * * 3",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "V├®rifie les ├®v├®nements du weekend ├á Rennes sur jds.fr/rennes (browser). Filtre selon les go├╗ts de Jules:\nÔ£à Jeux de soci├®t├®, Gastronomie, Science, Plantes/botanique, Danse moderne, D├®bats, Humour intelligent\n\nSi un ├®v├®nement int├®ressant, envoie ├á Jules avec le tool `message` (action=send, channel=telegram, target=8133218645) avec titre, date, lieu. Si l'envoi ├®choue, RETRY 2 fois. Sinon, ne rien envoyer."
+      },
+      "state": {
+        "nextRunAtMs": 1776247200000,
+        "lastRunAtMs": 1775642400017,
+        "lastStatus": "ok",
+        "lastDurationMs": 40867,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "lastDelivered": false,
+        "lastDeliveryStatus": "not-delivered"
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram"
       }
     },
     {
