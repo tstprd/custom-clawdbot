@@ -22,6 +22,8 @@ Exemples :
 
 ## Notes rapides (CFCAL dossier 292674)
 
+- ✅ Contrainte à respecter dans les récapitulatifs : **montant total < 150 000 €**
+
 - Montant du prêt : **149 182 €**
 - Montant viré aux sociétés de gestion : **147 280 €**
 - SCPI financées :
