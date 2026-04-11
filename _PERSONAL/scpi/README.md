@@ -36,7 +36,7 @@ Exemples :
   - Transitions Europe : **48 480 €**
   - Europa : **49 400 €**
 - Intérêts intercalaires : **10/05/2026**
-- 1ère échéance d’amortissement : **10/02/2027**
+- ⚠️ **Début du remboursement du capital (amortissement) : 10/02/2027**
 - Dernière échéance : **10/04/2051**
 - Prélèvements récurrents : le **10 de chaque mois**
 

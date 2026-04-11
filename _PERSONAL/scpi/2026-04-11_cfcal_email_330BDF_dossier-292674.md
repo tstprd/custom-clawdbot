@@ -23,8 +23,8 @@ CFCAL confirme avoir effectué le virement aux sociétés de gestion pour l’ac
 
 ### Échéances mentionnées
 
-- **1ère échéance d’amortissement** : **10/02/2027**
 - **Échéance d’intérêts intercalaires** : **10/05/2026**
+- ⚠️ **Début du remboursement du capital (1ère échéance d’amortissement)** : **10/02/2027**
 - **Dernière échéance** : **10/04/2051**
 
 ### Mention importante
