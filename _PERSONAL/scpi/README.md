@@ -20,6 +20,11 @@ Exemples :
 - `2026-04-07_reference_taco-acronym.jpg`  
   Capture de référence (acronyme “TACO”).
 
+## Fichiers ajoutés le 2026-04-11
+
+- `2026-04-11_cfcal_email_330BDF_dossier-292674.md`  
+  Contenu synthétisé de l’email CFCAL `#330BDF# - Dossier n°292674 : MUDES Jules` (virement, répartition, échéances).
+
 ## Notes rapides (CFCAL dossier 292674)
 
 - ✅ Contrainte à respecter dans les récapitulatifs : **montant total < 150 000 €**
@@ -30,7 +35,9 @@ Exemples :
   - Épargne Pierre Europe : **49 400 €**
   - Transitions Europe : **48 480 €**
   - Europa : **49 400 €**
-- 1er prélèvement : **10/05/2026** — **704,75 €**
+- Intérêts intercalaires : **10/05/2026**
+- 1ère échéance d’amortissement : **10/02/2027**
+- Dernière échéance : **10/04/2051**
 - Prélèvements récurrents : le **10 de chaque mois**
 
 ## Règle d’organisation
