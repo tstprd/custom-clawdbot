@@ -6,7 +6,7 @@
       "name": "Daily Backup Commit",
       "enabled": true,
       "createdAtMs": 1770151010343,
-      "updatedAtMs": 1775779249843,
+      "updatedAtMs": 1775865646304,
       "schedule": {
         "kind": "cron",
         "expr": "0 2 * * *",
@@ -19,51 +19,19 @@
         "message": "Backup quotidien:\n1. Exporte les crons actuels vers _config/crons-backup.json (utilise cron action=list puis ├®cris le JSON)\n2. Git add + commit + push: cd C:\\Users\\jules\\repo\\clawdbot && git add -A && git commit -m 'backup auto' --allow-empty && git push jules main\nSi erreur, log-la mais ne fail pas."
       },
       "state": {
-        "nextRunAtMs": 1775865600000,
-        "lastRunAtMs": 1775779200055,
+        "nextRunAtMs": 1775952000000,
+        "lastRunAtMs": 1775865600030,
         "lastStatus": "ok",
-        "lastDurationMs": 49788,
+        "lastDurationMs": 46274,
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
-        "lastDeliveryStatus": "delivered",
-        "lastDelivered": true,
-        "runningAtMs": 1775865600030
+        "lastDeliveryStatus": "not-delivered",
+        "lastDelivered": false,
+        "lastDeliveryError": "cron announce delivery failed",
+        "runningAtMs": 1775952000034
       },
       "delivery": {
         "mode": "announce"
-      }
-    },
-    {
-      "id": "d180690e-c70a-48ca-9d76-24f4185f685b",
-      "agentId": "main",
-      "name": "Crypto Digest Weekend",
-      "enabled": true,
-      "createdAtMs": 1772182375213,
-      "updatedAtMs": 1775290318121,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 10 * * 6",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "now",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "C'est samedi matin. Pr├®pare un digest crypto pour Jules bas├® sur un chapitre du livre 'How Crypto Actually Works' (https://github.com/lawmaster10/howcryptoworksbook). Choisis un chapitre pertinent (MEV, DeFi, Stablecoins, Market Structure, ou autre) et fais un r├®sum├® concis des points cl├®s avec des insights pratiques. Envoie-le sur Telegram.",
-        "timeoutSeconds": 300
-      },
-      "delivery": {
-        "mode": "announce"
-      },
-      "state": {
-        "nextRunAtMs": 1775894400000,
-        "lastRunAtMs": 1775290280833,
-        "lastStatus": "ok",
-        "lastDurationMs": 37288,
-        "consecutiveErrors": 0,
-        "lastRunStatus": "ok",
-        "lastDelivered": true,
-        "lastDeliveryStatus": "delivered"
       }
     },
     {
@@ -72,7 +40,7 @@
       "name": "Morning Brief - Weekend",
       "enabled": true,
       "createdAtMs": 1770216072659,
-      "updatedAtMs": 1775376000612,
+      "updatedAtMs": 1775894612573,
       "schedule": {
         "kind": "cron",
         "expr": "0 10 * * 0,6",
@@ -82,88 +50,21 @@
       "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "agentTurn",
-        "message": "G├®n├¿re le brief du matin (weekend) pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning.\n\n## EMAILS IMPORTANTS\nCheck les emails non-lus de jmudes76000@gmail.com avec: gog gmail search \"is:unread\" --account jmudes76000@gmail.com --json\nR├®sume les 3-5 emails les plus importants (ignore newsletters, notifs auto).\nÔÜá´©Å PRIORIT├ë: Si email des Ateliers de la Mabilais ÔåÆ signaler en URGENT et mettre ├á jour le RDV claustra (17 mars ÔåÆ 18 ou 19 selon leur r├®ponse).\n\nInclus ├á la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n- 3 mots italiens (prononciation + exemple) - UNIQUEMENT LE MATIN\n\nAvant d'envoyer, check les mots d├®j├á envoy├®s: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nApr├¿s envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi ├®choue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
+        "message": "G├®n├¿re le brief du matin (weekend) pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning.\n\n## EMAILS IMPORTANTS\nCheck les emails non-lus de jmudes76000@gmail.com avec: gog gmail search is:unread --account jmudes76000@gmail.com --json\nR├®sume les 3-5 emails les plus importants (ignore newsletters, notifs auto).\n\nInclus ├á la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n- 3 mots italiens (prononciation + exemple) - UNIQUEMENT LE MATIN\n\nAvant d'envoyer, check les mots d├®j├á envoy├®s: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nApr├¿s envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word <word>\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi ├®choue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
       },
       "state": {
-        "nextRunAtMs": 1775894400000,
-        "lastRunAtMs": 1775376000036,
-        "lastStatus": "error",
-        "lastDurationMs": 576,
-        "consecutiveErrors": 1,
-        "lastRunStatus": "error",
+        "nextRunAtMs": 1775980800000,
+        "lastRunAtMs": 1775894400043,
+        "lastStatus": "ok",
+        "lastDurationMs": 74346,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
         "lastDelivered": false,
-        "lastDeliveryStatus": "not-delivered",
-        "lastError": "LLM request rejected: Third-party apps now draw from your extra usage, not your plan limits. We've added a $100 credit to get you started. Claim it at claude.ai/settings/usage and keep going.",
-        "lastDeliveryError": "LLM request rejected: Third-party apps now draw from your extra usage, not your plan limits. We've added a $100 credit to get you started. Claim it at claude.ai/settings/usage and keep going."
+        "lastDeliveryStatus": "not-delivered"
       },
       "delivery": {
         "mode": "none",
         "channel": "telegram"
-      }
-    },
-    {
-      "id": "47ab3947-4d8e-4012-92f5-9837829556ba",
-      "agentId": "main",
-      "name": "Table des Savoirs - Scraping quotidien",
-      "enabled": true,
-      "createdAtMs": 1772800148136,
-      "updatedAtMs": 1775817900035,
-      "schedule": {
-        "kind": "cron",
-        "expr": "30 12 * * *",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "now",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Lance le scraper Table des Savoirs et envoie une confirmation ├á Jules.\n\n## ├ëTAPES\n1. Lance le scraper:\n   cd C:\\Users\\jules\\scripts\\table_savoirs_scraper\n   .\\venv\\Scripts\\python.exe scraper.py\n\n2. Cr├®e un backup horodat├®:\n   $timestamp = Get-Date -Format 'yyyyMMdd_HHmmss'\n   Copy-Item data\\2026-*.csv data\\backup_$(Get-Date -Format 'yyyy-MM-dd')_$timestamp.csv\n\n3. Lis le CSV du jour et extrais:\n   - Position de Serial76 (Abordable + Expert)\n   - Position de thepetitbreton (Abordable + Expert)\n   - ├ëcart entre les deux\n\n4. Envoie un message Telegram (target=8133218645) avec:\n   ­ƒôè Table des Savoirs ÔÇö [date] [heure]\n   \n   Serial76: #X Abordable (Y pts) | #X Expert (Y pts)\n   thepetitbreton: #X Abordable (Y pts) | #X Expert (Y pts)\n   ├ëcart: ┬▒X pts Abordable, ┬▒X pts Expert\n   \n   Ô£à Backup: backup_YYYY-MM-DD_HHMMSS.csv",
-        "timeoutSeconds": 900
-      },
-      "delivery": {
-        "mode": "none"
-      },
-      "state": {
-        "nextRunAtMs": 1775903400000,
-        "lastRunAtMs": 1775817000019,
-        "lastRunStatus": "error",
-        "lastStatus": "error",
-        "lastDurationMs": 900016,
-        "lastDeliveryStatus": "not-requested",
-        "consecutiveErrors": 2,
-        "lastError": "cron: job execution timed out"
-      }
-    },
-    {
-      "id": "65b05ae0-d96c-4198-9587-839fe39a6f9a",
-      "agentId": "main",
-      "name": "Afternoon Brief - Weekend",
-      "createdAtMs": 1770659003253,
-      "updatedAtMs": 1775304078394,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 14 * * 0,6",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "G├®n├¿re et envoie le brief de l'apr├¿s-midi (weekend) ├á Jules sur Telegram. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts afternoon.\n\nInclus ├á la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\nÔÜá´©Å PAS D'ITALIEN L'APR├êS-MIDI - seulement au brief du matin.\n\nTout dans UN SEUL message. Sois concis."
-      },
-      "state": {
-        "nextRunAtMs": 1775908800000,
-        "lastRunAtMs": 1775304000024,
-        "lastStatus": "ok",
-        "lastDurationMs": 78370,
-        "consecutiveErrors": 0,
-        "lastRunStatus": "ok",
-        "lastDelivered": true,
-        "lastDeliveryStatus": "delivered"
-      },
-      "enabled": true,
-      "delivery": {
-        "mode": "announce"
       }
     },
     {
@@ -201,12 +102,77 @@
       }
     },
     {
+      "id": "47ab3947-4d8e-4012-92f5-9837829556ba",
+      "agentId": "main",
+      "name": "Table des Savoirs - Scraping quotidien",
+      "enabled": true,
+      "createdAtMs": 1772800148136,
+      "updatedAtMs": 1775904241211,
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 12 * * *",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Lance le scraper Table des Savoirs et envoie une confirmation ├á Jules.\n\n## ├ëTAPES\n1. Lance le scraper:\n   cd C:\\Users\\jules\\scripts\\table_savoirs_scraper\n   .\\venv\\Scripts\\python.exe scraper.py\n\n2. Cr├®e un backup horodat├®:\n   $timestamp = Get-Date -Format 'yyyyMMdd_HHmmss'\n   Copy-Item data\\2026-*.csv data\\backup_$(Get-Date -Format 'yyyy-MM-dd')_$timestamp.csv\n\n3. Lis le CSV du jour et extrais:\n   - Position de Serial76 (Abordable + Expert)\n   - Position de thepetitbreton (Abordable + Expert)\n   - ├ëcart entre les deux\n\n4. Envoie un message Telegram (target=8133218645) avec:\n   ­ƒôè Table des Savoirs ÔÇö [date] [heure]\n   \n   Serial76: #X Abordable (Y pts) | #X Expert (Y pts)\n   thepetitbreton: #X Abordable (Y pts) | #X Expert (Y pts)\n   ├ëcart: ┬▒X pts Abordable, ┬▒X pts Expert\n   \n   Ô£à Backup: backup_YYYY-MM-DD_HHMMSS.csv",
+        "timeoutSeconds": 900
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1775989800000,
+        "lastRunAtMs": 1775903400036,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 841175,
+        "lastDeliveryStatus": "not-delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": false
+      }
+    },
+    {
+      "id": "65b05ae0-d96c-4198-9587-839fe39a6f9a",
+      "agentId": "main",
+      "name": "Afternoon Brief - Weekend",
+      "createdAtMs": 1770659003253,
+      "updatedAtMs": 1775908820152,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 14 * * 0,6",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "G├®n├¿re et envoie le brief de l'apr├¿s-midi (weekend) ├á Jules sur Telegram. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts afternoon.\n\nInclus ├á la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\nÔÜá´©Å PAS D'ITALIEN L'APR├êS-MIDI - seulement au brief du matin.\n\nTout dans UN SEUL message. Sois concis."
+      },
+      "state": {
+        "nextRunAtMs": 1775995200000,
+        "lastRunAtMs": 1775908800032,
+        "lastStatus": "ok",
+        "lastDurationMs": 20120,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "lastDelivered": true,
+        "lastDeliveryStatus": "delivered"
+      },
+      "enabled": true,
+      "delivery": {
+        "mode": "announce"
+      }
+    },
+    {
       "id": "4b8e20a8-2cce-4c2f-a0cd-2d2fd707d71f",
       "agentId": "main",
       "name": "Morning Brief - Weekday",
       "enabled": true,
       "createdAtMs": 1770216068237,
-      "updatedAtMs": 1775803311274,
+      "updatedAtMs": 1775894615534,
       "schedule": {
         "kind": "cron",
         "expr": "40 8 * * 1-5",
@@ -216,7 +182,7 @@
       "wakeMode": "next-heartbeat",
       "payload": {
         "kind": "agentTurn",
-        "message": "G├®n├¿re le brief du matin pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning.\n\n## EMAILS IMPORTANTS\nCheck les emails non-lus de jmudes76000@gmail.com avec: gog gmail search \"is:unread\" --account jmudes76000@gmail.com --json\nR├®sume les 3-5 emails les plus importants (ignore newsletters, notifs auto).\nÔÜá´©Å PRIORIT├ë: Si email des Ateliers de la Mabilais ÔåÆ signaler en URGENT et mettre ├á jour le RDV claustra (17 mars ÔåÆ 18 ou 19 selon leur r├®ponse).\n\nAjoute une section MARCH├ëS:\n- Capgemini (CAP.PA) : prix en Ôé¼ + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus ├á la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n- 3 mots italiens (prononciation + exemple) - UNIQUEMENT LE MATIN\n\nAvant d'envoyer, check les mots d├®j├á envoy├®s: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nApr├¿s envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi ├®choue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
+        "message": "G├®n├¿re le brief du matin pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning.\n\n## EMAILS IMPORTANTS\nCheck les emails non-lus de jmudes76000@gmail.com avec: gog gmail search is:unread --account jmudes76000@gmail.com --json\nR├®sume les 3-5 emails les plus importants (ignore newsletters, notifs auto).\n\nAjoute une section MARCH├ëS:\n- Capgemini (CAP.PA) : prix en Ôé¼ + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus ├á la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n- 3 mots italiens (prononciation + exemple) - UNIQUEMENT LE MATIN\n\nAvant d'envoyer, check les mots d├®j├á envoy├®s: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nApr├¿s envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word <word>\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi ├®choue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
       },
       "state": {
         "nextRunAtMs": 1776062400000,
@@ -475,6 +441,39 @@
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDeliveryStatus": "not-requested"
+      }
+    },
+    {
+      "id": "d180690e-c70a-48ca-9d76-24f4185f685b",
+      "agentId": "main",
+      "name": "Crypto Digest Weekend",
+      "enabled": true,
+      "createdAtMs": 1772182375213,
+      "updatedAtMs": 1775894505314,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 10 * * 6",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "C'est samedi matin. Pr├®pare un digest crypto pour Jules bas├® sur un chapitre du livre 'How Crypto Actually Works' (https://github.com/lawmaster10/howcryptoworksbook). Choisis un chapitre pertinent (MEV, DeFi, Stablecoins, Market Structure, ou autre) et fais un r├®sum├® concis des points cl├®s avec des insights pratiques. Envoie-le sur Telegram.",
+        "timeoutSeconds": 300
+      },
+      "delivery": {
+        "mode": "announce"
+      },
+      "state": {
+        "nextRunAtMs": 1776499200000,
+        "lastRunAtMs": 1775894474389,
+        "lastStatus": "ok",
+        "lastDurationMs": 30925,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "lastDelivered": true,
+        "lastDeliveryStatus": "delivered"
       }
     },
     {
