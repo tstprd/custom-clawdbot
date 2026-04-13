@@ -6,10 +6,7 @@ _Contexte urgent pour le prochain reset. Pas de données techniques ici._
 
 ## 🔴 Urgent
 
-- **⚠️ DeFi Health Rate** : Curve LlamaLend (Fraxtal) = **1.03** ← surveiller!
-  - Collateral: 60,820 sfrxUSD ($72,284)
-  - Borrowed: 68,270 crvUSD ($68,160)
-  - Seuil critique: < 1.05
+- Aucun.
 
 ## ⚠️ À traiter
 

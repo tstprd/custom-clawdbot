@@ -1,23 +1,29 @@
 # DeFi Report Hebdo
 
-## Dernière mise à jour: 2026-03-30
+## Dernière mise à jour: 2026-04-12
 
-### Portfolio Total: $58,159 (+1.70%)
+### Portfolio Total: $59,764 (+2.76%)
 
-| Position                | Valeur  | APY      | Gain/sem |
-| ----------------------- | ------- | -------- | -------- |
-| scrvUSD (Curve Savings) | $20,802 | 4.39%    | $17.56   |
-| frxETH (Fraxlend)       | $10,923 | 6.45%    | $13.55   |
-| WETH (Aave V3)          | $10,755 | 1.69%    | $3.50    |
-| uCVX (Llama Airforce)   | $7,594  | 15.41%\* | $22.50   |
+| Position                | Valeur  | APY    | Gain/sem |
+| ----------------------- | ------- | ------ | -------- |
+| scrvUSD (Curve Savings) | $20,851 | 4.28%  | $17.15   |
+| frxETH (Fraxlend)       | $12,067 | 4.69%  | $10.88   |
+| WETH (Aave V3)          | $11,891 | 1.76%  | $4.02    |
+| uCVX (Llama Airforce)   | $8,133  | 16.30% | $25.49   |
 
-💰 **Total: ~$57/semaine (~$2,973/an)**
-
-\*uCVX: APY estimé (site ne charge pas sans wallet)
+💰 **Total: ~$58/semaine (~$2,993/an)**
 
 ---
 
 ## Historique
+
+### 2026-04-12
+
+- Portfolio: $59,764 (+2.76% vs semaine précédente)
+- scrvUSD: $20,851 @ 4.28% (-0.11 pt)
+- frxETH: $12,067 @ 4.69% (-1.76 pts)
+- WETH: $11,891 @ 1.76% (+0.07 pt)
+- uCVX: $8,133 @ 16.30% (+0.89 pt)
 
 ### 2026-03-29
 
