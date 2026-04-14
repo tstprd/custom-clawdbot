@@ -6,7 +6,7 @@
       "name": "Daily Backup Commit",
       "enabled": true,
       "createdAtMs": 1770151010343,
-      "updatedAtMs": 1775952088218,
+      "updatedAtMs": 1776038436975,
       "schedule": {
         "kind": "cron",
         "expr": "0 2 * * *",
@@ -19,15 +19,15 @@
         "message": "Backup quotidien:\n1. Exporte les crons actuels vers _config/crons-backup.json (utilise cron action=list puis ├®cris le JSON)\n2. Git add + commit + push: cd C:\\Users\\jules\\repo\\clawdbot && git add -A && git commit -m 'backup auto' --allow-empty && git push jules main\nSi erreur, log-la mais ne fail pas."
       },
       "state": {
-        "nextRunAtMs": 1776038400000,
-        "lastRunAtMs": 1775952000034,
+        "nextRunAtMs": 1776124800000,
+        "lastRunAtMs": 1776038400026,
         "lastStatus": "ok",
-        "lastDurationMs": 88184,
+        "lastDurationMs": 36949,
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDeliveryStatus": "delivered",
         "lastDelivered": true,
-        "runningAtMs": 1776038400026
+        "runningAtMs": 1776124800048
       },
       "delivery": {
         "mode": "announce"
@@ -39,7 +39,7 @@
       "name": "Morning Brief - Weekday",
       "enabled": true,
       "createdAtMs": 1770216068237,
-      "updatedAtMs": 1775894615534,
+      "updatedAtMs": 1776062498662,
       "schedule": {
         "kind": "cron",
         "expr": "40 8 * * 1-5",
@@ -52,10 +52,10 @@
         "message": "G├®n├¿re le brief du matin pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts morning.\n\n## EMAILS IMPORTANTS\nCheck les emails non-lus de jmudes76000@gmail.com avec: gog gmail search is:unread --account jmudes76000@gmail.com --json\nR├®sume les 3-5 emails les plus importants (ignore newsletters, notifs auto).\n\nAjoute une section MARCH├ëS:\n- Capgemini (CAP.PA) : prix en Ôé¼ + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus ├á la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n- 3 mots italiens (prononciation + exemple) - UNIQUEMENT LE MATIN\n\nAvant d'envoyer, check les mots d├®j├á envoy├®s: pnpm tsx skills/local-db/scripts/wisdom-log.ts list\nApr├¿s envoi, log: pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word <word>\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi ├®choue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
       },
       "state": {
-        "nextRunAtMs": 1776062400000,
-        "lastRunAtMs": 1775803200034,
+        "nextRunAtMs": 1776148800000,
+        "lastRunAtMs": 1776062400041,
         "lastStatus": "ok",
-        "lastDurationMs": 111240,
+        "lastDurationMs": 98621,
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDelivered": false,
@@ -67,40 +67,12 @@
       }
     },
     {
-      "id": "0b48b9a2-299e-400a-ac2b-1ffc2a692efd",
-      "agentId": "main",
-      "name": "Planification pr├®sence hebdo",
-      "createdAtMs": 1770937813180,
-      "updatedAtMs": 1775458800027,
-      "schedule": {
-        "kind": "cron",
-        "expr": "0 9 * * 1",
-        "tz": "Europe/Paris"
-      },
-      "sessionTarget": "main",
-      "wakeMode": "next-heartbeat",
-      "payload": {
-        "kind": "systemEvent",
-        "text": "­ƒôà PLANIFICATION PR├ëSENCE HEBDO\n\nDemande ├á Jules les pr├®sences pour cette semaine (et la suivante si besoin).\nFormat: qui est pr├®sent/absent quel jour?\n\nCommandes:\n- Voir semaine: pnpm tsx skills/local-db/scripts/db-presence.ts week [YYYY-Www]\n- Set jour: pnpm tsx skills/local-db/scripts/db-presence.ts set <jules|anne-laure> <YYYY-MM-DD> <home|away>\n- Set semaine: pnpm tsx skills/local-db/scripts/db-presence.ts week-set <person> <YYYY-Www> <HHHHHHH>\n- Sync vers HA: pnpm tsx skills/local-db/scripts/db-presence.ts sync\n\nApr├¿s avoir re├ºu les infos, sync vers Home Assistant."
-      },
-      "state": {
-        "nextRunAtMs": 1776063600000,
-        "lastRunAtMs": 1775458800020,
-        "lastStatus": "ok",
-        "lastDurationMs": 7,
-        "consecutiveErrors": 0,
-        "lastRunStatus": "ok",
-        "lastDeliveryStatus": "not-requested"
-      },
-      "enabled": true
-    },
-    {
       "id": "77875bb0-92a9-4661-a8f8-f3a9a4c90ae6",
       "agentId": "main",
       "name": "Noon Brief - Weekday",
       "enabled": true,
       "createdAtMs": 1770737934433,
-      "updatedAtMs": 1775815254682,
+      "updatedAtMs": 1776074463197,
       "schedule": {
         "kind": "cron",
         "expr": "0 12 * * 1-5",
@@ -113,10 +85,10 @@
         "message": "G├®n├¿re le brief du midi pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts noon.\n\nAjoute une section MARCH├ëS:\n- Capgemini (CAP.PA) : prix en Ôé¼ + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus ├á la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\nÔÜá´©Å PAS D'ITALIEN AU MIDI - seulement au brief du matin.\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi ├®choue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
       },
       "state": {
-        "nextRunAtMs": 1776074400000,
-        "lastRunAtMs": 1775815200031,
+        "nextRunAtMs": 1776160800000,
+        "lastRunAtMs": 1776074400044,
         "lastStatus": "ok",
-        "lastDurationMs": 54651,
+        "lastDurationMs": 63153,
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDelivered": false,
@@ -133,7 +105,7 @@
       "name": "Table des Savoirs - Scraping quotidien",
       "enabled": true,
       "createdAtMs": 1772800148136,
-      "updatedAtMs": 1775990700047,
+      "updatedAtMs": 1776077100065,
       "schedule": {
         "kind": "cron",
         "expr": "30 12 * * *",
@@ -150,13 +122,13 @@
         "mode": "none"
       },
       "state": {
-        "nextRunAtMs": 1776076200000,
-        "lastRunAtMs": 1775989800032,
+        "nextRunAtMs": 1776162600000,
+        "lastRunAtMs": 1776076200022,
         "lastRunStatus": "error",
         "lastStatus": "error",
-        "lastDurationMs": 900015,
+        "lastDurationMs": 900043,
         "lastDeliveryStatus": "not-requested",
-        "consecutiveErrors": 1,
+        "consecutiveErrors": 2,
         "lastError": "cron: job execution timed out"
       }
     },
@@ -166,7 +138,7 @@
       "name": "Evening Brief - Weekday",
       "enabled": true,
       "createdAtMs": 1770216077273,
-      "updatedAtMs": 1775838669508,
+      "updatedAtMs": 1776097880488,
       "schedule": {
         "kind": "cron",
         "expr": "30 18 * * 1-5",
@@ -179,10 +151,10 @@
         "message": "G├®n├¿re le brief du soir pour Jules. Utilise le script: pnpm tsx skills/local-db/scripts/generate-brief.ts evening.\n\nAjoute une section MARCH├ëS:\n- Capgemini (CAP.PA) : prix en Ôé¼ + variation 24h\n- Bitcoin : prix en $ (USD) + variation 24h\n- Ethereum : prix en $ (USD) + variation 24h\nUtilise le browser sur Google Finance ou CoinGecko.\n\nInclus ├á la fin du message:\n- Une citation Dwight Schrute (utilise: pnpm tsx skills/local-db/scripts/db-quotes.ts get)\n\nÔÜá´©Å PAS D'ITALIEN LE SOIR - seulement au brief du matin.\n\nENVOI OBLIGATOIRE: Utilise le tool `message` avec action=send, channel=telegram, target=8133218645 pour envoyer le brief. Si l'envoi ├®choue, RETRY 2 fois avec 5 secondes d'intervalle. Tout dans UN SEUL message. Sois concis."
       },
       "state": {
-        "nextRunAtMs": 1776097800000,
-        "lastRunAtMs": 1775838600025,
+        "nextRunAtMs": 1776184200000,
+        "lastRunAtMs": 1776097800037,
         "lastStatus": "ok",
-        "lastDurationMs": 69483,
+        "lastDurationMs": 80451,
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDelivered": false,
@@ -475,6 +447,34 @@
       }
     },
     {
+      "id": "0b48b9a2-299e-400a-ac2b-1ffc2a692efd",
+      "agentId": "main",
+      "name": "Planification pr├®sence hebdo",
+      "createdAtMs": 1770937813180,
+      "updatedAtMs": 1776063600034,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 * * 1",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "­ƒôà PLANIFICATION PR├ëSENCE HEBDO\n\nDemande ├á Jules les pr├®sences pour cette semaine (et la suivante si besoin).\nFormat: qui est pr├®sent/absent quel jour?\n\nCommandes:\n- Voir semaine: pnpm tsx skills/local-db/scripts/db-presence.ts week [YYYY-Www]\n- Set jour: pnpm tsx skills/local-db/scripts/db-presence.ts set <jules|anne-laure> <YYYY-MM-DD> <home|away>\n- Set semaine: pnpm tsx skills/local-db/scripts/db-presence.ts week-set <person> <YYYY-Www> <HHHHHHH>\n- Sync vers HA: pnpm tsx skills/local-db/scripts/db-presence.ts sync\n\nApr├¿s avoir re├ºu les infos, sync vers Home Assistant."
+      },
+      "state": {
+        "nextRunAtMs": 1776668400000,
+        "lastRunAtMs": 1776063600030,
+        "lastStatus": "ok",
+        "lastDurationMs": 4,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "lastDeliveryStatus": "not-requested"
+      },
+      "enabled": true
+    },
+    {
       "id": "788923b3-45a0-4d4a-93f5-c28fece865a3",
       "agentId": "main",
       "name": "LinkedIn GenAI Post Reminder",
@@ -529,11 +529,533 @@
         "lastRunStatus": "ok",
         "lastDeliveryStatus": "not-requested"
       }
+    },
+    {
+      "id": "0bad8999-499c-4092-a2b5-6ebbcd8f08f4",
+      "agentId": "main",
+      "name": "Rappel achat b├®b├® - Vendredi",
+      "enabled": false,
+      "createdAtMs": 1770585550723,
+      "updatedAtMs": 1770585550733,
+      "schedule": {
+        "kind": "at",
+        "at": "2025-02-13T18:36:40.000Z"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "­ƒì╝ Dernier rappel : Session achat b├®b├® ÔÇö c'est vendredi, derni├¿re chance cette semaine !"
+      },
+      "state": {
+        "lastRunAtMs": 1770585550733,
+        "lastStatus": "ok",
+        "lastDurationMs": 0
+      }
+    },
+    {
+      "id": "14b45590-c819-4372-bf71-2802f82233f0",
+      "agentId": "main",
+      "name": "Dwight Daily Wisdom",
+      "enabled": false,
+      "createdAtMs": 1770233727822,
+      "updatedAtMs": 1770659571794,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 13 * * *",
+        "tz": "Europe/Paris"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Envoie ├á Jules sur Telegram:\n1. Un meme Dwight Schrute (imgflip, URL directe)\n2. 3 mots italiens avec prononciation et exemple\n\nAvant d'envoyer, check ce qui a d├®j├á ├®t├® envoy├®:\n  pnpm tsx skills/local-db/scripts/wisdom-log.ts list\n\nApr├¿s envoi, log chaque ├®l├®ment:\n  pnpm tsx skills/local-db/scripts/wisdom-log.ts add meme \"<meme_id>\"\n  pnpm tsx skills/local-db/scripts/wisdom-log.ts add italian_word \"<word>\"\n\nChoisis des mots/memes diff├®rents de ceux d├®j├á logg├®s."
+      },
+      "state": {
+        "lastRunAtMs": 1770638400005,
+        "lastStatus": "ok",
+        "lastDurationMs": 101503
+      },
+      "delivery": {
+        "mode": "announce"
+      }
+    },
+    {
+      "id": "4db2b91f-f049-4138-b3b8-19d96af57abc",
+      "agentId": "main",
+      "name": "Rappel resto avec AL",
+      "enabled": false,
+      "createdAtMs": 1770309355747,
+      "updatedAtMs": 1770309355756,
+      "schedule": {
+        "kind": "at",
+        "at": "2025-02-09T06:40:00.000Z"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "ÔÅ░ Rappel pour Jules : Planifier un resto avec Anne-Laure cette semaine. Il avait demand├® ce rappel jeudi dernier."
+      },
+      "state": {
+        "lastRunAtMs": 1770309355756,
+        "lastStatus": "ok",
+        "lastDurationMs": 1
+      }
+    },
+    {
+      "id": "51045d7a-1dea-48c8-ae1f-a0ba287c77d3",
+      "agentId": "main",
+      "name": "Rappel achat b├®b├® - Mardi",
+      "enabled": false,
+      "createdAtMs": 1770585550623,
+      "updatedAtMs": 1770585550636,
+      "schedule": {
+        "kind": "at",
+        "at": "2025-02-10T18:36:40.000Z"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "­ƒì╝ Rappel : Session achat b├®b├®. Tu as pu avancer ?"
+      },
+      "state": {
+        "lastRunAtMs": 1770585550636,
+        "lastStatus": "ok",
+        "lastDurationMs": 0
+      }
+    },
+    {
+      "id": "5929038d-632b-46d3-a002-c78b5799e093",
+      "agentId": "main",
+      "name": "LinkedIn Post #2 Reminder Email",
+      "enabled": false,
+      "createdAtMs": 1770134941181,
+      "updatedAtMs": 1770134941185,
+      "schedule": {
+        "kind": "at",
+        "at": "2025-02-17T08:00:00.000Z"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Envoie un email ├á jules.mudes@capgemini.com avec sujet 'Rappel LinkedIn Post #2 - Les 7 niveaux d'automatisation'. Corps du mail : 'Salut Jules, c'est le moment de pr├®parer ton Post #2 LinkedIn sur les 7 niveaux d'automatisation (du pas fait car trop cher jusqu'├á l'agent autonome). Le visuel est pr├¬t dans linkedin-schema-post2.html. Retrouve le brief complet dans Obsidian : Projects/LinkedIn-GenAI-Strategy.md'. Utilise gog gmail send."
+      },
+      "state": {
+        "lastRunAtMs": 1770134941185,
+        "lastStatus": "ok",
+        "lastDurationMs": 16908
+      },
+      "delivery": {
+        "mode": "announce"
+      }
+    },
+    {
+      "id": "5be82e1b-b2d9-47ab-9f75-2eb1dfe7f8eb",
+      "agentId": "main",
+      "name": "Rappel achat b├®b├® - Mercredi",
+      "enabled": false,
+      "createdAtMs": 1770585585115,
+      "updatedAtMs": 1770832200007,
+      "schedule": {
+        "kind": "at",
+        "at": "2026-02-11T17:50:00.000Z"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "­ƒì╝ Rappel : Session achat b├®b├® ÔÇö mi-semaine, o├╣ en es-tu ?"
+      },
+      "state": {
+        "lastRunAtMs": 1770832200007,
+        "lastStatus": "ok",
+        "lastDurationMs": 17
+      }
+    },
+    {
+      "id": "5f5e91bd-6373-4a97-bb8b-c54849604732",
+      "agentId": "main",
+      "name": "Rappel achat b├®b├® - Vendredi",
+      "enabled": false,
+      "createdAtMs": 1770585585182,
+      "updatedAtMs": 1771005000039,
+      "schedule": {
+        "kind": "at",
+        "at": "2026-02-13T17:50:00.000Z"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "­ƒì╝ Dernier rappel : Session achat b├®b├® ÔÇö c'est vendredi, derni├¿re chance cette semaine !"
+      },
+      "state": {
+        "lastRunAtMs": 1771005000026,
+        "lastStatus": "ok",
+        "lastDurationMs": 13,
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "64bea8dd-e4d8-4ad4-afdf-71d19f6142d4",
+      "agentId": "main",
+      "name": "Rappel Cr├¿che St Martin - Mail + AL",
+      "createdAtMs": 1770627725182,
+      "updatedAtMs": 1770973717065,
+      "schedule": {
+        "kind": "at",
+        "at": "2025-02-19T09:00:00.000Z"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "­ƒì╝ Rappel Cr├¿che'n'do : Portes ouvertes dans 2 semaines (5 mars 18h30). Envoyer mail de confirmation ├á contact@crechendo-creches.com pour la cr├¿che Rennes St Martin. Proposer ├á Anne-Laure d'y aller ensemble !"
+      },
+      "state": {
+        "lastRunAtMs": 1770973717063,
+        "lastStatus": "ok",
+        "lastDurationMs": 2,
+        "consecutiveErrors": 0
+      },
+      "enabled": false
+    },
+    {
+      "id": "81b3d9a3-d1d7-40cd-b458-a5b66950b8ba",
+      "agentId": "main",
+      "name": "Rappel achat b├®b├® - Mercredi",
+      "enabled": false,
+      "createdAtMs": 1770585550655,
+      "updatedAtMs": 1770585550659,
+      "schedule": {
+        "kind": "at",
+        "at": "2025-02-11T18:36:40.000Z"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "­ƒì╝ Rappel : Session achat b├®b├® ÔÇö mi-semaine, o├╣ en es-tu ?"
+      },
+      "state": {
+        "lastRunAtMs": 1770585550660,
+        "lastStatus": "ok",
+        "lastDurationMs": 0
+      }
+    },
+    {
+      "id": "8d4e7a2e-3a35-4b13-9ce0-4daddf56beab",
+      "agentId": "main",
+      "name": "Parler cr├¿che avec AL ce soir",
+      "createdAtMs": 1770627725215,
+      "updatedAtMs": 1770973717066,
+      "schedule": {
+        "kind": "at",
+        "at": "2026-02-09T17:30:00.000Z"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "­ƒì╝ Ce soir : Parler ├á Anne-Laure des portes ouvertes Cr├¿che'n'do (5 mars, Rennes St Martin). Voir si elle peut venir ensemble."
+      },
+      "state": {
+        "lastRunAtMs": 1770973717065,
+        "lastStatus": "ok",
+        "lastDurationMs": 1,
+        "consecutiveErrors": 0
+      },
+      "enabled": false
+    },
+    {
+      "id": "8f2484bf-bb4f-4903-983f-77126c5a8e8c",
+      "agentId": "main",
+      "name": "Rappel nouvelle maman - Midi",
+      "enabled": false,
+      "createdAtMs": 1770759519486,
+      "updatedAtMs": 1770858000013,
+      "schedule": {
+        "kind": "at",
+        "at": "2026-02-12T01:00:00.000Z"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "­ƒôû Rappel : Lire la nouvelle de ta m├¿re. Prends des notes au fur et ├á mesure de la lecture !"
+      },
+      "state": {
+        "lastRunAtMs": 1770858037188,
+        "lastStatus": "ok",
+        "lastDurationMs": 1
+      }
+    },
+    {
+      "id": "982572fa-55b5-4576-b293-61dfb03c0250",
+      "agentId": "main",
+      "name": "Rappel achat b├®b├® - Jeudi",
+      "enabled": false,
+      "createdAtMs": 1770585585151,
+      "updatedAtMs": 1770918890849,
+      "schedule": {
+        "kind": "at",
+        "at": "2026-02-12T17:50:00.000Z"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "­ƒì╝ Rappel : Achat b├®b├® ÔÇö plus que demain pour boucler !"
+      },
+      "state": {
+        "lastRunAtMs": 1770918890849,
+        "lastStatus": "ok",
+        "lastDurationMs": 1
+      }
+    },
+    {
+      "id": "bb695765-6862-47d9-9704-51fc7ebc1fa7",
+      "agentId": "main",
+      "name": "LinkedIn Post #2 - Email Reminder",
+      "enabled": false,
+      "createdAtMs": 1770135709277,
+      "updatedAtMs": 1771315223757,
+      "schedule": {
+        "kind": "at",
+        "at": "2026-02-17T08:00:00.000Z"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Envoie un email ├á jules.mudes@capgemini.com avec sujet 'Rappel LinkedIn Post #2 - Les 7 niveaux d'automatisation'. Corps : 'Salut Jules, c'est le moment de pr├®parer ton Post #2 LinkedIn sur les 7 niveaux d'automatisation. Le visuel est pr├¬t : _PERSONAL/linkedin-genai/linkedin-schema-post2.html. Brief complet : Obsidian > Projects/LinkedIn-GenAI-Strategy.md'. Utilise gog gmail send --account jmudes76000@gmail.com"
+      },
+      "state": {
+        "lastRunAtMs": 1771315200018,
+        "lastStatus": "ok",
+        "lastDurationMs": 23739,
+        "consecutiveErrors": 0
+      },
+      "delivery": {
+        "mode": "announce"
+      }
+    },
+    {
+      "id": "cae55346-49b9-45d6-9210-0220772ed699",
+      "agentId": "main",
+      "name": "Rappel achat b├®b├® - Mardi",
+      "enabled": false,
+      "createdAtMs": 1770585585085,
+      "updatedAtMs": 1770745800003,
+      "schedule": {
+        "kind": "at",
+        "at": "2026-02-10T17:50:00.000Z"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "­ƒì╝ Rappel : Session achat b├®b├®. Tu as pu avancer ?"
+      },
+      "state": {
+        "lastRunAtMs": 1770745800003,
+        "lastStatus": "ok",
+        "lastDurationMs": 25
+      }
+    },
+    {
+      "id": "cc3bacbb-bd07-4844-8eea-127984a21a78",
+      "agentId": "main",
+      "name": "Rappel achat b├®b├® - Lundi",
+      "enabled": false,
+      "createdAtMs": 1770585585053,
+      "updatedAtMs": 1770659400011,
+      "schedule": {
+        "kind": "at",
+        "at": "2026-02-09T17:50:00.000Z"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "­ƒì╝ Rappel : Session achat b├®b├® pr├®vue cette semaine. C'est le moment de s'y mettre ?"
+      },
+      "state": {
+        "lastRunAtMs": 1770659400011,
+        "lastStatus": "ok",
+        "lastDurationMs": 18
+      }
+    },
+    {
+      "id": "d209c4c6-e0e2-47f5-b597-4d5c50e47da7",
+      "agentId": "main",
+      "name": "Rappel t├®l├®charger Pluribus",
+      "enabled": false,
+      "createdAtMs": 1770586278857,
+      "updatedAtMs": 1770659400011,
+      "schedule": {
+        "kind": "at",
+        "at": "2026-02-09T17:50:00.000Z"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "­ƒÄ▓ Rappel : T├®l├®charger Pluribus"
+      },
+      "state": {
+        "lastRunAtMs": 1770659400029,
+        "lastStatus": "ok",
+        "lastDurationMs": 1
+      }
+    },
+    {
+      "id": "d579a462-b663-4ef6-8ec3-1eb57c1a58d8",
+      "agentId": "main",
+      "name": "Analyser r├®solutions AG copro",
+      "createdAtMs": 1770654222732,
+      "updatedAtMs": 1770973717066,
+      "schedule": {
+        "kind": "at",
+        "at": "2026-02-09T17:30:00.000Z"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "­ƒÅá Ce soir : Analyser les r├®solutions de l'AG copro (17 mars). Points cl├®s :\n- Bornes VE : voter POUR si int├®r├¬t voiture ├®lectrique (co├╗t 448-2229Ôé¼ si raccordement)\n- Vides ordures : Olifant = moins cher (1408Ôé¼)\n- Fermeture portes 18h\n- V├®rifier si vous utilisez le gaz cuisine\n\nPDF sauvegard├® : _PERSONAL/syndic/convoc-ag-2026.pdf"
+      },
+      "state": {
+        "lastRunAtMs": 1770973717066,
+        "lastStatus": "ok",
+        "lastDurationMs": 0,
+        "consecutiveErrors": 0
+      },
+      "enabled": false
+    },
+    {
+      "id": "df527508-fecd-473d-8391-ffa954eddae6",
+      "agentId": "main",
+      "name": "Rappel achat b├®b├® - Jeudi",
+      "enabled": false,
+      "createdAtMs": 1770585550690,
+      "updatedAtMs": 1770585550704,
+      "schedule": {
+        "kind": "at",
+        "at": "2025-02-12T18:36:40.000Z"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "­ƒì╝ Rappel : Achat b├®b├® ÔÇö plus que demain pour boucler !"
+      },
+      "state": {
+        "lastRunAtMs": 1770585550704,
+        "lastStatus": "ok",
+        "lastDurationMs": 0
+      }
+    },
+    {
+      "id": "edd548bb-53c9-481a-abc6-aa4676d00adb",
+      "agentId": "main",
+      "name": "Rappel resto avec AL",
+      "enabled": false,
+      "createdAtMs": 1770309374726,
+      "updatedAtMs": 1770709200005,
+      "schedule": {
+        "kind": "at",
+        "at": "2026-02-10T07:40:00.000Z"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "­ƒì¢´©Å Rappel pour Jules : Planifier un resto avec Anne-Laure cette semaine ! (demand├® jeudi 5 f├®v)"
+      },
+      "state": {
+        "lastRunAtMs": 1770709266348,
+        "lastStatus": "ok",
+        "lastDurationMs": 1
+      }
+    },
+    {
+      "id": "f1273251-a90d-4fe9-9bd9-903de309839f",
+      "agentId": "main",
+      "name": "Check liste b├®b├® avec AL",
+      "enabled": false,
+      "createdAtMs": 1770929944686,
+      "updatedAtMs": 1772305200051,
+      "schedule": {
+        "kind": "at",
+        "at": "2026-02-28T19:00:00.000Z"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "RAPPEL: Demander ├á Jules o├╣ en est Anne-Laure sur la liste b├®b├® (Google Tasks alejmurot). Faire le point ensemble."
+      },
+      "state": {
+        "lastRunAtMs": 1772305200024,
+        "lastStatus": "ok",
+        "lastDurationMs": 27,
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "fe6644dc-af98-4819-bc5c-d3fe47a863c5",
+      "agentId": "main",
+      "name": "Rappel achat b├®b├® - Lundi",
+      "enabled": false,
+      "createdAtMs": 1770585550586,
+      "updatedAtMs": 1770585550603,
+      "schedule": {
+        "kind": "at",
+        "at": "2025-02-09T18:36:40.000Z"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "­ƒì╝ Rappel : Session achat b├®b├® pr├®vue cette semaine. C'est le moment de s'y mettre ?"
+      },
+      "state": {
+        "lastRunAtMs": 1770585550603,
+        "lastStatus": "ok",
+        "lastDurationMs": 0
+      }
+    },
+    {
+      "id": "ff7a5a05-2c36-42bd-a857-31f583535fe9",
+      "agentId": "main",
+      "name": "Rappel nouvelle maman - 14h",
+      "enabled": false,
+      "createdAtMs": 1770759519537,
+      "updatedAtMs": 1770865200012,
+      "schedule": {
+        "kind": "at",
+        "at": "2026-02-12T03:00:00.000Z"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "­ƒôû Rappel (2├¿me chance) : Lire la nouvelle de ta m├¿re + prendre des notes au fil de la lecture."
+      },
+      "state": {
+        "lastRunAtMs": 1770865200013,
+        "lastStatus": "ok",
+        "lastDurationMs": 14
+      }
     }
   ],
-  "total": 17,
+  "total": 39,
   "offset": 0,
-  "limit": 17,
+  "limit": 39,
   "hasMore": false,
   "nextOffset": null
 }
